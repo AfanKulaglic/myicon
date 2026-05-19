@@ -6,11 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="MYICON — Premium European custom print platform. Design and order high-quality T-shirts, flyers, business cards, brochures, posters and promotional products online." />
     <title>MYICON — Premium Custom Print & Design</title>
+
+    <!-- Preconnect to font origins so TLS handshake completes before CSS fires -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/assets/index-W1-jT4fk.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-NoCiiSiJ.css">
+    <!-- Preconnect to Unsplash for the above-fold hero image -->
+    <link rel="preconnect" href="https://images.unsplash.com" />
+
+    <!--
+      Non-blocking font load:
+      1. media="print" prevents render-blocking — browser downloads but doesn't apply
+      2. onload switches media to "all" so styles apply once the sheet is ready
+      3. <noscript> fallback for no-JS environments
+    -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" />
+    </noscript>
+    <script type="module" crossorigin src="/assets/index-CRpJo3SL.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-react-DnS9QZ5Z.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-router-DJM0j-kF.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-firebase-BrHLOz-o.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-CXWOT_X2.css">
   </head>
   <body>
     <div id="root"></div>

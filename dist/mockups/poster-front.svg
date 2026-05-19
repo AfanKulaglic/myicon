@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1300" width="1000" height="1300">
   <rect width="1000" height="1300" fill="#F5F6F8"/>
-  <rect x="100" y="100" width="800" height="1100" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+  <rect x="100" y="100" width="800" height="1100" fill="#00FF00" stroke="#E5E7EB" stroke-width="2"/>
   <rect x="100" y="100" width="800" height="1100" fill="none" stroke="#1E5AA8" stroke-width="1" stroke-dasharray="6 6" opacity="0.25"/>
   <text x="500" y="1250" text-anchor="middle" fill="#8A95A4" font-family="Inter,sans-serif" font-size="22">Plakat A3</text>
 </svg>

@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" width="1000" height="800">
-  <rect width="1000" height="800" fill="#F5F6F8"/>
-  <rect x="100" y="200" width="800" height="520" rx="12" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
-  <rect x="100" y="200" width="800" height="520" rx="12" fill="none" stroke="#1E5AA8" stroke-width="1" stroke-dasharray="6 6" opacity="0.25"/>
-  <text x="500" y="760" text-anchor="middle" fill="#8A95A4" font-family="Inter,sans-serif" font-size="22">Visitenkarte — Rückseite</text>
-</svg>

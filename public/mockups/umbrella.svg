@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
-  <rect width="1000" height="1000" fill="#F5F6F8"/>
-  <path d="M 500 100 L 900 700 L 100 700 Z" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
-  <path d="M 500 100 L 700 700 M 500 100 L 300 700" stroke="#E5E7EB" stroke-width="1"/>
-  <rect x="200" y="200" width="600" height="600" fill="none" stroke="#1E5AA8" stroke-width="1" stroke-dasharray="6 6" opacity="0.25"/>
-  <line x1="500" y1="700" x2="500" y2="900" stroke="#1E1E1E" stroke-width="6"/>
-  <circle cx="500" cy="920" r="20" fill="#8B5A2B"/>
-  <text x="500" y="970" text-anchor="middle" fill="#8A95A4" font-family="Inter,sans-serif" font-size="22">Regenschirm</text>
-</svg>

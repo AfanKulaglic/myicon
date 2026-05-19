@@ -9,11 +9,12 @@
  *   - Direct image URLs
  */
 
-const MAX_PX = 1600;
-const TARGET_BYTES = 1_500 * 1024; // 1.5 MB
-const QUALITY_START = 0.9;
-const QUALITY_STEP = 0.08;
-const QUALITY_MIN = 0.4;
+// Optimized settings for best performance
+const MAX_PX = 1400; // Reduced from 1600 for faster loading
+const TARGET_BYTES = 800 * 1024; // Reduced to 800KB for faster loading
+const QUALITY_START = 0.85; // Slightly lower quality for better compression
+const QUALITY_STEP = 0.1;
+const QUALITY_MIN = 0.5;
 
 // ImgBB API key - public, safe to expose (read-only upload key)
 const IMGBB_API_KEY = "5e1512f1ebee23db7ec7288def30f170";

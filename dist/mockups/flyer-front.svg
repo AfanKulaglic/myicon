@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1050" width="1000" height="1050">
   <rect width="1000" height="1050" fill="#F5F6F8"/>
-  <rect x="200" y="100" width="600" height="850" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+  <rect x="200" y="100" width="600" height="850" fill="#00FF00" stroke="#E5E7EB" stroke-width="2"/>
   <rect x="200" y="100" width="600" height="850" fill="none" stroke="#1E5AA8" stroke-width="1" stroke-dasharray="6 6" opacity="0.25"/>
   <text x="500" y="1000" text-anchor="middle" fill="#8A95A4" font-family="Inter,sans-serif" font-size="22">Flyer A5 — Vorderseite</text>
 </svg>

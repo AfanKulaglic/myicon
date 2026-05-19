@@ -1,6 +1,6 @@
 # MYICON — Project Documentation
 
-> **Last updated:** Prompt 99 — Added 3 missing Werbematerial products for all remaining subcategories.
+> **Last updated:** Prompt 102 — Default product colors fallback (4 standard colors when no Firebase colors exist).
 > **Read this file at the start of every prompt. Update it at the end of every prompt.**
 > **This is enforced automatically via `.github/copilot-instructions.md` — injected into every Copilot session in this workspace.**
 
@@ -479,6 +479,9 @@ In `mock-data/products.ts`, set:
 
 | Prompt | Changes |
 |--------|--------|
+| 102 | **Default product colors fallback.** When a product has no `colors[]` array defined in Firebase, the customizer now always shows 4 standard default colors (Schwarz, Weiß, Marineblau, Rot) instead of hiding the color selector entirely. New `DEFAULT_PRODUCT_COLORS` constant in [src/features/customizer/panels/RightSidebar.tsx](src/features/customizer/panels/RightSidebar.tsx) provides `{ name, hex }` pairs. `ProductOptions` now uses `product.colors.length > 0 ? product.colors : DEFAULT_PRODUCT_COLORS`, so the color row always renders with either Firebase-provided colors or the fallback 4. `npx tsc --noEmit` — 0 errors. |
+| 101 | **Maximum page-load performance.** (1) Route code-splitting: all 30+ page imports in `App.tsx` converted to `React.lazy()` + `Suspense` — Konva/Firebase/Framer/Swiper/forms only download when actually navigated to. (2) Vite `manualChunks`: separate vendor chunks for `react`, `router`, `konva`, `swiper`, `framer-motion`, `firebase`, and `forms` so each can be cached independently. (3) Hero LCP image: replaced `background-image` CSS with real `<img fetchPriority="high" loading="eager" decoding="sync">` so the preload scanner discovers it immediately. (4) Google Fonts: switched to non-blocking `media="print" onload="this.media='all'"` pattern with `<noscript>` fallback — fonts no longer block first render. (5) Preconnect to `images.unsplash.com` added for above-fold hero image. (6) `decoding="async"` added to `CategoryCard` and `ProductCard` images for off-main-thread decoding. |
+| 100 | Admin color-per-product feature confirmed fully wired. Added `initialColor` prop to `CustomizerProvider` and `EmbeddedCustomizer`. `ProductDetail` now passes selected `color` state to `EmbeddedCustomizer` so the designer starts with the user's pre-selected color. |
 | 99 | Added 3 werbematerial products to [products.ts](src/mock-data/products.ts): `p_schluesselanhaenger`, `p_eiskratzer`, `p_cap_promo`. All 6 Werbematerial subcategories now show products. Pushed to GitHub. |
 | 98 | Added 3 poster products to [products.ts](src/mock-data/products.ts): `p_poster_a4` (A4), `p_poster_werbeplakat` (Werbeplakate), `p_poster_hochglanz` (Hochglanz-Plakate). All 4 Plakate subcategories now show products. Pushed to GitHub. |
 | 97 | Added 4 business card products to [products.ts](src/mock-data/products.ts): `p_visitenkarte_doppelseitig`, `p_visitenkarte_laminiert`, `p_visitenkarte_matt`, `p_visitenkarte_glanz`. All 5 Visitenkarten subcategories now show products. Pushed to GitHub. |

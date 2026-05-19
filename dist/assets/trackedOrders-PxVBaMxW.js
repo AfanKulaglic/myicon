@@ -1,0 +1,1 @@
+import{o as i,p as o}from"./index-CRpJo3SL.js";const t=i()(o(s=>({ids:[],add:r=>s(e=>e.ids.includes(r)?e:{ids:[r,...e.ids]}),remove:r=>s(e=>({ids:e.ids.filter(d=>d!==r)}))}),{name:"myicon-tracked-orders"}));export{t as u};

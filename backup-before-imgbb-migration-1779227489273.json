@@ -1,0 +1,3054 @@
+{
+  "p_broschuere_a3": {
+    "basePrice": 44.9,
+    "bestseller": false,
+    "category": "broschueren",
+    "description": "Großformat-Broschüre A3 — prägnante Präsentationen und Ausstellungshefte.",
+    "highlights": [
+      "Format: 297 × 420 mm",
+      "16 Seiten Standard",
+      "135 g/m² Bilderdruck",
+      "Drahtheftung"
+    ],
+    "image": "https://files.catbox.moe/1igzvp.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_3vt9vv8u",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/6ievp1.png",
+        "mockupHeight": 1274,
+        "mockupWidth": 850,
+        "printArea": {
+          "heightPct": 40.03875968992248,
+          "leftPct": 23.76923076923077,
+          "topPct": 36.54156642608928,
+          "widthPct": 71.94871794871794
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 44.9,
+    "rating": 4.6,
+    "reviews": 89,
+    "slug": "broschuere-a3",
+    "subcategory": "broschueren-a3",
+    "title": "Broschüre A3",
+    "type": "brochure",
+    "updatedAt": 1779172885941,
+    "views": [
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "cover",
+        "image": "/mockups/brochure-front.svg",
+        "label": "Cover"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 420,
+        "id": "cover",
+        "label": "Cover",
+        "width": 297
+      }
+    ]
+  },
+  "p_broschuere_a4": {
+    "basePrice": 34.9,
+    "bestseller": false,
+    "category": "broschueren",
+    "description": "Großformatige Broschüre A4 — ideal für Jahresberichte und Kataloge.",
+    "highlights": [
+      "Format: 210 × 297 mm",
+      "16 Seiten Standard",
+      "135 g/m² Bilderdruck",
+      "Drahtheftung oder Klebebindung"
+    ],
+    "image": "https://files.catbox.moe/1igzvp.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_ikvkmnuw",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/6ievp1.png",
+        "mockupHeight": 1274,
+        "mockupWidth": 850,
+        "printArea": {
+          "heightPct": 39.18337342956429,
+          "leftPct": 24.53846153846154,
+          "topPct": 37.0547981823042,
+          "widthPct": 70.66666666666666
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 34.9,
+    "rating": 4.8,
+    "reviews": 197,
+    "slug": "broschuere-a4",
+    "subcategory": "broschueren-a4",
+    "title": "Broschüre A4",
+    "type": "brochure",
+    "updatedAt": 1779172951109,
+    "views": [
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "cover",
+        "image": "/mockups/brochure-front.svg",
+        "label": "Cover"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 297,
+        "id": "cover",
+        "label": "Cover",
+        "width": 210
+      }
+    ]
+  },
+  "p_broschuere_a5": {
+    "basePrice": 29.9,
+    "bestseller": false,
+    "category": "broschueren",
+    "description": "Hochwertige Broschüre A5 mit Drahtheftung. 16 Seiten, 135 g/m².",
+    "gallery": [
+      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "Format: 148 × 210 mm",
+      "16 Seiten Standard",
+      "Drahtheftung",
+      "135 g/m² Bilderdruck"
+    ],
+    "image": "https://files.catbox.moe/1igzvp.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_v9we18t1",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/6ievp1.png",
+        "mockupHeight": 1274,
+        "mockupWidth": 850,
+        "printArea": {
+          "heightPct": 39.525527933707565,
+          "leftPct": 25.05128205128205,
+          "topPct": 36.712643678160916,
+          "widthPct": 70.15384615384616
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 29.9,
+    "rating": 4.8,
+    "reviews": 312,
+    "slug": "broschuere-a5",
+    "subcategory": "broschueren-heftung",
+    "title": "Broschüre A5 mit Heftung",
+    "type": "brochure",
+    "updatedAt": 1779173003263,
+    "views": [
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "cover",
+        "image": "/mockups/brochure-front.svg",
+        "label": "Cover"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 210,
+        "id": "cover",
+        "label": "Cover",
+        "width": 148
+      }
+    ]
+  },
+  "p_broschuere_a5_std": {
+    "basePrice": 24.9,
+    "bestseller": false,
+    "category": "broschueren",
+    "description": "Klassische Broschüre A5 — perfekt für Firmenprofile und Angebotshefte.",
+    "highlights": [
+      "Format: 148 × 210 mm",
+      "16 Seiten Standard",
+      "135 g/m² Bilderdruck",
+      "Drahtheftung"
+    ],
+    "image": "https://files.catbox.moe/1igzvp.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_j0mybn4l",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/6ievp1.png",
+        "mockupHeight": 1274,
+        "mockupWidth": 850,
+        "printArea": {
+          "heightPct": 39.354450681635925,
+          "leftPct": 24.282051282051285,
+          "topPct": 37.0547981823042,
+          "widthPct": 70.66666666666666
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 24.9,
+    "rating": 4.8,
+    "reviews": 263,
+    "slug": "broschuere-a5-standard",
+    "subcategory": "broschueren-a5",
+    "title": "Broschüre A5",
+    "type": "brochure",
+    "updatedAt": 1779173074255,
+    "views": [
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "cover",
+        "image": "/mockups/brochure-front.svg",
+        "label": "Cover"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 210,
+        "id": "cover",
+        "label": "Cover",
+        "width": 148
+      }
+    ]
+  },
+  "p_broschuere_a6": {
+    "basePrice": 19.9,
+    "bestseller": false,
+    "category": "broschueren",
+    "description": "Kompakte Broschüre im A6-Format. Ideal für Produktkataloge und Menükarten.",
+    "highlights": [
+      "Format: 105 × 148 mm",
+      "16 Seiten Standard",
+      "135 g/m² Bilderdruck",
+      "Drahtheftung"
+    ],
+    "image": "https://files.catbox.moe/1igzvp.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_00jhu7q7",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/6ievp1.png",
+        "mockupHeight": 1274,
+        "mockupWidth": 850,
+        "printArea": {
+          "heightPct": 39.012296177492644,
+          "leftPct": 23.94016833183093,
+          "topPct": 37.39695268644746,
+          "widthPct": 71.6923076923077
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 19.9,
+    "rating": 4.7,
+    "reviews": 184,
+    "slug": "broschuere-a6",
+    "subcategory": "broschueren-a6",
+    "title": "Broschüre A6",
+    "type": "brochure",
+    "updatedAt": 1779173099640,
+    "views": [
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "cover",
+        "image": "/mockups/brochure-front.svg",
+        "label": "Cover"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 148,
+        "id": "cover",
+        "label": "Cover",
+        "width": 105
+      }
+    ]
+  },
+  "p_broschuere_gefaltet": {
+    "basePrice": 22.9,
+    "bestseller": false,
+    "category": "broschueren",
+    "description": "Gefaltete Broschüre als Wickel-, Zickzack- oder Leporello-Falz — ohne Heftung.",
+    "highlights": [
+      "Mehrere Falzarten",
+      "Format wählbar",
+      "135 g/m² Bilderdruck",
+      "Beidseitiger Druck"
+    ],
+    "image": "https://files.catbox.moe/1igzvp.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_jn9ekrp8",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/6ievp1.png",
+        "mockupHeight": 1274,
+        "mockupWidth": 850,
+        "printArea": {
+          "heightPct": 39.01229617749265,
+          "leftPct": 25.307692307692307,
+          "topPct": 37.56802993851911,
+          "widthPct": 70.15384615384616
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 22.9,
+    "rating": 4.7,
+    "reviews": 143,
+    "slug": "broschuere-gefaltet",
+    "subcategory": "gefaltete-broschueren",
+    "title": "Gefaltete Broschüre",
+    "type": "brochure",
+    "updatedAt": 1779173126421,
+    "views": [
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "cover",
+        "image": "/mockups/brochure-front.svg",
+        "label": "Cover"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 297,
+        "id": "cover",
+        "label": "Cover",
+        "width": 210
+      }
+    ]
+  },
+  "p_cap": {
+    "basePrice": 12.9,
+    "bestseller": false,
+    "category": "textilien",
+    "colors": [
+      {
+        "hex": "#111111",
+        "name": "Schwarz"
+      },
+      {
+        "hex": "#1E3A5F",
+        "name": "Marine"
+      },
+      {
+        "hex": "#FFFFFF",
+        "name": "Weiß"
+      }
+    ],
+    "description": "Klassische Snapback Cap mit ebenem Schirm. Ideal für Stickerei oder Patch-Druck.",
+    "descriptionEn": "Classic snapback cap with a flat brim. Ideal for embroidery or patch printing.",
+    "gallery": [
+      "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "6-Panel Design",
+      "Verstellbarer Snap-Verschluss",
+      "Einheitsgröße",
+      "Stickerei möglich"
+    ],
+    "highlightsEn": [
+      "6-panel design",
+      "Adjustable snap closure",
+      "One size fits all",
+      "Embroidery available"
+    ],
+    "image": "https://files.catbox.moe/pzb1dg.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 60,
+        "id": "front",
+        "key": "front",
+        "label": "Front-Panel",
+        "labelEn": "Front panel",
+        "mockup": "https://files.catbox.moe/jdqkwn.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 22,
+          "leftPct": 35,
+          "topPct": 25,
+          "widthPct": 30
+        },
+        "recommendedDpi": 300,
+        "safePct": 5,
+        "widthMm": 120
+      }
+    ],
+    "priceFrom": 12.9,
+    "rating": 4.6,
+    "reviews": 412,
+    "slug": "snapback-cap",
+    "subcategory": "caps",
+    "title": "Snapback Cap — bestickbar",
+    "titleEn": "Snapback Cap — embroiderable",
+    "type": "other",
+    "updatedAt": 1779070651579,
+    "views": [
+      {
+        "area": {
+          "height": 89,
+          "width": 147,
+          "x": 172,
+          "y": 101
+        },
+        "id": "front",
+        "image": "/mockups/cap/cap.png",
+        "label": "Vorderseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 2,
+        "height": 60,
+        "id": "front",
+        "label": "Front",
+        "width": 120
+      }
+    ]
+  },
+  "p_cap_promo": {
+    "basePrice": 9.9,
+    "bestseller": false,
+    "category": "werbematerial",
+    "colors": [
+      {
+        "hex": "#111111",
+        "name": "Schwarz"
+      },
+      {
+        "hex": "#FFFFFF",
+        "name": "Weiß"
+      },
+      {
+        "hex": "#1E3A5F",
+        "name": "Navy"
+      }
+    ],
+    "description": "Klassische Baseball-Cap mit Ihrem Logo als hochwertige Stickerei — ideal als Teamwear oder Werbegeschenk.",
+    "highlights": [
+      "100% Baumwolle",
+      "Verstellbares Klettband",
+      "Stickerei oder Druck",
+      "Einheitsgröße"
+    ],
+    "image": "",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_o8o7zt3a",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/jdqkwn.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 20.897435897435894,
+          "leftPct": 28.897435897435894,
+          "topPct": 31.48717948717949,
+          "widthPct": 42.717948717948715
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 9.9,
+    "rating": 4.7,
+    "reviews": 336,
+    "slug": "cap-werbemittel",
+    "subcategory": "caps",
+    "title": "Cap mit Stickerei",
+    "type": "cap",
+    "updatedAt": 1779171178950,
+    "views": [
+      {
+        "area": {
+          "height": 300,
+          "width": 400,
+          "x": 300,
+          "y": 300
+        },
+        "id": "front",
+        "image": "/mockups/cap-front.svg",
+        "label": "Vorne"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 60,
+        "id": "front",
+        "label": "Front-Panel",
+        "width": 80
+      }
+    ]
+  },
+  "p_damen_polo": {
+    "basePrice": 24.9,
+    "bestseller": true,
+    "category": "textilien",
+    "colors": [
+      {
+        "hex": "#FFFFFF",
+        "name": "Weiß"
+      },
+      {
+        "hex": "#111111",
+        "name": "Schwarz"
+      },
+      {
+        "hex": "#1E3A5F",
+        "name": "Marine"
+      },
+      {
+        "hex": "#B7BCC4",
+        "name": "Grau"
+      },
+      {
+        "hex": "#C03434",
+        "name": "Rot"
+      }
+    ],
+    "description": "Elegantes Damen Polo-Shirt aus hochwertiger Pique-Qualität, 200 g/m². Ideal für Business und Events.",
+    "gallery": [
+      "https://images.unsplash.com/photo-1594938298603-c8148c4b1dea?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "Pique 200 g/m²",
+      "Taillierter Damenschnitt",
+      "Knopfleiste mit 3 Knöpfen",
+      "Stickerei oder Druck möglich"
+    ],
+    "image": "https://files.catbox.moe/sjdeak.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 360,
+        "id": "front",
+        "key": "front",
+        "label": "Vorderseite",
+        "labelEn": "Front",
+        "mockup": "https://files.catbox.moe/06z23f.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 44,
+          "leftPct": 35,
+          "topPct": 31.384615384615387,
+          "widthPct": 30
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 260
+      },
+      {
+        "additionalPrice": 2.6,
+        "bleedPct": 0,
+        "heightMm": 80,
+        "id": "chest_left",
+        "key": "chest_left",
+        "label": "Brust links",
+        "labelEn": "Left chest",
+        "mockup": "https://files.catbox.moe/06z23f.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 12,
+          "leftPct": 54,
+          "topPct": 28,
+          "widthPct": 12
+        },
+        "recommendedDpi": 300,
+        "safePct": 5,
+        "widthMm": 80
+      },
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_sp65wr8n",
+        "key": "back",
+        "label": "Rückseite",
+        "mockup": "https://files.catbox.moe/x00tjx.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 50,
+          "leftPct": 33,
+          "topPct": 18,
+          "widthPct": 34
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      },
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 110,
+        "id": "place_cglrdzpn",
+        "key": "sleeve_right",
+        "label": "Ärmel rechts",
+        "mockup": "https://files.catbox.moe/ruyaiv.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 14,
+          "leftPct": 46.87179487179487,
+          "topPct": 22.256410256410255,
+          "widthPct": 10
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 90
+      }
+    ],
+    "priceFrom": 24.9,
+    "rating": 4.7,
+    "reviews": 421,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "slug": "damen-polo-shirt",
+    "subcategory": "damen-polo-shirts",
+    "title": "Damen Polo-Shirt",
+    "type": "tshirt",
+    "updatedAt": 1779101953448,
+    "views": [
+      {
+        "area": {
+          "height": 367,
+          "width": 274,
+          "x": 319,
+          "y": 217
+        },
+        "id": "front",
+        "image": "/mockups/tshirt/front.png",
+        "label": "Vorderseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 2,
+        "height": 80,
+        "id": "front",
+        "label": "Brust",
+        "width": 80
+      }
+    ]
+  },
+  "p_damen_tshirt": {
+    "badge": "Bestseller",
+    "basePrice": 15.9,
+    "bestseller": true,
+    "category": "textilien",
+    "colors": [
+      {
+        "hex": "#FFFFFF",
+        "name": "Weiß"
+      },
+      {
+        "hex": "#111111",
+        "name": "Schwarz"
+      },
+      {
+        "hex": "#1E3A5F",
+        "name": "Marine"
+      },
+      {
+        "hex": "#B7BCC4",
+        "name": "Grau"
+      },
+      {
+        "hex": "#C03434",
+        "name": "Rot"
+      }
+    ],
+    "description": "Tailliertes Damen T-Shirt aus 100% Bio-Baumwolle, 160 g/m². Schmeichelhafter Schnitt für alle Größen.",
+    "gallery": [
+      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "100% Bio-Baumwolle, 160 g/m²",
+      "Taillierter Damenschnitt",
+      "OEKO-TEX® zertifiziert",
+      "Vor-/Rückendruck möglich"
+    ],
+    "image": "https://files.catbox.moe/5z4foa.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 380,
+        "id": "front",
+        "key": "front",
+        "label": "Vorderseite",
+        "labelEn": "Front",
+        "mockup": "https://files.catbox.moe/3imxwr.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 50,
+          "leftPct": 33,
+          "topPct": 24,
+          "widthPct": 34
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 280
+      },
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 380,
+        "id": "back",
+        "key": "back",
+        "label": "Rückseite",
+        "labelEn": "Back",
+        "mockup": "https://files.catbox.moe/o6zuf6.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 56,
+          "leftPct": 32,
+          "topPct": 18,
+          "widthPct": 36
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 280
+      },
+      {
+        "additionalPrice": 2.6,
+        "bleedPct": 0,
+        "heightMm": 100,
+        "id": "chest_left",
+        "key": "chest_left",
+        "label": "Brust links",
+        "labelEn": "Left chest",
+        "mockup": "https://files.catbox.moe/3imxwr.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 14,
+          "leftPct": 54,
+          "topPct": 26,
+          "widthPct": 13
+        },
+        "recommendedDpi": 300,
+        "safePct": 5,
+        "widthMm": 100
+      },
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 110,
+        "id": "place_oauebhyl",
+        "key": "sleeve_right",
+        "label": "Ärmel rechts",
+        "mockup": "https://files.catbox.moe/rzrtii.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 14,
+          "leftPct": 47.128205128205124,
+          "topPct": 20.504273504273506,
+          "widthPct": 10
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 90
+      }
+    ],
+    "priceFrom": 15.9,
+    "rating": 4.8,
+    "reviews": 934,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "slug": "damen-t-shirt",
+    "subcategory": "damen-t-shirts",
+    "title": "Damen T-Shirt — Bio Baumwolle",
+    "type": "tshirt",
+    "updatedAt": 1779104750969,
+    "views": [
+      {
+        "area": {
+          "height": 417,
+          "width": 310,
+          "x": 301,
+          "y": 200
+        },
+        "id": "front",
+        "image": "/mockups/tshirt/front.png",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 475,
+          "width": 302,
+          "x": 269,
+          "y": 153
+        },
+        "id": "back",
+        "image": "/mockups/tshirt/back.png",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 380,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 280
+      },
+      {
+        "bleed": 3,
+        "height": 380,
+        "id": "back",
+        "label": "Rückseite",
+        "width": 280
+      }
+    ]
+  },
+  "p_eiskratzer": {
+    "basePrice": 1.5,
+    "bestseller": false,
+    "category": "werbematerial",
+    "description": "Praktischer Eiskratzer mit Ihrem Logo-Druck — ein saisonales Werbegeschenk das in Erinnerung bleibt.",
+    "highlights": [
+      "Robustes PP-Kunststoff",
+      "Einfarbiger Siebdruck",
+      "Handliche Größe",
+      "Ab 100 Stück"
+    ],
+    "image": "https://files.catbox.moe/cjsu8w.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_vsbzdjja",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/qs86mc.png",
+        "mockupHeight": 1536,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 16.623931623931625,
+          "leftPct": 33.51282051282051,
+          "topPct": 54.99145299145299,
+          "widthPct": 32.205128205128204
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 1.5,
+    "rating": 4.4,
+    "reviews": 273,
+    "slug": "eiskratzer",
+    "subcategory": "eiskratzer",
+    "title": "Eiskratzer mit Aufdruck",
+    "type": "promo",
+    "updatedAt": 1779174625032,
+    "views": [
+      {
+        "area": {
+          "height": 400,
+          "width": 600,
+          "x": 200,
+          "y": 300
+        },
+        "id": "front",
+        "image": "/mockups/icescraper-front.svg",
+        "label": "Vorderseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 2,
+        "height": 50,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 120
+      }
+    ]
+  },
+  "p_flyer_a4": {
+    "basePrice": 14.9,
+    "bestseller": false,
+    "category": "flyer",
+    "description": "Großformatiger Flyer A4 für maximale Wirkung. 135 g/m² Bilderdruck glänzend. Perfekt für Werbung, Veranstaltungen und Informationsblätter.",
+    "highlights": [
+      "Format: 210 × 297 mm",
+      "135 g/m² Bilderdruck glänzend",
+      "4/4-farbig (beidseitig)",
+      "Ab 100 Stück"
+    ],
+    "image": "https://files.catbox.moe/enexh1.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_tdrt82bf",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/xgygma.png",
+        "mockupHeight": 1340,
+        "mockupWidth": 893,
+        "printArea": {
+          "heightPct": 56.27813526286279,
+          "leftPct": 32.48717948717949,
+          "topPct": 26.10114009558647,
+          "widthPct": 55.282051282051285
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 14.9,
+    "rating": 4.8,
+    "reviews": 0,
+    "slug": "flyer-a4",
+    "subcategory": "flyer-a4",
+    "title": "Flyer A4",
+    "type": "other",
+    "updatedAt": 1779172228012,
+    "views": [
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "front",
+        "image": "/mockups/flyer-front.svg",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "back",
+        "image": "/mockups/flyer-back.svg",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 297,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 210
+      },
+      {
+        "bleed": 3,
+        "height": 297,
+        "id": "back",
+        "label": "Rückseite",
+        "width": 210
+      }
+    ]
+  },
+  "p_flyer_a5": {
+    "basePrice": 9.9,
+    "bestseller": true,
+    "category": "flyer",
+    "description": "Premium Flyer A5, 135 g/m² Bilderdruck. Brillante Farben, gestochen scharfer Druck.",
+    "gallery": [
+      "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "Format: 148 × 210 mm",
+      "135 g/m² Bilderdruck glänzend",
+      "4/4-farbig (beidseitig)",
+      "Ab 250 Stück"
+    ],
+    "image": "https://files.catbox.moe/1my6zy.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_0m0ob9uy",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/xgygma.png",
+        "mockupHeight": 1340,
+        "mockupWidth": 893,
+        "printArea": {
+          "heightPct": 55.08196940165007,
+          "leftPct": 33,
+          "topPct": 27.46818679411529,
+          "widthPct": 54.76923076923077
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 9.9,
+    "rating": 4.9,
+    "reviews": 3217,
+    "slug": "flyer-a5",
+    "subcategory": "flyer-a5",
+    "title": "Flyer A5 — Premium",
+    "type": "other",
+    "updatedAt": 1779172308349,
+    "views": [
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "front",
+        "image": "/mockups/flyer-front.svg",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "back",
+        "image": "/mockups/flyer-back.svg",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 210,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 148
+      },
+      {
+        "bleed": 3,
+        "height": 210,
+        "id": "back",
+        "label": "Rückseite",
+        "width": 148
+      }
+    ]
+  },
+  "p_flyer_a6": {
+    "basePrice": 7.9,
+    "bestseller": false,
+    "category": "flyer",
+    "description": "Kompakter Flyer im A6-Format. 135 g/m² Bilderdruck glänzend. Ideal für Ankündigungen, Gutscheine und Veranstaltungen.",
+    "highlights": [
+      "Format: 105 × 148 mm",
+      "135 g/m² Bilderdruck glänzend",
+      "4/4-farbig (beidseitig)",
+      "Ab 250 Stück"
+    ],
+    "image": "https://files.catbox.moe/d2xafj.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_k6iix7an",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/xgygma.png",
+        "mockupHeight": 1340,
+        "mockupWidth": 893,
+        "printArea": {
+          "heightPct": 56.449016100178895,
+          "leftPct": 32.230769230769226,
+          "topPct": 26.27202093290257,
+          "widthPct": 55.794871794871796
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 7.9,
+    "rating": 4.8,
+    "reviews": 0,
+    "slug": "flyer-a6",
+    "subcategory": "flyer-a6",
+    "title": "Flyer A6",
+    "type": "other",
+    "updatedAt": 1779172362269,
+    "views": [
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "front",
+        "image": "/mockups/flyer-front.svg",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "back",
+        "image": "/mockups/flyer-back.svg",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 148,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 105
+      },
+      {
+        "bleed": 3,
+        "height": 148,
+        "id": "back",
+        "label": "Rückseite",
+        "width": 105
+      }
+    ]
+  },
+  "p_flyer_beidseitig": {
+    "basePrice": 9.9,
+    "bestseller": false,
+    "category": "flyer",
+    "description": "Flyer beidseitig bedruckt in Premium-Qualität. 135 g/m² Bilderdruck. Vorder- und Rückseite individuell gestalten.",
+    "highlights": [
+      "Format: 148 × 210 mm (A5)",
+      "135 g/m² Bilderdruck glänzend",
+      "Beidseitiger Vollfarbdruck",
+      "Ab 250 Stück"
+    ],
+    "image": "https://files.catbox.moe/txk6vq.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_yv0ept2b",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/xgygma.png",
+        "mockupHeight": 1340,
+        "mockupWidth": 893,
+        "printArea": {
+          "heightPct": 55.08196940165007,
+          "leftPct": 31.974358974358974,
+          "topPct": 27.46818679411529,
+          "widthPct": 55.02564102564102
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 9.9,
+    "rating": 4.8,
+    "reviews": 0,
+    "slug": "beidseitig-flyer",
+    "subcategory": "beidseitig-flyer",
+    "title": "Beidseitig bedruckte Flyer",
+    "type": "other",
+    "updatedAt": 1779172751982,
+    "views": [
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "front",
+        "image": "/mockups/flyer-front.svg",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "back",
+        "image": "/mockups/flyer-back.svg",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 210,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 148
+      },
+      {
+        "bleed": 3,
+        "height": 210,
+        "id": "back",
+        "label": "Rückseite",
+        "width": 148
+      }
+    ]
+  },
+  "p_flyer_express": {
+    "badge": "Express",
+    "basePrice": 14.9,
+    "bestseller": false,
+    "category": "flyer",
+    "description": "Flyer mit Expresslieferung — bereits am nächsten Werktag druckfertig. 135 g/m² Bilderdruck, Format A5.",
+    "highlights": [
+      "Format: 148 × 210 mm",
+      "135 g/m² Bilderdruck glänzend",
+      "Lieferung in 24 h möglich",
+      "Ab 100 Stück"
+    ],
+    "image": "https://files.catbox.moe/txk6vq.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_901vdumi",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/xgygma.png",
+        "mockupHeight": 1340,
+        "mockupWidth": 893,
+        "printArea": {
+          "heightPct": 55.08196940165007,
+          "leftPct": 32.48717948717949,
+          "topPct": 27.29730595679919,
+          "widthPct": 54.256410256410255
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 14.9,
+    "rating": 4.9,
+    "reviews": 0,
+    "slug": "express-flyer",
+    "subcategory": "express-flyer",
+    "title": "Express-Flyer",
+    "type": "other",
+    "updatedAt": 1779172821911,
+    "views": [
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "front",
+        "image": "/mockups/flyer-front.svg",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "back",
+        "image": "/mockups/flyer-back.svg",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 210,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 148
+      },
+      {
+        "bleed": 3,
+        "height": 210,
+        "id": "back",
+        "label": "Rückseite",
+        "width": 148
+      }
+    ]
+  },
+  "p_flyer_gefaltet": {
+    "basePrice": 19.9,
+    "bestseller": false,
+    "category": "flyer",
+    "description": "Gefaltete Flyer mit Mittelfalz oder Wickelfalz. 150 g/m² Bilderdruck glänzend. Ideal für Speisekarten, Programme und Broschürchen.",
+    "highlights": [
+      "Format gefaltet: A5 (148 × 210 mm)",
+      "150 g/m² Bilderdruck glänzend",
+      "Mittelfalz oder Wickelfalz",
+      "Ab 100 Stück"
+    ],
+    "image": "https://files.catbox.moe/txk6vq.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_36m05n2u",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/xgygma.png",
+        "mockupHeight": 1340,
+        "mockupWidth": 893,
+        "printArea": {
+          "heightPct": 56.27813526286279,
+          "leftPct": 31.974358974358974,
+          "topPct": 26.27202093290257,
+          "widthPct": 56.30769230769231
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 19.9,
+    "rating": 4.7,
+    "reviews": 0,
+    "slug": "gefaltete-flyer",
+    "subcategory": "gefaltete-flyer",
+    "title": "Gefaltete Flyer",
+    "type": "other",
+    "updatedAt": 1779172862145,
+    "views": [
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "front",
+        "image": "/mockups/flyer-front.svg",
+        "label": "Außenseite"
+      },
+      {
+        "area": {
+          "height": 850,
+          "width": 600,
+          "x": 200,
+          "y": 100
+        },
+        "id": "back",
+        "image": "/mockups/flyer-back.svg",
+        "label": "Innenseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 210,
+        "id": "front",
+        "label": "Außenseite",
+        "width": 210
+      },
+      {
+        "bleed": 3,
+        "height": 210,
+        "id": "back",
+        "label": "Innenseite",
+        "width": 210
+      }
+    ]
+  },
+  "p_hoodie": {
+    "badge": "Neu",
+    "badgeEn": "New",
+    "basePrice": 34.9,
+    "bestseller": false,
+    "category": "textilien",
+    "colors": [
+      {
+        "hex": "#FFFFFF",
+        "name": "Weiß"
+      },
+      {
+        "hex": "#111111",
+        "name": "Schwarz"
+      },
+      {
+        "hex": "#1E3A5F",
+        "name": "Marine"
+      },
+      {
+        "hex": "#B7BCC4",
+        "name": "Grau"
+      },
+      {
+        "hex": "#C03434",
+        "name": "Rot"
+      }
+    ],
+    "description": "Schwerer Premium-Hoodie, 320 g/m². Innen angeraut. Perfekt für Markenmerchandise.",
+    "descriptionEn": "Heavy premium hoodie, 320 g/m². Brushed inside. Perfect for brand merchandise.",
+    "gallery": [
+      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "320 g/m² Baumwoll-Mix",
+      "Doppelter Kapuzensaum",
+      "Kängurutasche",
+      "Unisex Fit"
+    ],
+    "highlightsEn": [
+      "320 g/m² cotton blend",
+      "Double-layered hood seam",
+      "Kangaroo pocket",
+      "Unisex fit"
+    ],
+    "image": "https://files.catbox.moe/tvr01f.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_81a0bysq",
+        "key": "front",
+        "label": "Front",
+        "mockup": "https://files.catbox.moe/i6myqn.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 35.256410256410255,
+          "leftPct": 32.23076923076923,
+          "topPct": 17.641025641025642,
+          "widthPct": 34
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      },
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_i7ki0vi1",
+        "key": "back",
+        "label": "Back",
+        "mockup": "https://files.catbox.moe/k7bo7n.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 50,
+          "leftPct": 33,
+          "topPct": 21.076923076923077,
+          "widthPct": 34
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 34.9,
+    "rating": 4.9,
+    "reviews": 1432,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "slug": "premium-hoodie",
+    "subcategory": "hoodies",
+    "title": "Premium Hoodie mit Kapuze",
+    "titleEn": "Premium Hoodie with Hood",
+    "type": "tshirt",
+    "updatedAt": 1779070539924,
+    "views": [
+      {
+        "area": {
+          "height": 350,
+          "width": 328,
+          "x": 292,
+          "y": 234
+        },
+        "id": "front",
+        "image": "/mockups/tshirt/front.png",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 441,
+          "width": 336,
+          "x": 252,
+          "y": 186
+        },
+        "id": "back",
+        "image": "/mockups/tshirt/back.png",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 380,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 305
+      }
+    ]
+  },
+  "p_mousepad": {
+    "basePrice": 6.9,
+    "bestseller": false,
+    "category": "werbematerial",
+    "description": "Mousepad mit individueller Bedruckung. Rutschfeste Unterseite.",
+    "gallery": [
+      "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "220 × 180 mm",
+      "Vollflächendruck",
+      "Rutschfest"
+    ],
+    "image": "https://files.catbox.moe/zg0rei.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_rt47pqah",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/y5d0b7.png",
+        "mockupHeight": 1536,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 18.846153846153847,
+          "leftPct": 25.05128205128205,
+          "topPct": 30.547008547008545,
+          "widthPct": 50.41025641025641
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 6.9,
+    "rating": 4.5,
+    "reviews": 221,
+    "slug": "mousepad",
+    "subcategory": "mousepads",
+    "title": "Mousepad mit Vollflächendruck",
+    "type": "promo",
+    "updatedAt": 1779174687938,
+    "views": [
+      {
+        "area": {
+          "height": 600,
+          "width": 800,
+          "x": 100,
+          "y": 200
+        },
+        "id": "front",
+        "image": "/mockups/mousepad.svg",
+        "label": "Oberseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 180,
+        "id": "front",
+        "label": "Oberseite",
+        "width": 220
+      }
+    ]
+  },
+  "p_polo_classic": {
+    "basePrice": 22.5,
+    "bestseller": true,
+    "category": "textilien",
+    "colors": [
+      {
+        "hex": "#FFFFFF",
+        "name": "Weiß"
+      },
+      {
+        "hex": "#111111",
+        "name": "Schwarz"
+      },
+      {
+        "hex": "#1E3A5F",
+        "name": "Marine"
+      },
+      {
+        "hex": "#B7BCC4",
+        "name": "Grau"
+      },
+      {
+        "hex": "#C03434",
+        "name": "Rot"
+      }
+    ],
+    "description": "Elegantes Polo-Shirt für Business und Event. Hochwertige Pique-Qualität, 200 g/m².",
+    "descriptionEn": "Elegant polo shirt for business and events. High-quality piqué fabric, 200 g/m².",
+    "gallery": [
+      "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "Pique 200 g/m²",
+      "Knopfleiste mit 3 Knöpfen",
+      "Stickerei oder Druck möglich",
+      "Premium Marken-Qualität"
+    ],
+    "highlightsEn": [
+      "Piqué 200 g/m²",
+      "Button placket with 3 buttons",
+      "Embroidery or print available",
+      "Premium brand quality"
+    ],
+    "image": "https://files.catbox.moe/l3riwe.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 380,
+        "id": "front",
+        "key": "front",
+        "label": "Vorderseite",
+        "labelEn": "Front",
+        "mockup": "https://files.catbox.moe/wqhd92.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 44,
+          "leftPct": 31.153846153846153,
+          "topPct": 32.666666666666664,
+          "widthPct": 38.205128205128204
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 280
+      },
+      {
+        "additionalPrice": 2.6,
+        "bleedPct": 0,
+        "heightMm": 80,
+        "id": "chest_left",
+        "key": "front",
+        "label": "Brust links",
+        "labelEn": "Left chest",
+        "mockup": "https://files.catbox.moe/wqhd92.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 15.58974358974359,
+          "leftPct": 55.28205128205128,
+          "topPct": 24.033925913443987,
+          "widthPct": 15.58974358974359
+        },
+        "recommendedDpi": 300,
+        "safePct": 5,
+        "widthMm": 80
+      },
+      {
+        "additionalPrice": 2.9,
+        "bleedPct": 0,
+        "heightMm": 50,
+        "id": "sleeve_left",
+        "key": "sleeve_left",
+        "label": "Ärmel links",
+        "labelEn": "Left sleeve",
+        "mockup": "https://files.catbox.moe/r1nopv.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 18.41025641025641,
+          "leftPct": 47.48717948717949,
+          "topPct": 24.962870681508516,
+          "widthPct": 13.538461538461538
+        },
+        "recommendedDpi": 300,
+        "safePct": 6,
+        "widthMm": 80
+      },
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_h194mg6w",
+        "key": "back",
+        "label": "Back",
+        "mockup": "https://files.catbox.moe/dm3p6q.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 50,
+          "leftPct": 33,
+          "topPct": 18,
+          "widthPct": 34
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 22.5,
+    "rating": 4.7,
+    "reviews": 812,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "slug": "klassisches-polo-shirt",
+    "subcategory": "polo-shirts",
+    "title": "Klassisches Polo-Shirt",
+    "titleEn": "Classic Polo Shirt",
+    "type": "tshirt",
+    "updatedAt": 1779070835437,
+    "views": [
+      {
+        "area": {
+          "height": 367,
+          "width": 274,
+          "x": 319,
+          "y": 217
+        },
+        "id": "front",
+        "image": "/mockups/tshirt/front.png",
+        "label": "Vorderseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 2,
+        "height": 80,
+        "id": "front",
+        "label": "Brust",
+        "width": 80
+      }
+    ]
+  },
+  "p_poster_a3": {
+    "basePrice": 4.9,
+    "bestseller": false,
+    "category": "plakate",
+    "description": "Hochglanz-Plakat A3, 170 g/m². Perfekt für Events und Werbung.",
+    "gallery": [
+      "https://images.unsplash.com/photo-1561070791-2526d30994b8?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1561070791-2526d30994b8?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "Format: 297 × 420 mm",
+      "170 g/m² Bilderdruck",
+      "Glänzend oder matt"
+    ],
+    "image": "https://files.catbox.moe/m4il2i.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_qxcgug5w",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/8zw040.png",
+        "mockupHeight": 1536,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 56.794871794871796,
+          "leftPct": 29.41025641025641,
+          "topPct": 23.70940170940171,
+          "widthPct": 57.84615384615385
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 4.9,
+    "rating": 4.7,
+    "reviews": 921,
+    "slug": "poster-a3",
+    "subcategory": "plakate-a3",
+    "title": "Plakat A3 — Hochglanz",
+    "type": "poster",
+    "updatedAt": 1779174112392,
+    "views": [
+      {
+        "area": {
+          "height": 1100,
+          "width": 800,
+          "x": 100,
+          "y": 100
+        },
+        "id": "front",
+        "image": "/mockups/poster-front.svg",
+        "label": "Vorderseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 420,
+        "id": "front",
+        "label": "Plakat",
+        "width": 297
+      }
+    ]
+  },
+  "p_poster_a4": {
+    "basePrice": 2.9,
+    "bestseller": false,
+    "category": "plakate",
+    "description": "Kompaktes A4-Plakat, 170 g/m². Ideal für Schaufenster, Infowände und Aushänge.",
+    "highlights": [
+      "Format: 210 × 297 mm",
+      "170 g/m² Bilderdruck",
+      "Glänzend oder matt",
+      "Ab 10 Stück"
+    ],
+    "image": "https://files.catbox.moe/m4il2i.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_p56noin9",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/8zw040.png",
+        "mockupHeight": 1536,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 57.30769230769231,
+          "leftPct": 29.923076923076923,
+          "topPct": 23.70940170940171,
+          "widthPct": 57.84615384615385
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 2.9,
+    "rating": 4.6,
+    "reviews": 743,
+    "slug": "poster-a4",
+    "subcategory": "plakate-a4",
+    "title": "Plakat A4",
+    "type": "poster",
+    "updatedAt": 1779174139123,
+    "views": [
+      {
+        "area": {
+          "height": 1100,
+          "width": 800,
+          "x": 100,
+          "y": 100
+        },
+        "id": "front",
+        "image": "/mockups/poster-front.svg",
+        "label": "Vorderseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 297,
+        "id": "front",
+        "label": "Plakat",
+        "width": 210
+      }
+    ]
+  },
+  "p_poster_hochglanz": {
+    "basePrice": 5.9,
+    "bestseller": false,
+    "category": "plakate",
+    "description": "Premium Hochglanz-Plakat mit brillanten Farben — für maximale Aufmerksamkeit.",
+    "highlights": [
+      "Formate A4–A1",
+      "200 g/m² Hochglanz",
+      "UV-Schutzlaminat",
+      "Ab 10 Stück"
+    ],
+    "image": "https://files.catbox.moe/m4il2i.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_dnc6z7pe",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/8zw040.png",
+        "mockupHeight": 1536,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 56.794871794871796,
+          "leftPct": 29.666666666666668,
+          "topPct": 24.05128205128205,
+          "widthPct": 58.1025641025641
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 5.9,
+    "rating": 4.9,
+    "reviews": 388,
+    "slug": "hochglanz-plakat",
+    "subcategory": "hochglanz-plakate",
+    "title": "Hochglanz-Plakat",
+    "type": "poster",
+    "updatedAt": 1779174170135,
+    "views": [
+      {
+        "area": {
+          "height": 1100,
+          "width": 800,
+          "x": 100,
+          "y": 100
+        },
+        "id": "front",
+        "image": "/mockups/poster-front.svg",
+        "label": "Vorderseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 420,
+        "id": "front",
+        "label": "Plakat",
+        "width": 297
+      }
+    ]
+  },
+  "p_poster_werbeplakat": {
+    "basePrice": 6.9,
+    "bestseller": false,
+    "category": "plakate",
+    "description": "Großformatige Werbeplakate für Außenwerbung und Events — wetterfest und farbecht.",
+    "highlights": [
+      "Formate A3–A0",
+      "170 g/m² Bilderdruck",
+      "Wetterfeste Option",
+      "Glänzend oder matt"
+    ],
+    "image": "https://files.catbox.moe/m4il2i.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_esta5v2y",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/8zw040.png",
+        "mockupHeight": 1536,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 57.30769230769231,
+          "leftPct": 29.41025641025641,
+          "topPct": 23.53846153846154,
+          "widthPct": 57.84615384615385
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 6.9,
+    "rating": 4.7,
+    "reviews": 512,
+    "slug": "werbeplakat",
+    "subcategory": "werbeplakate",
+    "title": "Werbeplakat",
+    "type": "poster",
+    "updatedAt": 1779174194810,
+    "views": [
+      {
+        "area": {
+          "height": 1100,
+          "width": 800,
+          "x": 100,
+          "y": 100
+        },
+        "id": "front",
+        "image": "/mockups/poster-front.svg",
+        "label": "Vorderseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 594,
+        "id": "front",
+        "label": "Plakat",
+        "width": 420
+      }
+    ]
+  },
+  "p_regenschirm": {
+    "basePrice": 14.9,
+    "bestseller": false,
+    "category": "werbematerial",
+    "description": "Premium Stockschirm mit Holzgriff und individuellem Logo-Druck.",
+    "gallery": [
+      "https://images.unsplash.com/photo-1534270804882-6b5048b1c1fc?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1534270804882-6b5048b1c1fc?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "8 Panels",
+      "Holzgriff",
+      "Windfest",
+      "Logo-Druck inklusive"
+    ],
+    "image": "https://images.unsplash.com/photo-1534270804882-6b5048b1c1fc?w=800&q=80&auto=format&fit=crop",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_sa87k4dm",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/zxrkps.png",
+        "mockupHeight": 1536,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 12.692307692307693,
+          "leftPct": 41.20512820512822,
+          "topPct": 59.777777777777786,
+          "widthPct": 18.102564102564102
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 14.9,
+    "rating": 4.7,
+    "reviews": 154,
+    "slug": "regenschirm",
+    "subcategory": "regenschirme",
+    "title": "Regenschirm mit Logo-Druck",
+    "type": "promo",
+    "updatedAt": 1779170997864,
+    "views": [
+      {
+        "area": {
+          "height": 600,
+          "width": 600,
+          "x": 200,
+          "y": 200
+        },
+        "id": "front",
+        "image": "/mockups/umbrella.svg",
+        "label": "Panel"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 200,
+        "id": "front",
+        "label": "Panel",
+        "width": 200
+      }
+    ]
+  },
+  "p_schluesselanhaenger": {
+    "basePrice": 1.9,
+    "bestseller": false,
+    "category": "werbematerial",
+    "description": "Individueller Schlüsselanhänger mit Ihrem Logo — als Werbegeschenk oder Merchandising-Artikel.",
+    "highlights": [
+      "Beidseitig bedruckbar",
+      "Stabiles Kunststoff-Gehäuse",
+      "Metallkarabiner",
+      "Ab 50 Stück"
+    ],
+    "image": "https://files.catbox.moe/mqt4ha.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_nsvjyw2o",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/w165eu.png",
+        "mockupHeight": 1299,
+        "mockupWidth": 870,
+        "printArea": {
+          "heightPct": 35.55464620173343,
+          "leftPct": 48.38461538461537,
+          "topPct": 48.79725239832037,
+          "widthPct": 32.97435897435897
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 1.9,
+    "rating": 4.5,
+    "reviews": 408,
+    "slug": "schluesselanhaenger",
+    "subcategory": "schluesselanhaenger",
+    "title": "Schlüsselanhänger mit Logo",
+    "type": "promo",
+    "updatedAt": 1779174422031,
+    "views": [
+      {
+        "area": {
+          "height": 400,
+          "width": 400,
+          "x": 300,
+          "y": 300
+        },
+        "id": "front",
+        "image": "/mockups/keyring-front.svg",
+        "label": "Vorderseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 2,
+        "height": 50,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 50
+      }
+    ]
+  },
+  "p_schuerze": {
+    "badge": "Neu",
+    "basePrice": 18.9,
+    "bestseller": false,
+    "category": "textilien",
+    "colors": [
+      {
+        "hex": "#FFFFFF",
+        "name": "Weiß"
+      },
+      {
+        "hex": "#111111",
+        "name": "Schwarz"
+      },
+      {
+        "hex": "#1E3A5F",
+        "name": "Marine"
+      },
+      {
+        "hex": "#C03434",
+        "name": "Rot"
+      }
+    ],
+    "description": "Robuste Schürze aus 65% Polyester / 35% Baumwolle, 210 g/m². Einheitsgröße mit verstellbarem Nackenband.",
+    "gallery": [
+      "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1581888227599-779811939961?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "65% Polyester / 35% Baumwolle, 210 g/m²",
+      "Einheitsgröße, verstellbares Nackenband",
+      "Großflächiger Druckbereich",
+      "Ideal für Gastronomie & Events"
+    ],
+    "image": "https://files.catbox.moe/8j1cjg.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 350,
+        "id": "front",
+        "key": "front",
+        "label": "Vorderseite",
+        "labelEn": "Front",
+        "mockup": "https://files.catbox.moe/dludxu.png",
+        "mockupHeight": 1536,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 53.81196581196581,
+          "leftPct": 22.82051282051282,
+          "topPct": 39.23076923076923,
+          "widthPct": 55.8974358974359
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 300
+      }
+    ],
+    "priceFrom": 18.9,
+    "rating": 4.6,
+    "reviews": 287,
+    "slug": "kochschuerze",
+    "subcategory": "schuerzen",
+    "title": "Schürze — bedruckbar",
+    "type": "tshirt",
+    "updatedAt": 1779105251965,
+    "views": [
+      {
+        "area": {
+          "height": 401,
+          "width": 365,
+          "x": 274,
+          "y": 251
+        },
+        "id": "front",
+        "image": "/mockups/tshirt/front.png",
+        "label": "Vorderseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 350,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 300
+      }
+    ]
+  },
+  "p_stofftasche": {
+    "basePrice": 5.9,
+    "bestseller": false,
+    "category": "werbematerial",
+    "colors": [
+      {
+        "hex": "#E8DDC7",
+        "name": "Natur"
+      },
+      {
+        "hex": "#111111",
+        "name": "Schwarz"
+      }
+    ],
+    "description": "Nachhaltige Bio-Stofftasche mit Logo-Druck. Ideal als Werbegeschenk.",
+    "gallery": [
+      "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "100% Bio-Baumwolle",
+      "Lange Henkel",
+      "1- oder 4-farbig bedruckbar"
+    ],
+    "image": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=800&q=80&auto=format&fit=crop",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_pdf1qqkd",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/354720.png",
+        "mockupHeight": 1536,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 34.059829059829056,
+          "leftPct": 22.23076923076923,
+          "topPct": 46.61538461538461,
+          "widthPct": 55.53846153846154
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 5.9,
+    "rating": 4.6,
+    "reviews": 654,
+    "slug": "stofftasche",
+    "subcategory": "stofftaschen",
+    "title": "Stofftasche Bio-Baumwolle",
+    "type": "promo",
+    "updatedAt": 1779171047572,
+    "views": [
+      {
+        "area": {
+          "height": 400,
+          "width": 400,
+          "x": 300,
+          "y": 280
+        },
+        "id": "front",
+        "image": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=1000&q=80&auto=format&fit=crop",
+        "label": "Vorne"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 220,
+        "id": "front",
+        "label": "Vorne",
+        "width": 220
+      }
+    ]
+  },
+  "p_tshirt_classic": {
+    "badge": "Bestseller",
+    "badgeEn": "Bestseller",
+    "basePrice": 14.9,
+    "bestseller": true,
+    "category": "textilien",
+    "colors": [
+      {
+        "hex": "#FFFFFF",
+        "name": "Weiß"
+      },
+      {
+        "hex": "#111111",
+        "name": "Schwarz"
+      },
+      {
+        "hex": "#1E3A5F",
+        "name": "Marine"
+      },
+      {
+        "hex": "#B7BCC4",
+        "name": "Grau"
+      },
+      {
+        "hex": "#C03434",
+        "name": "Rot"
+      }
+    ],
+    "description": "Hochwertiges T-Shirt aus 100% Bio-Baumwolle, 180 g/m². Perfekt für individuellen Druck — von Einzelstück bis Großauflage.",
+    "descriptionEn": "High-quality T-shirt made from 100% organic cotton, 180 g/m². Perfect for custom printing — from a single piece to large runs.",
+    "gallery": [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "100% Bio-Baumwolle, 180 g/m²",
+      "Premium Druckqualität (DTG / Siebdruck)",
+      "OEKO-TEX® zertifiziert",
+      "Vor-/Rückendruck möglich"
+    ],
+    "highlightsEn": [
+      "100% organic cotton, 180 g/m²",
+      "Premium print quality (DTG / screen printing)",
+      "OEKO-TEX® certified",
+      "Front and back printing available"
+    ],
+    "image": "https://files.catbox.moe/cf8n6g.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "front",
+        "key": "front",
+        "label": "Vorderseite",
+        "labelEn": "Front",
+        "mockup": "https://files.catbox.moe/xbimrs.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 50,
+          "leftPct": 32.23076923076923,
+          "topPct": 24.256410256410255,
+          "widthPct": 34
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      },
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "back",
+        "key": "back",
+        "label": "Rückseite",
+        "labelEn": "Back",
+        "mockup": "https://files.catbox.moe/qg9bwm.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 56,
+          "leftPct": 32,
+          "topPct": 18,
+          "widthPct": 36
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      },
+      {
+        "additionalPrice": 2.6,
+        "bleedPct": 0,
+        "heightMm": 100,
+        "id": "chest_left",
+        "key": "chest_left",
+        "label": "Brust links",
+        "labelEn": "Left chest",
+        "mockup": "https://files.catbox.moe/xbimrs.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 14,
+          "leftPct": 54,
+          "topPct": 26,
+          "widthPct": 13
+        },
+        "recommendedDpi": 300,
+        "safePct": 5,
+        "widthMm": 100
+      },
+      {
+        "additionalPrice": 2.9,
+        "bleedPct": 0,
+        "heightMm": 60,
+        "id": "sleeve_left",
+        "key": "sleeve_left",
+        "label": "Ärmel links",
+        "labelEn": "Left sleeve",
+        "mockup": "https://files.catbox.moe/qg012d.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1024,
+        "printArea": {
+          "heightPct": 19.58974358974359,
+          "leftPct": 47.23076923076923,
+          "topPct": 18.666666666666668,
+          "widthPct": 15.589743589743588
+        },
+        "recommendedDpi": 300,
+        "safePct": 6,
+        "widthMm": 90
+      },
+      {
+        "additionalPrice": 2.9,
+        "bleedPct": 0,
+        "heightMm": 60,
+        "id": "sleeve_right",
+        "key": "sleeve_right",
+        "label": "Ärmel rechts",
+        "labelEn": "Right sleeve",
+        "mockup": "/mockups/tshirt/side.png",
+        "mockupHeight": 1200,
+        "mockupWidth": 1311,
+        "printArea": {
+          "heightPct": 26,
+          "leftPct": 43.641025641025635,
+          "topPct": 16.67740523505209,
+          "widthPct": 22
+        },
+        "recommendedDpi": 300,
+        "safePct": 6,
+        "widthMm": 90
+      }
+    ],
+    "priceFrom": 14.9,
+    "rating": 4.8,
+    "reviews": 2143,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "slug": "premium-t-shirt",
+    "subcategory": "t-shirts",
+    "title": "Premium T-Shirt — Bio Baumwolle",
+    "titleEn": "Premium T-Shirt — Organic Cotton",
+    "type": "tshirt",
+    "updatedAt": 1779070311755,
+    "views": [
+      {
+        "area": {
+          "height": 417,
+          "width": 310,
+          "x": 301,
+          "y": 200
+        },
+        "id": "front",
+        "image": "/mockups/tshirt/front.png",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 475,
+          "width": 302,
+          "x": 269,
+          "y": 153
+        },
+        "id": "back",
+        "image": "/mockups/tshirt/back.png",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 3,
+        "height": 406,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 305
+      },
+      {
+        "bleed": 3,
+        "height": 406,
+        "id": "back",
+        "label": "Rückseite",
+        "width": 305
+      },
+      {
+        "bleed": 2,
+        "height": 100,
+        "id": "chest_left",
+        "label": "Brust links",
+        "width": 100
+      }
+    ]
+  },
+  "p_visitenkarte_doppelseitig": {
+    "basePrice": 9.9,
+    "bestseller": false,
+    "category": "visitenkarten",
+    "description": "Visitenkarten beidseitig bedruckt — maximale Fläche für Ihre Botschaft.",
+    "highlights": [
+      "Format: 85 × 55 mm",
+      "350 g/m² Premium Karton",
+      "4/4-farbig beidseitig",
+      "Ab 100 Stück"
+    ],
+    "image": "https://files.catbox.moe/zhmvd8.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_gg28womx",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/s2ca1f.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1536,
+        "printArea": {
+          "heightPct": 43.46153846153846,
+          "leftPct": 31.71794871794872,
+          "topPct": 36.61538461538462,
+          "widthPct": 51.69230769230769
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 9.9,
+    "rating": 4.8,
+    "reviews": 2134,
+    "slug": "visitenkarte-doppelseitig",
+    "subcategory": "doppelseitig",
+    "title": "Doppelseitig bedruckte Visitenkarten",
+    "type": "businesscard",
+    "updatedAt": 1779173558748,
+    "views": [
+      {
+        "area": {
+          "height": 520,
+          "width": 800,
+          "x": 100,
+          "y": 200
+        },
+        "id": "front",
+        "image": "/mockups/bcard-front.svg",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 520,
+          "width": 800,
+          "x": 100,
+          "y": 200
+        },
+        "id": "back",
+        "image": "/mockups/bcard-back.svg",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 2,
+        "height": 55,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 85
+      },
+      {
+        "bleed": 2,
+        "height": 55,
+        "id": "back",
+        "label": "Rückseite",
+        "width": 85
+      }
+    ]
+  },
+  "p_visitenkarte_glanz": {
+    "basePrice": 13.9,
+    "bestseller": false,
+    "category": "visitenkarten",
+    "description": "Hochglanz-Laminat für strahlende Farben und maximale Leuchtkraft.",
+    "highlights": [
+      "Format: 85 × 55 mm",
+      "400 g/m² Karton",
+      "Glanz-Laminat",
+      "Ab 100 Stück"
+    ],
+    "image": "https://files.catbox.moe/zhmvd8.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_q73aetaj",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/s2ca1f.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1536,
+        "printArea": {
+          "heightPct": 42.69230769230769,
+          "leftPct": 32.48717948717949,
+          "topPct": 36.61538461538461,
+          "widthPct": 50.666666666666664
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 13.9,
+    "rating": 4.8,
+    "reviews": 987,
+    "slug": "visitenkarte-glanz-laminiert",
+    "subcategory": "glanz-laminiert",
+    "title": "Glanz laminierte Visitenkarten",
+    "type": "businesscard",
+    "updatedAt": 1779173582061,
+    "views": [
+      {
+        "area": {
+          "height": 520,
+          "width": 800,
+          "x": 100,
+          "y": 200
+        },
+        "id": "front",
+        "image": "/mockups/bcard-front.svg",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 520,
+          "width": 800,
+          "x": 100,
+          "y": 200
+        },
+        "id": "back",
+        "image": "/mockups/bcard-back.svg",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 2,
+        "height": 55,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 85
+      },
+      {
+        "bleed": 2,
+        "height": 55,
+        "id": "back",
+        "label": "Rückseite",
+        "width": 85
+      }
+    ]
+  },
+  "p_visitenkarte_laminiert": {
+    "basePrice": 12.9,
+    "bestseller": false,
+    "category": "visitenkarten",
+    "description": "Visitenkarten mit Schutzlaminat — besonders robust und hochwertig.",
+    "highlights": [
+      "Format: 85 × 55 mm",
+      "400 g/m² Karton",
+      "Laminiert (matt oder glanz)",
+      "Ab 100 Stück"
+    ],
+    "image": "https://files.catbox.moe/zhmvd8.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_qv4gh19a",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/s2ca1f.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1536,
+        "printArea": {
+          "heightPct": 42.30769230769231,
+          "leftPct": 31.974358974358974,
+          "topPct": 37,
+          "widthPct": 51.69230769230769
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 12.9,
+    "rating": 4.9,
+    "reviews": 1876,
+    "slug": "visitenkarte-laminiert",
+    "subcategory": "laminiert",
+    "title": "Laminierte Visitenkarten",
+    "type": "businesscard",
+    "updatedAt": 1779173721862,
+    "views": [
+      {
+        "area": {
+          "height": 520,
+          "width": 800,
+          "x": 100,
+          "y": 200
+        },
+        "id": "front",
+        "image": "/mockups/bcard-front.svg",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 520,
+          "width": 800,
+          "x": 100,
+          "y": 200
+        },
+        "id": "back",
+        "image": "/mockups/bcard-back.svg",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 2,
+        "height": 55,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 85
+      },
+      {
+        "bleed": 2,
+        "height": 55,
+        "id": "back",
+        "label": "Rückseite",
+        "width": 85
+      }
+    ]
+  },
+  "p_visitenkarte_matt": {
+    "basePrice": 13.9,
+    "bestseller": false,
+    "category": "visitenkarten",
+    "description": "Edles mattes Laminat für ein softes, hochwertiges Erscheinungsbild.",
+    "highlights": [
+      "Format: 85 × 55 mm",
+      "400 g/m² Karton",
+      "Matt-Laminat",
+      "Ab 100 Stück"
+    ],
+    "image": "https://files.catbox.moe/zhmvd8.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_f9wbhs6u",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/s2ca1f.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1536,
+        "printArea": {
+          "heightPct": 43.07692307692308,
+          "leftPct": 32.23076923076923,
+          "topPct": 37,
+          "widthPct": 51.94871794871795
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 13.9,
+    "rating": 4.9,
+    "reviews": 1243,
+    "slug": "visitenkarte-matt-laminiert",
+    "subcategory": "matt-laminiert",
+    "title": "Matt laminierte Visitenkarten",
+    "type": "businesscard",
+    "updatedAt": 1779173753013,
+    "views": [
+      {
+        "area": {
+          "height": 520,
+          "width": 800,
+          "x": 100,
+          "y": 200
+        },
+        "id": "front",
+        "image": "/mockups/bcard-front.svg",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 520,
+          "width": 800,
+          "x": 100,
+          "y": 200
+        },
+        "id": "back",
+        "image": "/mockups/bcard-back.svg",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 2,
+        "height": 55,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 85
+      },
+      {
+        "bleed": 2,
+        "height": 55,
+        "id": "back",
+        "label": "Rückseite",
+        "width": 85
+      }
+    ]
+  },
+  "p_visitenkarte_standard": {
+    "basePrice": 7.9,
+    "bestseller": true,
+    "category": "visitenkarten",
+    "description": "Premium Visitenkarten in Standardformat. 350 g/m² Bilderdruck.",
+    "gallery": [
+      "https://images.unsplash.com/photo-1606293459339-aa5dd9b48049?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1606293459339-aa5dd9b48049?w=1200&q=80&auto=format&fit=crop"
+    ],
+    "highlights": [
+      "Format: 85 × 55 mm",
+      "350 g/m² Premium Karton",
+      "4/4-farbig",
+      "Ab 100 Stück"
+    ],
+    "image": "https://files.catbox.moe/zhmvd8.png",
+    "placements": [
+      {
+        "additionalPrice": 0,
+        "bleedPct": 0,
+        "heightMm": 406,
+        "id": "place_wuyixp1a",
+        "key": "front",
+        "label": "Vorderseite",
+        "mockup": "https://files.catbox.moe/s2ca1f.png",
+        "mockupHeight": 1024,
+        "mockupWidth": 1536,
+        "printArea": {
+          "heightPct": 43.84615384615385,
+          "leftPct": 31.974358974358974,
+          "topPct": 36.529914529914535,
+          "widthPct": 51.94871794871795
+        },
+        "recommendedDpi": 150,
+        "safePct": 5,
+        "widthMm": 305
+      }
+    ],
+    "priceFrom": 7.9,
+    "rating": 4.8,
+    "reviews": 4521,
+    "slug": "visitenkarte-standard",
+    "subcategory": "standard",
+    "title": "Visitenkarte Standard 85 × 55 mm",
+    "type": "businesscard",
+    "updatedAt": 1779173777112,
+    "views": [
+      {
+        "area": {
+          "height": 520,
+          "width": 800,
+          "x": 100,
+          "y": 200
+        },
+        "id": "front",
+        "image": "/mockups/bcard-front.svg",
+        "label": "Vorderseite"
+      },
+      {
+        "area": {
+          "height": 520,
+          "width": 800,
+          "x": 100,
+          "y": 200
+        },
+        "id": "back",
+        "image": "/mockups/bcard-back.svg",
+        "label": "Rückseite"
+      }
+    ],
+    "zones": [
+      {
+        "bleed": 2,
+        "height": 55,
+        "id": "front",
+        "label": "Vorderseite",
+        "width": 85
+      },
+      {
+        "bleed": 2,
+        "height": 55,
+        "id": "back",
+        "label": "Rückseite",
+        "width": 85
+      }
+    ]
+  }
+}
