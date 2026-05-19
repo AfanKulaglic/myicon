@@ -974,6 +974,7 @@ export const PRODUCTS: Product[] = [
     reviews: 512,
     description: "Großformatige Werbeplakate für Außenwerbung und Events — wetterfest und farbecht.",
     highlights: ["Formate A3–A0", "170 g/m² Bilderdruck", "Wetterfeste Option", "Glänzend oder matt"],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/poster-front.svg", area: { x: 100, y: 100, width: 800, height: 1100 } },
     ],
@@ -1148,6 +1149,7 @@ export const PRODUCTS: Product[] = [
     reviews: 143,
     description: "Gefaltete Broschüre als Wickel-, Zickzack- oder Leporello-Falz — ohne Heftung.",
     highlights: ["Mehrere Falzarten", "Format wählbar", "135 g/m² Bilderdruck", "Beidseitiger Druck"],
+    colors: defaultColors,
     views: [
       {
         id: "cover",
