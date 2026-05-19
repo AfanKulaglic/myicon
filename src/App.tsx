@@ -1,47 +1,48 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Toaster } from "@/components/ui/Toaster";
 
-import HomePage from "@/pages/HomePage";
-import CategoriesPage from "@/pages/CategoriesPage";
-import CategoryPage from "@/pages/CategoryPage";
-import SubcategoryPage from "@/pages/SubcategoryPage";
-import ProductPage from "@/pages/ProductPage";
-import CustomizePage from "@/pages/CustomizePage";
-import CartPage from "@/pages/CartPage";
-import WishlistPage from "@/pages/WishlistPage";
-import CheckoutPage from "@/pages/CheckoutPage";
-import OrderSuccessPage from "@/pages/OrderSuccessPage";
-import TrackOrderPage from "@/pages/TrackOrderPage";
-import LoginPage from "@/pages/LoginPage";
-import RegisterPage from "@/pages/RegisterPage";
-import AccountLayout from "@/pages/account/AccountLayout";
-import AccountPage from "@/pages/account/AccountPage";
-import OrdersPage from "@/pages/account/OrdersPage";
-import DraftsPage from "@/pages/account/DraftsPage";
-import AccountWishlistPage from "@/pages/account/WishlistPage";
-import ProfilePage from "@/pages/account/ProfilePage";
-import FAQPage from "@/pages/FAQPage";
-import ContactPage from "@/pages/ContactPage";
-import AboutPage from "@/pages/AboutPage";
-import TermsPage from "@/pages/TermsPage";
-import PrivacyPage from "@/pages/PrivacyPage";
-import ImprintPage from "@/pages/ImprintPage";
-import NotFoundPage from "@/pages/NotFoundPage";
+// Route-level code splitting — each page gets its own chunk
+const HomePage = lazy(() => import("@/pages/HomePage"));
+const CategoriesPage = lazy(() => import("@/pages/CategoriesPage"));
+const CategoryPage = lazy(() => import("@/pages/CategoryPage"));
+const SubcategoryPage = lazy(() => import("@/pages/SubcategoryPage"));
+const ProductPage = lazy(() => import("@/pages/ProductPage"));
+const CustomizePage = lazy(() => import("@/pages/CustomizePage"));
+const CartPage = lazy(() => import("@/pages/CartPage"));
+const WishlistPage = lazy(() => import("@/pages/WishlistPage"));
+const CheckoutPage = lazy(() => import("@/pages/CheckoutPage"));
+const OrderSuccessPage = lazy(() => import("@/pages/OrderSuccessPage"));
+const TrackOrderPage = lazy(() => import("@/pages/TrackOrderPage"));
+const LoginPage = lazy(() => import("@/pages/LoginPage"));
+const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
+const AccountLayout = lazy(() => import("@/pages/account/AccountLayout"));
+const AccountPage = lazy(() => import("@/pages/account/AccountPage"));
+const OrdersPage = lazy(() => import("@/pages/account/OrdersPage"));
+const DraftsPage = lazy(() => import("@/pages/account/DraftsPage"));
+const AccountWishlistPage = lazy(() => import("@/pages/account/WishlistPage"));
+const ProfilePage = lazy(() => import("@/pages/account/ProfilePage"));
+const FAQPage = lazy(() => import("@/pages/FAQPage"));
+const ContactPage = lazy(() => import("@/pages/ContactPage"));
+const AboutPage = lazy(() => import("@/pages/AboutPage"));
+const TermsPage = lazy(() => import("@/pages/TermsPage"));
+const PrivacyPage = lazy(() => import("@/pages/PrivacyPage"));
+const ImprintPage = lazy(() => import("@/pages/ImprintPage"));
+const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
 
-// Admin pages (eagerly loaded — code-gated by AdminLayout)
-import AdminLayout from "@/pages/admin/AdminLayout";
-import AdminDashboard from "@/pages/admin/AdminDashboard";
-import AdminProducts from "@/pages/admin/AdminProducts";
-import AdminProductForm from "@/pages/admin/AdminProductForm";
-import AdminCategories from "@/pages/admin/AdminCategories";
-import AdminOrders from "@/pages/admin/AdminOrders";
-import AdminContent from "@/pages/admin/AdminContent";
-import AdminSettings from "@/pages/admin/AdminSettings";
+// Admin pages — lazy-loaded, code-gated by AdminLayout
+const AdminLayout = lazy(() => import("@/pages/admin/AdminLayout"));
+const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
+const AdminProducts = lazy(() => import("@/pages/admin/AdminProducts"));
+const AdminProductForm = lazy(() => import("@/pages/admin/AdminProductForm"));
+const AdminCategories = lazy(() => import("@/pages/admin/AdminCategories"));
+const AdminOrders = lazy(() => import("@/pages/admin/AdminOrders"));
+const AdminContent = lazy(() => import("@/pages/admin/AdminContent"));
+const AdminSettings = lazy(() => import("@/pages/admin/AdminSettings"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -67,6 +68,7 @@ export function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <ScrollToTop />
+      <Suspense fallback={null}>
       <Routes>
         {/* Admin panel = full-screen, code-gated */}
         <Route path="/admin" element={<AdminLayout />}>
@@ -124,6 +126,7 @@ export function App() {
       </Routes>
       <CartDrawer />
       <Toaster />
+      </Suspense>
     </div>
   );
 }

@@ -40,6 +40,63 @@ const CANVAS_REF_WIDTH = 1000; // base reference width
 const MIDPOINT = 0.62;
 const HIGHLIGHT_STRENGTH = 0.55;
 
+/**
+ * Recolor SVG by replacing green fill with target color.
+ * For SVG mockups, we can't use pixel-based processing, so we fetch the SVG,
+ * parse it, and replace all green fills with the target color.
+ */
+function useSVGRecolor(
+  src: string,
+  targetHex: string | null
+): HTMLImageElement | null {
+  const [out, setOut] = useState<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    if (!src.endsWith('.svg')) {
+      // Not an SVG, return null and let the raster handler take over
+      setOut(null);
+      return;
+    }
+    if (!targetHex) {
+      // No color specified, load SVG as-is
+      const img = new Image();
+      img.onload = () => setOut(img);
+      img.src = src;
+      return;
+    }
+
+    // Fetch and recolor the SVG
+    fetch(src)
+      .then((res) => res.text())
+      .then((svgText) => {
+        // Replace all instances of green (#00FF00, #0f0, rgb(0,255,0), etc.)
+        const recolored = svgText
+          .replace(/fill="#00FF00"/gi, `fill="${targetHex}"`)
+          .replace(/fill="#0F0"/gi, `fill="${targetHex}"`)
+          .replace(/fill="rgb\(0,\s*255,\s*0\)"/gi, `fill="${targetHex}"`);
+        
+        // Convert to data URL
+        const blob = new Blob([recolored], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        
+        const img = new Image();
+        img.onload = () => {
+          setOut(img);
+          URL.revokeObjectURL(url);
+        };
+        img.src = url;
+      })
+      .catch(() => {
+        // Fallback: load original SVG
+        const img = new Image();
+        img.onload = () => setOut(img);
+        img.src = src;
+      });
+  }, [src, targetHex]);
+
+  return out;
+}
+
 function useGreenScreenRecolor(
   src: string,
   targetHex: string | null
@@ -140,7 +197,12 @@ function MockupImage({
   /** When set, the source photo is recoloured via green-screen replacement. */
   targetHex?: string | null;
 }) {
-  const img = useGreenScreenRecolor(src, targetHex ?? null);
+  // Use SVG recoloring for SVG files, raster recoloring for PNG/JPG
+  const svgImg = useSVGRecolor(src, targetHex ?? null);
+  const rasterImg = useGreenScreenRecolor(src, targetHex ?? null);
+  
+  const img = src.endsWith('.svg') ? svgImg : rasterImg;
+  
   return img ? (
     <KImage
       image={img}

@@ -49,13 +49,13 @@ export function Hero() {
 
           <div className="relative">
             <div className="aspect-[5/4] rounded-2xl overflow-hidden bg-white border border-line shadow-card">
-              <div
-                className="size-full bg-cover bg-center"
-                style={{
-                  backgroundImage: c.imageUrl
-                    ? `url(${c.imageUrl})`
-                    : "url(https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1400&q=80&auto=format&fit=crop)",
-                }}
+              <img
+                src={c.imageUrl || "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1400&q=80&auto=format&fit=crop"}
+                alt=""
+                fetchPriority="high"
+                loading="eager"
+                decoding="sync"
+                className="size-full object-cover"
               />
             </div>
             <div className="absolute -left-4 -bottom-4 lg:-left-6 lg:-bottom-6 hidden md:block">

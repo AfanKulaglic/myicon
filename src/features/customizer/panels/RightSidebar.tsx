@@ -4,6 +4,14 @@ import { cn } from "@/lib/utils";
 const FONTS = ["Inter", "Plus Jakarta Sans", "Arial", "Georgia", "Times New Roman", "Courier New", "Impact"];
 const COLORS = ["#111111", "#FFFFFF", "#1E5AA8", "#C03434", "#E5A21C", "#1A8754", "#7C3AED"];
 
+// 4 standard fallback colors when no Firebase colors are provided
+const DEFAULT_PRODUCT_COLORS = [
+  { name: "Schwarz", hex: "#111111" },
+  { name: "Weiß", hex: "#FFFFFF" },
+  { name: "Marineblau", hex: "#1E5AA8" },
+  { name: "Rot", hex: "#C03434" },
+];
+
 export function RightSidebar() {
   const c = useCustomizer();
   const sel = useSelectedLayer();
@@ -49,27 +57,28 @@ function ViewSwitcher() {
 
 function ProductOptions() {
   const { product, productColor, setProductColor, productSize, setProductSize } = useCustomizer();
+  // Use Firebase colors if available, otherwise fall back to 4 standard colors
+  const colors = (product.colors && product.colors.length > 0) ? product.colors : DEFAULT_PRODUCT_COLORS;
+  
   return (
     <div className="p-4 border-b border-line space-y-4">
-      {product.colors && product.colors.length > 0 ? (
-        <div>
-          <div className="text-xs font-semibold text-ink-muted uppercase mb-2">Farbe</div>
-          <div className="flex flex-wrap gap-2">
-            {product.colors.map((c) => (
-              <button
-                key={c.name}
-                onClick={() => setProductColor(c.name)}
-                className={cn(
-                  "size-8 rounded-full border-2",
-                  productColor === c.name ? "border-brand" : "border-line"
-                )}
-                style={{ backgroundColor: c.hex }}
-                title={c.name}
-              />
-            ))}
-          </div>
+      <div>
+        <div className="text-xs font-semibold text-ink-muted uppercase mb-2">Farbe</div>
+        <div className="flex flex-wrap gap-2">
+          {colors.map((c) => (
+            <button
+              key={c.name}
+              onClick={() => setProductColor(c.name)}
+              className={cn(
+                "size-8 rounded-full border-2",
+                productColor === c.name ? "border-brand" : "border-line"
+              )}
+              style={{ backgroundColor: c.hex }}
+              title={c.name}
+            />
+          ))}
         </div>
-      ) : null}
+      </div>
       {product.sizes && product.sizes.length > 0 ? (
         <div>
           <div className="text-xs font-semibold text-ink-muted uppercase mb-2">Größe</div>

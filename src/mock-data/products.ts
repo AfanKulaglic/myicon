@@ -1,6 +1,6 @@
 import type { Product } from "@/types";
 
-const tshirtColors = [
+const defaultColors = [
   { name: "Weiß", hex: "#FFFFFF" },
   { name: "Schwarz", hex: "#111111" },
   { name: "Marine", hex: "#1E3A5F" },
@@ -30,7 +30,7 @@ export const PRODUCTS: Product[] = [
       "OEKO-TEX® zertifiziert",
       "Vor-/Rückendruck möglich",
     ],
-    colors: tshirtColors,
+    colors: defaultColors,
     sizes: sizesApparel,
     placements: [
       {
@@ -162,7 +162,7 @@ export const PRODUCTS: Product[] = [
       "Stickerei oder Druck möglich",
       "Premium Marken-Qualität",
     ],
-    colors: tshirtColors,
+    colors: defaultColors,
     sizes: sizesApparel,
     placements: [
       {
@@ -244,7 +244,7 @@ export const PRODUCTS: Product[] = [
     description:
       "Schwerer Premium-Hoodie, 320 g/m². Innen angeraut. Perfekt für Markenmerchandise.",
     highlights: ["320 g/m² Baumwoll-Mix", "Doppelter Kapuzensaum", "Kängurutasche", "Unisex Fit"],
-    colors: tshirtColors,
+    colors: defaultColors,
     sizes: sizesApparel,
     placements: [
       {
@@ -315,11 +315,7 @@ export const PRODUCTS: Product[] = [
     reviews: 412,
     description: "Klassische Snapback Cap mit ebenem Schirm. Ideal für Stickerei oder Patch-Druck.",
     highlights: ["6-Panel Design", "Verstellbarer Snap-Verschluss", "Einheitsgröße", "Stickerei möglich"],
-    colors: [
-      { name: "Schwarz", hex: "#111111" },
-      { name: "Marine", hex: "#1E3A5F" },
-      { name: "Weiß", hex: "#FFFFFF" },
-    ],
+    colors: defaultColors,
     placements: [
       {
         id: "front",
@@ -369,7 +365,7 @@ export const PRODUCTS: Product[] = [
       "OEKO-TEX® zertifiziert",
       "Vor-/Rückendruck möglich",
     ],
-    colors: tshirtColors,
+    colors: defaultColors,
     sizes: sizesApparel,
     placements: [
       {
@@ -467,7 +463,7 @@ export const PRODUCTS: Product[] = [
       "Knopfleiste mit 3 Knöpfen",
       "Stickerei oder Druck möglich",
     ],
-    colors: tshirtColors,
+    colors: defaultColors,
     sizes: sizesApparel,
     placements: [
       {
@@ -540,12 +536,7 @@ export const PRODUCTS: Product[] = [
       "Großflächiger Druckbereich",
       "Ideal für Gastronomie & Events",
     ],
-    colors: [
-      { name: "Weiß", hex: "#FFFFFF" },
-      { name: "Schwarz", hex: "#111111" },
-      { name: "Marine", hex: "#1E3A5F" },
-      { name: "Rot", hex: "#C03434" },
-    ],
+    colors: defaultColors,
     placements: [
       {
         id: "front",
@@ -599,6 +590,7 @@ export const PRODUCTS: Product[] = [
       "4/4-farbig (beidseitig)",
       "Ab 250 Stück",
     ],
+    colors: defaultColors,
     views: [
       {
         id: "front",
@@ -642,6 +634,7 @@ export const PRODUCTS: Product[] = [
       "4/4-farbig (beidseitig)",
       "Ab 250 Stück",
     ],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/flyer-front.svg", area: { x: 200, y: 100, width: 600, height: 850 } },
       { id: "back", label: "Rückseite", image: "/mockups/flyer-back.svg", area: { x: 200, y: 100, width: 600, height: 850 } },
@@ -671,6 +664,7 @@ export const PRODUCTS: Product[] = [
       "4/4-farbig (beidseitig)",
       "Ab 100 Stück",
     ],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/flyer-front.svg", area: { x: 200, y: 100, width: 600, height: 850 } },
       { id: "back", label: "Rückseite", image: "/mockups/flyer-back.svg", area: { x: 200, y: 100, width: 600, height: 850 } },
@@ -700,6 +694,7 @@ export const PRODUCTS: Product[] = [
       "Mittelfalz oder Wickelfalz",
       "Ab 100 Stück",
     ],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Außenseite", image: "/mockups/flyer-front.svg", area: { x: 200, y: 100, width: 600, height: 850 } },
       { id: "back", label: "Innenseite", image: "/mockups/flyer-back.svg", area: { x: 200, y: 100, width: 600, height: 850 } },
@@ -730,6 +725,7 @@ export const PRODUCTS: Product[] = [
       "Lieferung in 24 h möglich",
       "Ab 100 Stück",
     ],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/flyer-front.svg", area: { x: 200, y: 100, width: 600, height: 850 } },
       { id: "back", label: "Rückseite", image: "/mockups/flyer-back.svg", area: { x: 200, y: 100, width: 600, height: 850 } },
@@ -759,6 +755,7 @@ export const PRODUCTS: Product[] = [
       "Beidseitiger Vollfarbdruck",
       "Ab 250 Stück",
     ],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/flyer-front.svg", area: { x: 200, y: 100, width: 600, height: 850 } },
       { id: "back", label: "Rückseite", image: "/mockups/flyer-back.svg", area: { x: 200, y: 100, width: 600, height: 850 } },
@@ -788,6 +785,7 @@ export const PRODUCTS: Product[] = [
       "4/4-farbig",
       "Ab 100 Stück",
     ],
+    colors: defaultColors,
     views: [
       {
         id: "front",
@@ -826,6 +824,7 @@ export const PRODUCTS: Product[] = [
     reviews: 2134,
     description: "Visitenkarten beidseitig bedruckt — maximale Fläche für Ihre Botschaft.",
     highlights: ["Format: 85 × 55 mm", "350 g/m² Premium Karton", "4/4-farbig beidseitig", "Ab 100 Stück"],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/bcard-front.svg", area: { x: 100, y: 200, width: 800, height: 520 } },
       { id: "back", label: "Rückseite", image: "/mockups/bcard-back.svg", area: { x: 100, y: 200, width: 800, height: 520 } },
@@ -850,6 +849,7 @@ export const PRODUCTS: Product[] = [
     reviews: 1876,
     description: "Visitenkarten mit Schutzlaminat — besonders robust und hochwertig.",
     highlights: ["Format: 85 × 55 mm", "400 g/m² Karton", "Laminiert (matt oder glanz)", "Ab 100 Stück"],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/bcard-front.svg", area: { x: 100, y: 200, width: 800, height: 520 } },
       { id: "back", label: "Rückseite", image: "/mockups/bcard-back.svg", area: { x: 100, y: 200, width: 800, height: 520 } },
@@ -874,6 +874,7 @@ export const PRODUCTS: Product[] = [
     reviews: 1243,
     description: "Edles mattes Laminat für ein softes, hochwertiges Erscheinungsbild.",
     highlights: ["Format: 85 × 55 mm", "400 g/m² Karton", "Matt-Laminat", "Ab 100 Stück"],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/bcard-front.svg", area: { x: 100, y: 200, width: 800, height: 520 } },
       { id: "back", label: "Rückseite", image: "/mockups/bcard-back.svg", area: { x: 100, y: 200, width: 800, height: 520 } },
@@ -898,6 +899,7 @@ export const PRODUCTS: Product[] = [
     reviews: 987,
     description: "Hochglanz-Laminat für strahlende Farben und maximale Leuchtkraft.",
     highlights: ["Format: 85 × 55 mm", "400 g/m² Karton", "Glanz-Laminat", "Ab 100 Stück"],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/bcard-front.svg", area: { x: 100, y: 200, width: 800, height: 520 } },
       { id: "back", label: "Rückseite", image: "/mockups/bcard-back.svg", area: { x: 100, y: 200, width: 800, height: 520 } },
@@ -922,6 +924,7 @@ export const PRODUCTS: Product[] = [
     reviews: 921,
     description: "Hochglanz-Plakat A3, 170 g/m². Perfekt für Events und Werbung.",
     highlights: ["Format: 297 × 420 mm", "170 g/m² Bilderdruck", "Glänzend oder matt"],
+    colors: defaultColors,
     views: [
       {
         id: "front",
@@ -950,6 +953,7 @@ export const PRODUCTS: Product[] = [
     reviews: 743,
     description: "Kompaktes A4-Plakat, 170 g/m². Ideal für Schaufenster, Infowände und Aushänge.",
     highlights: ["Format: 210 × 297 mm", "170 g/m² Bilderdruck", "Glänzend oder matt", "Ab 10 Stück"],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/poster-front.svg", area: { x: 100, y: 100, width: 800, height: 1100 } },
     ],
@@ -990,6 +994,7 @@ export const PRODUCTS: Product[] = [
     reviews: 388,
     description: "Premium Hochglanz-Plakat mit brillanten Farben — für maximale Aufmerksamkeit.",
     highlights: ["Formate A4–A1", "200 g/m² Hochglanz", "UV-Schutzlaminat", "Ab 10 Stück"],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/poster-front.svg", area: { x: 100, y: 100, width: 800, height: 1100 } },
     ],
@@ -1010,6 +1015,7 @@ export const PRODUCTS: Product[] = [
     reviews: 312,
     description: "Hochwertige Broschüre A5 mit Drahtheftung. 16 Seiten, 135 g/m².",
     highlights: ["Format: 148 × 210 mm", "16 Seiten Standard", "Drahtheftung", "135 g/m² Bilderdruck"],
+    colors: defaultColors,
     views: [
       {
         id: "cover",
@@ -1038,6 +1044,7 @@ export const PRODUCTS: Product[] = [
     reviews: 184,
     description: "Kompakte Broschüre im A6-Format. Ideal für Produktkataloge und Menükarten.",
     highlights: ["Format: 105 × 148 mm", "16 Seiten Standard", "135 g/m² Bilderdruck", "Drahtheftung"],
+    colors: defaultColors,
     views: [
       {
         id: "cover",
@@ -1063,6 +1070,7 @@ export const PRODUCTS: Product[] = [
     reviews: 263,
     description: "Klassische Broschüre A5 — perfekt für Firmenprofile und Angebotshefte.",
     highlights: ["Format: 148 × 210 mm", "16 Seiten Standard", "135 g/m² Bilderdruck", "Drahtheftung"],
+    colors: defaultColors,
     views: [
       {
         id: "cover",
@@ -1088,6 +1096,7 @@ export const PRODUCTS: Product[] = [
     reviews: 197,
     description: "Großformatige Broschüre A4 — ideal für Jahresberichte und Kataloge.",
     highlights: ["Format: 210 × 297 mm", "16 Seiten Standard", "135 g/m² Bilderdruck", "Drahtheftung oder Klebebindung"],
+    colors: defaultColors,
     views: [
       {
         id: "cover",
@@ -1113,6 +1122,7 @@ export const PRODUCTS: Product[] = [
     reviews: 89,
     description: "Großformat-Broschüre A3 — prägnante Präsentationen und Ausstellungshefte.",
     highlights: ["Format: 297 × 420 mm", "16 Seiten Standard", "135 g/m² Bilderdruck", "Drahtheftung"],
+    colors: defaultColors,
     views: [
       {
         id: "cover",
@@ -1163,10 +1173,7 @@ export const PRODUCTS: Product[] = [
     reviews: 654,
     description: "Nachhaltige Bio-Stofftasche mit Logo-Druck. Ideal als Werbegeschenk.",
     highlights: ["100% Bio-Baumwolle", "Lange Henkel", "1- oder 4-farbig bedruckbar"],
-    colors: [
-      { name: "Natur", hex: "#E8DDC7" },
-      { name: "Schwarz", hex: "#111111" },
-    ],
+    colors: defaultColors,
     views: [
       {
         id: "front",
@@ -1196,6 +1203,7 @@ export const PRODUCTS: Product[] = [
     reviews: 221,
     description: "Mousepad mit individueller Bedruckung. Rutschfeste Unterseite.",
     highlights: ["220 × 180 mm", "Vollflächendruck", "Rutschfest"],
+    colors: defaultColors,
     views: [
       {
         id: "front",
@@ -1224,6 +1232,7 @@ export const PRODUCTS: Product[] = [
     reviews: 154,
     description: "Premium Stockschirm mit Holzgriff und individuellem Logo-Druck.",
     highlights: ["8 Panels", "Holzgriff", "Windfest", "Logo-Druck inklusive"],
+    colors: defaultColors,
     views: [
       {
         id: "front",
@@ -1252,6 +1261,7 @@ export const PRODUCTS: Product[] = [
     reviews: 408,
     description: "Individueller Schlüsselanhänger mit Ihrem Logo — als Werbegeschenk oder Merchandising-Artikel.",
     highlights: ["Beidseitig bedruckbar", "Stabiles Kunststoff-Gehäuse", "Metallkarabiner", "Ab 50 Stück"],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/keyring-front.svg", area: { x: 300, y: 300, width: 400, height: 400 } },
     ],
@@ -1272,6 +1282,7 @@ export const PRODUCTS: Product[] = [
     reviews: 273,
     description: "Praktischer Eiskratzer mit Ihrem Logo-Druck — ein saisonales Werbegeschenk das in Erinnerung bleibt.",
     highlights: ["Robustes PP-Kunststoff", "Einfarbiger Siebdruck", "Handliche Größe", "Ab 100 Stück"],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorderseite", image: "/mockups/icescraper-front.svg", area: { x: 200, y: 300, width: 600, height: 400 } },
     ],
@@ -1292,11 +1303,7 @@ export const PRODUCTS: Product[] = [
     reviews: 336,
     description: "Klassische Baseball-Cap mit Ihrem Logo als hochwertige Stickerei — ideal als Teamwear oder Werbegeschenk.",
     highlights: ["100% Baumwolle", "Verstellbares Klettband", "Stickerei oder Druck", "Einheitsgröße"],
-    colors: [
-      { name: "Schwarz", hex: "#111111" },
-      { name: "Weiß", hex: "#FFFFFF" },
-      { name: "Navy", hex: "#1E3A5F" },
-    ],
+    colors: defaultColors,
     views: [
       { id: "front", label: "Vorne", image: "/mockups/cap-front.svg", area: { x: 300, y: 300, width: 400, height: 300 } },
     ],
@@ -1315,3 +1322,4 @@ export function getProductsByCategory(slug: string) {
 export function getBestsellers() {
   return PRODUCTS.filter((p) => p.bestseller);
 }
+

@@ -13,6 +13,7 @@ export function CategoryCard({ category }: { category: Category }) {
           src={category.image}
           alt={category.title}
           loading="lazy"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
         />
       </div>
