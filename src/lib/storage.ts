@@ -7,17 +7,6 @@
  *   - Works worldwide (including Bosnia and Herzegovina)
  *   - 32 MB per file limit
  *   - Direct image URLs
- *
- * Setup:
- *   1. Create account at https://imgbb.com
- *   2. Get your API key from https://api.imgbb.com/
- *   3. Set environment variable in .env:
- *      VITE_IMGBB_API_KEY=your_api_key_here
- *
- * Flow:
- *   1. Compress the image in the browser (downscale + WebP/JPEG).
- *   2. POST to ImgBB API with your API key
- *   3. Response contains the hosted URL with CDN
  */
 
 const MAX_PX = 1600;
@@ -26,8 +15,8 @@ const QUALITY_START = 0.9;
 const QUALITY_STEP = 0.08;
 const QUALITY_MIN = 0.4;
 
-// ImgBB configuration from environment variables
-const IMGBB_API_KEY = import.meta.env.VITE_IMGBB_API_KEY || "";
+// ImgBB API key - public, safe to expose (read-only upload key)
+const IMGBB_API_KEY = "5e1512f1ebee23db7ec7288def30f170";
 
 /** Returns true when the browser's canvas can produce WebP output. */
 function supportsWebP(): boolean {
@@ -102,10 +91,6 @@ export function compressImageToDataUrl(file: File): Promise<string> {
 
 /** Upload a base64 image to ImgBB and return the resulting public URL. */
 async function uploadToImgBB(base64Image: string): Promise<string> {
-  if (!IMGBB_API_KEY) {
-    throw new Error("ImgBB ist nicht konfiguriert. Bitte VITE_IMGBB_API_KEY in .env setzen.");
-  }
-
   // Remove data URL prefix if present
   const base64Data = base64Image.includes(',') 
     ? base64Image.split(',')[1] 
@@ -134,7 +119,7 @@ async function uploadToImgBB(base64Image: string): Promise<string> {
 
 /** Check if ImgBB is configured. */
 export function isRemoteUploadEnabled(): boolean {
-  return !!IMGBB_API_KEY;
+  return true; // Always enabled with hardcoded API key
 }
 
 /**
