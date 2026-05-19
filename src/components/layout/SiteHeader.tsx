@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Search, User, Heart, ShoppingBag } from "lucide-react";
 import { Logo } from "./Logo";
@@ -11,8 +10,11 @@ import { useT } from "@/hooks/useT";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { DEFAULT_NAVBAR, DEFAULT_NAVBAR_EN, type NavbarContent } from "@/types/content";
 
-export function SiteHeader() {
-  const [menuOpen, setMenuOpen] = useState(false);
+interface Props {
+  onMenuOpen: () => void;
+}
+
+export function SiteHeader({ onMenuOpen }: Props) {
   const cartCount = useCartStore((s) => s.count());
   const openCart = useCartStore((s) => s.openCart);
   const wishlistCount = useWishlistStore((s) => s.productIds.length);
@@ -41,7 +43,7 @@ export function SiteHeader() {
       <div className="container py-3 lg:py-4">
         <div className="flex items-center gap-3 lg:gap-6">
           <button
-            onClick={() => setMenuOpen(true)}
+            onClick={onMenuOpen}
             className="lg:hidden size-10 inline-flex items-center justify-center rounded-lg hover:bg-surface-alt"
             aria-label={t("header.openMenu")}
           >
@@ -120,7 +122,6 @@ export function SiteHeader() {
       </div>
 
       <DesktopNav />
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
     </header>
   );
 }

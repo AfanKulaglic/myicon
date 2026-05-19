@@ -1,7 +1,8 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { MobileMenu } from "@/components/layout/MobileMenu";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Toaster } from "@/components/ui/Toaster";
 
@@ -51,9 +52,11 @@ function ScrollToTop() {
 }
 
 function ShellLayout({ children }: { children: React.ReactNode }) {
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <>
-      <SiteHeader />
+      <SiteHeader onMenuOpen={() => setMenuOpen(true)} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
       <main className="flex-1">{children}</main>
       <SiteFooter />
     </>
