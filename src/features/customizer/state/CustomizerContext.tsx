@@ -92,15 +92,19 @@ const Ctx = createContext<CustomizerState | null>(null);
 
 export function CustomizerProvider({
   product,
+  initialColor,
   children,
 }: {
   product: Product;
+  initialColor?: string;
   children: ReactNode;
 }) {
   const [viewId, setViewId] = useState(
     product.placements?.[0]?.id ?? product.views[0].id
   );
-  const [productColor, setProductColor] = useState(product.colors?.[0]?.name ?? "Weiß");
+  const [productColor, setProductColor] = useState(
+    initialColor ?? product.colors?.[0]?.name ?? "Weiß"
+  );
   const [productSize, setProductSize] = useState<string | undefined>(product.sizes?.[3]);
   const [layers, setLayers] = useState<Layer[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);

@@ -245,7 +245,7 @@ export function ProductDetail({ product }: Props) {
               <X className="size-5" />
             </button>
           </div>
-          <EmbeddedCustomizer product={product} />
+          <EmbeddedCustomizer product={product} initialColor={color} />
         </section>
       )}
 

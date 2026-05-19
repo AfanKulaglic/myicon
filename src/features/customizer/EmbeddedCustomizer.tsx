@@ -250,11 +250,11 @@ function InlineToolbar({ slug }: { slug: string }) {
  * Renders LeftSidebar + Canvas + RightSidebar in a constrained-height container.
  * No body scroll lock, no fixed positioning — flows naturally with the page.
  */
-export function EmbeddedCustomizer({ product }: { product: Product }) {
+export function EmbeddedCustomizer({ product, initialColor }: { product: Product; initialColor?: string }) {
   const [mobilePanel, setMobilePanel] = useState<"left" | "right" | null>(null);
 
   return (
-    <CustomizerProvider product={product}>
+    <CustomizerProvider product={product} initialColor={initialColor}>
       <div className="rounded-2xl border border-line bg-white overflow-hidden shadow-card">
         <InlineToolbar slug={product.slug} />
 
