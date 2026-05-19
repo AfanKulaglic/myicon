@@ -1,6 +1,6 @@
 # MYICON — Project Documentation
 
-> **Last updated:** Prompt 97 — Added 4 missing business card products for all remaining visitenkarten subcategories.
+> **Last updated:** Prompt 98 — Added 3 missing poster products for all remaining Plakate subcategories.
 > **Read this file at the start of every prompt. Update it at the end of every prompt.**
 > **This is enforced automatically via `.github/copilot-instructions.md` — injected into every Copilot session in this workspace.**
 
@@ -479,6 +479,7 @@ In `mock-data/products.ts`, set:
 
 | Prompt | Changes |
 |--------|--------|
+| 98 | Added 3 poster products to [products.ts](src/mock-data/products.ts): `p_poster_a4` (A4), `p_poster_werbeplakat` (Werbeplakate), `p_poster_hochglanz` (Hochglanz-Plakate). All 4 Plakate subcategories now show products. Pushed to GitHub. |
 | 97 | Added 4 business card products to [products.ts](src/mock-data/products.ts): `p_visitenkarte_doppelseitig`, `p_visitenkarte_laminiert`, `p_visitenkarte_matt`, `p_visitenkarte_glanz`. All 5 Visitenkarten subcategories now show products. Pushed to GitHub. |
 | 96 | Fixed mobile sidebar not covering full screen. Root cause: `<MobileMenu>` was rendered inside `<header>` which has `backdrop-filter` — this creates a new CSS stacking context that breaks `position: fixed` children. Moved `MobileMenu` + `menuOpen` state to `ShellLayout` in [App.tsx](src/App.tsx); `SiteHeader` now accepts `onMenuOpen` prop. Pushed to GitHub. |
 | 95 | Initialised git repository, created initial commit (136 files), added remote `origin` pointing to `https://github.com/AfanKulaglic/myicon.git`, pushed `main` branch. |
