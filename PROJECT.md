@@ -1,6 +1,6 @@
 # MYICON — Project Documentation
 
-> **Last updated:** Prompt 95 — Initialised git repo and pushed to https://github.com/AfanKulaglic/myicon.git (branch: main).
+> **Last updated:** Prompt 96 — Fixed mobile sidebar: moved MobileMenu out of header to fix backdrop-filter stacking context breaking fixed positioning.
 > **Read this file at the start of every prompt. Update it at the end of every prompt.**
 > **This is enforced automatically via `.github/copilot-instructions.md` — injected into every Copilot session in this workspace.**
 
@@ -479,6 +479,7 @@ In `mock-data/products.ts`, set:
 
 | Prompt | Changes |
 |--------|--------|
+| 96 | Fixed mobile sidebar not covering full screen. Root cause: `<MobileMenu>` was rendered inside `<header>` which has `backdrop-filter` — this creates a new CSS stacking context that breaks `position: fixed` children. Moved `MobileMenu` + `menuOpen` state to `ShellLayout` in [App.tsx](src/App.tsx); `SiteHeader` now accepts `onMenuOpen` prop. Pushed to GitHub. |
 | 95 | Initialised git repository, created initial commit (136 files), added remote `origin` pointing to `https://github.com/AfanKulaglic/myicon.git`, pushed `main` branch. |
 | 94 | Fixed [AdminProductForm.tsx](src/pages/admin/AdminProductForm.tsx): Zod `type` enum only had `"tshirt" \| "print" \| "promo" \| "other"` — all other `ProductType` values (`brochure`, `flyer`, `poster`, `polo`, `hoodie`, `cap`, `apron`, `businesscard`) were rejected on submit, so saving any brochure (or flyer/poster) product was silently blocked. Expanded enum to all 11 types and added matching `<option>` entries. |
 | 93 | Added 5 brochure products to [products.ts](src/mock-data/products.ts): `p_broschuere_a6` (A6), `p_broschuere_a5_std` (A5), `p_broschuere_a4` (A4), `p_broschuere_a3` (A3), `p_broschuere_gefaltet` (Gefaltete). All use `image: ""`, `gallery: []`. All 6 Broschüren subcategories now show products instead of "Bald verfügbar." |
