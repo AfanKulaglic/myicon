@@ -203,7 +203,66 @@ function MockupImage({
   
   const img = src.endsWith('.svg') ? svgImg : rasterImg;
   
-  return img ? (
+  // Pulsing animation for loading state
+  const [pulseOpacity, setPulseOpacity] = useState(0.4);
+  
+  useEffect(() => {
+    if (img) return; // Stop animation when loaded
+    
+    let animationId: number;
+    let startTime = Date.now();
+    
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const cycle = (elapsed % 1500) / 1500; // 1.5s cycle
+      const opacity = 0.3 + Math.sin(cycle * Math.PI * 2) * 0.15; // Oscillate between 0.15 and 0.45
+      setPulseOpacity(opacity);
+      animationId = requestAnimationFrame(animate);
+    };
+    
+    animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, [img]);
+  
+  if (!img) {
+    // Loading skeleton - show a subtle pulsing placeholder
+    return (
+      <Group>
+        <Rect
+          x={0}
+          y={0}
+          width={width}
+          height={height}
+          fill="#E2E8F0"
+          listening={false}
+        />
+        <Rect
+          x={width * 0.25}
+          y={height * 0.3}
+          width={width * 0.5}
+          height={height * 0.4}
+          fill="#CBD5E1"
+          opacity={pulseOpacity}
+          cornerRadius={8}
+          listening={false}
+        />
+        <KText
+          x={0}
+          y={height / 2 - 10}
+          width={width}
+          text="Mockup wird geladen..."
+          fontSize={14}
+          fontFamily="Inter, sans-serif"
+          fill="#64748B"
+          align="center"
+          opacity={0.6 + pulseOpacity * 0.4}
+          listening={false}
+        />
+      </Group>
+    );
+  }
+  
+  return (
     <KImage
       image={img}
       x={0}
@@ -212,7 +271,7 @@ function MockupImage({
       height={height}
       listening={false}
     />
-  ) : null;
+  );
 }
 
 function CanvasImageLayer({
