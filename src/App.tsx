@@ -33,6 +33,7 @@ const TermsPage = lazy(() => import("@/pages/TermsPage"));
 const PrivacyPage = lazy(() => import("@/pages/PrivacyPage"));
 const ImprintPage = lazy(() => import("@/pages/ImprintPage"));
 const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
+const PDFPresentationPage = lazy(() => import("@/pages/PDFPresentationPage"));
 
 // Admin pages — lazy-loaded, code-gated by AdminLayout
 const AdminLayout = lazy(() => import("@/pages/admin/AdminLayout"));
@@ -84,6 +85,9 @@ export function App() {
 
         {/* Customizer = full-screen, no header/footer */}
         <Route path="/products/:slug/customize" element={<CustomizePage />} />
+        
+        {/* PDF Presentation = full-screen, no header/footer */}
+        <Route path="/pdf" element={<PDFPresentationPage />} />
 
         <Route
           path="*"
