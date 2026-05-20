@@ -34,6 +34,7 @@ export const DEFAULT_HERO: HeroContent = {
   ctaPrimaryUrl: "/categories",
   ctaSecondaryText: "Jetzt designen",
   ctaSecondaryUrl: "/products/premium-t-shirt/customize",
+  imageUrl: "", // Add your custom hero image URL here (leave empty to use fallback)
   stats: [
     { value: "2 Mio.+", label: "zufriedene Kunden" },
     { value: "24 h", label: "Same-Day Druck" },
@@ -56,6 +57,7 @@ export const DEFAULT_HERO_EN: HeroContent = {
   ctaPrimaryUrl: "/categories",
   ctaSecondaryText: "Design now",
   ctaSecondaryUrl: "/products/premium-t-shirt/customize",
+  imageUrl: "", // Add your custom hero image URL here (leave empty to use fallback)
   stats: [
     { value: "2M+", label: "satisfied customers" },
     { value: "24 h", label: "same-day printing" },
