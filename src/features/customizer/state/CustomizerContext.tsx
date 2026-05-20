@@ -10,7 +10,7 @@ import {
 import type { Product } from "@/types";
 import { uid } from "@/lib/utils";
 
-export type LayerType = "text" | "image" | "rect" | "circle";
+export type LayerType = "text" | "image" | "rect" | "circle" | "line";
 
 export interface BaseLayer {
   id: string;
@@ -48,7 +48,13 @@ export interface ShapeLayer extends BaseLayer {
   strokeWidth?: number;
 }
 
-export type Layer = TextLayer | ImageLayer | ShapeLayer;
+export interface LineLayer extends BaseLayer {
+  type: "line";
+  stroke: string;
+  strokeWidth: number;
+}
+
+export type Layer = TextLayer | ImageLayer | ShapeLayer | LineLayer;
 
 interface HistoryEntry {
   layers: Layer[];

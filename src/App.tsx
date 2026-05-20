@@ -13,6 +13,7 @@ const CategoryPage = lazy(() => import("@/pages/CategoryPage"));
 const SubcategoryPage = lazy(() => import("@/pages/SubcategoryPage"));
 const ProductPage = lazy(() => import("@/pages/ProductPage"));
 const CustomizePage = lazy(() => import("@/pages/CustomizePage"));
+const SearchPage = lazy(() => import("@/pages/SearchPage"));
 const CartPage = lazy(() => import("@/pages/CartPage"));
 const WishlistPage = lazy(() => import("@/pages/WishlistPage"));
 const CheckoutPage = lazy(() => import("@/pages/CheckoutPage"));
@@ -103,6 +104,7 @@ export function App() {
                 <Route path="/categories/:slug" element={<CategoryPage />} />
                 <Route path="/categories/:slug/:sub" element={<SubcategoryPage />} />
                 <Route path="/products/:slug" element={<ProductPage />} />
+                <Route path="/search" element={<SearchPage />} />
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/wishlist" element={<WishlistPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />

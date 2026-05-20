@@ -1,5 +1,6 @@
 import { useCustomizer, useSelectedLayer, type Layer } from "../state/CustomizerContext";
 import { cn } from "@/lib/utils";
+import { Lock } from "lucide-react";
 
 const FONTS = ["Inter", "Plus Jakarta Sans", "Arial", "Georgia", "Times New Roman", "Courier New", "Impact"];
 const COLORS = ["#111111", "#FFFFFF", "#1E5AA8", "#C03434", "#E5A21C", "#1A8754", "#7C3AED"];
@@ -128,6 +129,7 @@ function LayerControls({ layer }: { layer: Layer }) {
   const typeLabel =
     layer.type === "text" ? "Text" :
     layer.type === "image" ? "Bild" :
+    layer.type === "line" ? "Linie" :
     layer.type === "rect" ? "Rechteck" : "Kreis";
 
   return (
@@ -139,6 +141,10 @@ function LayerControls({ layer }: { layer: Layer }) {
 
       {layer.type === "text" && (
         <TextControls layer={layer} />
+      )}
+
+      {layer.type === "line" && (
+        <LineControls layer={layer} />
       )}
 
       {(layer.type === "rect" || layer.type === "circle") && (
@@ -264,6 +270,51 @@ function TextControls({ layer }: { layer: Extract<Layer, { type: "text" }> }) {
         value={layer.fill}
         onChange={(v) => updateLayer(layer.id, { fill: v })}
       />
+    </div>
+  );
+}
+
+function LineControls({ layer }: { layer: Extract<Layer, { type: "line" }> }) {
+  const { updateLayer } = useCustomizer();
+  return (
+    <div className="space-y-4">
+      <div>
+        <label className="label text-xs">Länge</label>
+        <input
+          type="number"
+          value={Math.round(layer.width)}
+          onChange={(e) => updateLayer(layer.id, { width: Math.max(10, Number(e.target.value)) })}
+          className="input"
+        />
+      </div>
+      <div>
+        <div className="flex items-center justify-between mb-1">
+          <label className="text-xs font-medium text-ink-muted">Strichstärke</label>
+          <span className="text-xs font-mono text-ink">{layer.strokeWidth}px</span>
+        </div>
+        <input
+          type="range"
+          min={1} max={20} step={1}
+          value={layer.strokeWidth}
+          onChange={(e) => updateLayer(layer.id, { strokeWidth: Number(e.target.value) })}
+          className="w-full accent-brand"
+        />
+      </div>
+      <ColorRow
+        label="Farbe"
+        value={layer.stroke}
+        onChange={(v) => updateLayer(layer.id, { stroke: v })}
+      />
+      {layer.locked && (
+        <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+          <div className="flex items-start gap-2">
+            <Lock className="size-4 text-amber-600 flex-shrink-0 mt-0.5" />
+            <div className="text-xs text-amber-900">
+              <strong>Gesperrt:</strong> Entsperren Sie die Linie über das Schloss-Symbol, um sie diagonal zu drehen und frei zu verschieben.
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

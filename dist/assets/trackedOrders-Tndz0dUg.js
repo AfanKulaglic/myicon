@@ -1,0 +1,1 @@
+import{o as s,p as d}from"./index-CPhmKoEX.js";const i=s()(d(s=>({ids:[],add:d=>s(s=>s.ids.includes(d)?s:{ids:[d,...s.ids]}),remove:d=>s(s=>({ids:s.ids.filter(s=>s!==d)}))}),{name:"myicon-tracked-orders"}));export{i as u};

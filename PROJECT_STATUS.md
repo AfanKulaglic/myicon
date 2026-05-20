@@ -56,7 +56,94 @@
   - Mockups must stay local for green-screen color manipulation in customizer
   - Documented in `IMAGE_ARCHITECTURE.md`
 
-### 5. Build Configuration
+### 5. Mobile Responsiveness
+- **Status:** ✅ Complete
+- **Details:**
+  - Fixed Hero section for narrow devices (360px+)
+  - Reduced padding on mobile (py-12→py-8)
+  - Adjusted text sizing (text-3xl→sm:text-4xl→lg:text-5xl)
+  - Stacked buttons vertically on mobile (flex-col sm:flex-row)
+  - Improved stats spacing and image aspect ratio
+  - Updated Tailwind container config with explicit breakpoints
+
+### 6. Skeleton Loading
+- **Status:** ✅ Complete
+- **Details:**
+  - Created reusable `ImageWithSkeleton` component
+  - Applied to all images site-wide:
+    - CategoryCard
+    - ProductCard
+    - ProductDetail gallery (main image and thumbnails)
+    - Hero section (custom skeleton)
+    - Customizer mockups (pulsing skeleton with animated logo)
+  - Pulsing gradient animation while loading
+  - Smooth fade-in when image loads
+
+### 7. Hero Image Configuration
+- **Status:** ✅ Complete
+- **Details:**
+  - Removed Unsplash fallback URL completely
+  - Hero shows skeleton until custom image configured
+  - "Kein Bild konfiguriert" message when no image set
+  - Custom images configured via `imageUrl` field in Firebase
+  - Created `HERO_IMAGE_GUIDE.md` with setup instructions
+
+### 8. ProductCard Layout Update
+- **Status:** ✅ Complete
+- **Details:**
+  - Removed "ab" text from price display
+  - Moved price to right side of card header (next to title)
+  - Added color swatches below rating (max 3 colors shown)
+  - Added "+X" indicator when more than 3 colors available
+  - Layout: Title + Price on same row, Rating below, Color swatches below that
+
+### 9. PDF Presentation Page
+- **Status:** ✅ Complete
+- **Details:**
+  - Created `/pdf` route with 7-page presentation
+  - Content in Bosnian covering:
+    - Project overview
+    - Technologies used
+    - Features
+    - Performance (ImgBB 70-75% faster)
+    - Architecture
+  - Optimized for screenshot-to-PDF conversion
+  - Fullscreen layout
+
+### 10. Admin Documentation Page
+- **Status:** ✅ Complete
+- **Details:**
+  - Created `/how-to-use-admin` route
+  - 8-page admin panel documentation in Bosnian
+  - Covers: access, dashboard, products, categories, orders, content, settings, real-time updates
+  - Modern design with gradients, animations, blur effects, hover transforms, glassmorphism
+  - Each page has unique gradient background
+  - Animated background blobs, gradient text headers, shadow-2xl cards
+
+### 11. Lock/Unlock Feature for Print Zones
+- **Status:** ✅ Complete
+- **Details:**
+  - Added `locked?: boolean` property to all layer types
+  - Lines created with `locked: true` by default
+  - Three UI locations for lock/unlock:
+    - **Layers Panel:** Lock/Unlock button for each layer
+    - **Floating Toolbar:** Lock button above selected layer
+    - **Canvas Display:** Blue lock icon on locked layers
+  - Locked layers behavior:
+    - Cannot be dragged (`draggable: false`)
+    - No transformer shown (no rotation/resize handles)
+    - Can still be selected, deleted, duplicated, reordered
+  - After unlocking:
+    - Free movement (horizontal, vertical, diagonal)
+    - Free rotation (any angle, not just 0°/90°/180°/270°)
+    - Full Konva transformer functionality
+  - Visual indicators:
+    - Blue lock icon in top-left corner of locked layers
+    - Icon rotates with the layer
+    - Blue background on lock button when active
+  - Documented in `LOCK_FEATURE.md`
+
+### 12. Build Configuration
 - **Status:** ✅ Complete
 - **Details:**
   - Terser installed as dev dependency for production minification

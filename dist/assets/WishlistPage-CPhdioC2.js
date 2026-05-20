@@ -1,0 +1,1 @@
+import{j as r}from"./vendor-react-r0Fclxcs.js";import o from"./WishlistPage-DbnAnopU.js";import"./vendor-router-C0geQgMP.js";import"./index-CPhmKoEX.js";import"./vendor-firebase-CmVs2UoN.js";import"./useProducts-B4Uz7KW0.js";import"./ProductCardSkeleton-BQUacV8n.js";import"./ImageWithSkeleton-i1saD-qB.js";function t(){return r.jsx(o,{})}export{t as default};

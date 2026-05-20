@@ -82,11 +82,11 @@ export function MobileMenu({ open, onClose }: Props) {
               ))}
               <li>
                 <Link
-                  to="/account"
+                  to="/order/track"
                   onClick={onClose}
                   className="block px-4 py-3.5 text-sm border-b border-line"
                 >
-                  Mein Konto
+                  Bestellungen verfolgen
                 </Link>
               </li>
               <li>

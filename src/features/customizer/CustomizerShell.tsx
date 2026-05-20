@@ -1,12 +1,10 @@
-import { useEffect, useState, lazy, Suspense, useRef } from "react";
-import { X, SlidersHorizontal } from "lucide-react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import type { Product } from "@/types";
 import { CustomizerProvider, useCustomizer } from "./state/CustomizerContext";
 import { CustomizerTopBar } from "./panels/CustomizerTopBar";
 import { LeftSidebar, LeftSidebarPanel, LEFT_TABS, type LeftSidebarTab } from "./panels/LeftSidebar";
 import { RightSidebar } from "./panels/RightSidebar";
 import { ZoomControls } from "./panels/ZoomControls";
-import { cn } from "@/lib/utils";
 
 const DesignerCanvas = lazy(() =>
   import("./canvas/DesignerCanvas").then((m) => ({ default: m.DesignerCanvas }))
@@ -20,7 +18,63 @@ function CanvasFallback() {
   );
 }
 
-type MobileSheet = LeftSidebarTab | "properties" | null;
+// Mobile tools panel with tabs for left sidebar tools and properties
+function MobileToolsPanel({ hasSelection }: { hasSelection: boolean }) {
+  const [activeTab, setActiveTab] = useState<LeftSidebarTab | "properties">("upload");
+
+  return (
+    <>
+      {/* Tab bar */}
+      <div className="flex border-b border-line bg-white overflow-x-auto">
+        {LEFT_TABS.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex-1 min-w-[80px] flex flex-col items-center gap-1 py-3 px-2 text-[11px] font-medium transition-colors relative ${
+              activeTab === tab.id
+                ? "text-brand"
+                : "text-ink-muted"
+            }`}
+          >
+            <tab.Icon className="size-5" strokeWidth={activeTab === tab.id ? 2.5 : 2} />
+            <span>{tab.label}</span>
+            {activeTab === tab.id && (
+              <span className="absolute bottom-0 inset-x-2 h-0.5 bg-brand rounded-t-full" />
+            )}
+          </button>
+        ))}
+        <button
+          onClick={() => setActiveTab("properties")}
+          disabled={!hasSelection}
+          className={`flex-1 min-w-[80px] flex flex-col items-center gap-1 py-3 px-2 text-[11px] font-medium transition-colors relative ${
+            activeTab === "properties"
+              ? "text-brand"
+              : hasSelection
+                ? "text-ink-muted"
+                : "text-ink-subtle/50"
+          }`}
+        >
+          <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={activeTab === "properties" ? 2.5 : 2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+          </svg>
+          <span>Eigenschaften</span>
+          {activeTab === "properties" && (
+            <span className="absolute bottom-0 inset-x-2 h-0.5 bg-brand rounded-t-full" />
+          )}
+        </button>
+      </div>
+
+      {/* Content area */}
+      <div className="flex-1 overflow-y-auto">
+        {activeTab === "properties" ? (
+          <RightSidebar />
+        ) : (
+          <LeftSidebarPanel tab={activeTab} />
+        )}
+      </div>
+    </>
+  );
+}
 
 export function CustomizerShell({ product, children }: { product: Product; children?: React.ReactNode }) {
   // Lock body scroll while in designer
@@ -42,25 +96,6 @@ export function CustomizerShell({ product, children }: { product: Product; child
 
 function ShellInner() {
   const { selectedId } = useCustomizer();
-  const [mobileSheet, setMobileSheet] = useState<MobileSheet>(null);
-  // Auto-open Properties sheet on mobile on the very first selection of the
-  // session — gives the user immediate visibility of text/color/etc controls.
-  // After that, they manage the sheet manually so it doesn't pop up every
-  // time they click a layer.
-  const hasAutoOpened = useRef(false);
-  useEffect(() => {
-    if (
-      selectedId &&
-      !hasAutoOpened.current &&
-      typeof window !== "undefined" &&
-      window.matchMedia("(max-width: 767px)").matches
-    ) {
-      hasAutoOpened.current = true;
-      setMobileSheet("properties");
-    }
-  }, [selectedId]);
-
-  const closeSheet = () => setMobileSheet(null);
 
   return (
     <div
@@ -69,12 +104,14 @@ function ShellInner() {
     >
       <CustomizerTopBar />
 
-      <div className="flex-1 min-h-0 flex">
-        {/* Desktop left */}
+      {/* Main content area */}
+      <div className="flex-1 min-h-0 flex flex-col md:flex-row">
+        {/* Desktop left sidebar */}
         <div className="hidden md:flex w-64 lg:w-72 border-r border-line bg-white">
           <LeftSidebar />
         </div>
 
+        {/* Canvas area */}
         <div className="relative flex-1 min-w-0 bg-surface-alt">
           <Suspense fallback={<CanvasFallback />}>
             <DesignerCanvas />
@@ -82,123 +119,16 @@ function ShellInner() {
           <ZoomControls />
         </div>
 
+        {/* Desktop right sidebar */}
         <div className="hidden lg:flex w-80 border-l border-line bg-white">
           <RightSidebar />
         </div>
+
+        {/* Mobile tools panel - always visible at bottom, split screen */}
+        <div className="md:hidden flex-shrink-0 h-[45vh] border-t-2 border-line bg-white flex flex-col overflow-hidden">
+          <MobileToolsPanel hasSelection={!!selectedId} />
+        </div>
       </div>
-
-      {/* Mobile bottom dock */}
-      <MobileDock active={mobileSheet} onChange={setMobileSheet} hasSelection={!!selectedId} />
-
-      {/* Mobile bottom sheet */}
-      <MobileSheetView sheet={mobileSheet} onClose={closeSheet} />
     </div>
-  );
-}
-
-function MobileDock({
-  active,
-  onChange,
-  hasSelection,
-}: {
-  active: MobileSheet;
-  onChange: (s: MobileSheet) => void;
-  hasSelection: boolean;
-}) {
-  const tabs: {
-    id: Exclude<MobileSheet, null>;
-    label: string;
-    Icon: typeof SlidersHorizontal;
-    disabled?: boolean;
-  }[] = [
-    ...LEFT_TABS.map((t) => ({ id: t.id, label: t.label, Icon: t.Icon })),
-    {
-      id: "properties" as const,
-      label: "Stil",
-      Icon: SlidersHorizontal,
-      disabled: !hasSelection,
-    },
-  ];
-
-  return (
-    <nav className="md:hidden flex border-t border-line bg-white shadow-[0_-2px_12px_rgba(0,0,0,0.04)] z-30 pb-[env(safe-area-inset-bottom)]">
-      {tabs.map(({ id, label, Icon, disabled }) => {
-        const isActive = active === id;
-        return (
-          <button
-            key={id}
-            onClick={() => !disabled && onChange(isActive ? null : id)}
-            disabled={disabled}
-            className={cn(
-              "flex-1 flex flex-col items-center justify-center gap-0.5 py-2 px-1 text-[10px] font-medium transition-colors relative",
-              isActive
-                ? "text-brand"
-                : disabled
-                  ? "text-ink-subtle/50"
-                  : "text-ink-muted hover:text-ink active:bg-surface-alt"
-            )}
-            aria-label={label}
-          >
-            <Icon className="size-5" strokeWidth={isActive ? 2.5 : 2} />
-            <span>{label}</span>
-            {isActive && (
-              <span className="absolute top-0 inset-x-3 h-0.5 bg-brand rounded-b-full" />
-            )}
-          </button>
-        );
-      })}
-    </nav>
-  );
-}
-
-function MobileSheetView({ sheet, onClose }: { sheet: MobileSheet; onClose: () => void }) {
-  if (!sheet) return null;
-  const title =
-    sheet === "properties"
-      ? "Eigenschaften"
-      : LEFT_TABS.find((t) => t.id === sheet)?.label ?? "";
-
-  return (
-    <>
-      {/* Backdrop */}
-      <div
-        className="md:hidden fixed inset-0 bg-black/30 z-40 animate-fade-in"
-        onClick={onClose}
-      />
-      {/* Sheet */}
-      <div
-        className="md:hidden fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-2xl shadow-pop max-h-[78vh] flex flex-col animate-slide-up"
-        role="dialog"
-        aria-label={title}
-      >
-        {/* Drag handle */}
-        <button
-          onClick={onClose}
-          className="pt-2 pb-1 flex justify-center"
-          aria-label="Schließen"
-        >
-          <span className="block h-1 w-10 rounded-full bg-line" />
-        </button>
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 pb-2 border-b border-line">
-          <h2 className="text-sm font-semibold">{title}</h2>
-          <button
-            onClick={onClose}
-            className="size-8 inline-flex items-center justify-center rounded-lg hover:bg-surface-alt"
-            aria-label="Schließen"
-          >
-            <X className="size-4" />
-          </button>
-        </div>
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto pb-4">
-          {sheet === "properties" ? (
-            <RightSidebar />
-          ) : (
-            <LeftSidebarPanel tab={sheet} />
-          )}
-        </div>
-      </div>
-    </>
   );
 }

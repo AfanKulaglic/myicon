@@ -62,10 +62,30 @@ export function SiteFooter() {
         <div>
           <div className="text-sm font-semibold text-ink mb-3">{c.colAccountLabel}</div>
           <ul className="space-y-2 text-sm text-ink-muted">
-            <li><Link className="hover:text-ink" to="/login">{t("footer.login")}</Link></li>
-            <li><Link className="hover:text-ink" to="/register">{t("footer.register")}</Link></li>
-            <li><Link className="hover:text-ink" to="/account/orders">{t("footer.orders")}</Link></li>
-            <li><Link className="hover:text-ink" to="/account/drafts">{t("footer.designs")}</Link></li>
+            <li>
+              <span className="cursor-not-allowed opacity-50 flex items-center gap-2">
+                {t("footer.login")}
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-alt text-ink-subtle">Bald</span>
+              </span>
+            </li>
+            <li>
+              <span className="cursor-not-allowed opacity-50 flex items-center gap-2">
+                {t("footer.register")}
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-alt text-ink-subtle">Bald</span>
+              </span>
+            </li>
+            <li>
+              <span className="cursor-not-allowed opacity-50 flex items-center gap-2">
+                {t("footer.orders")}
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-alt text-ink-subtle">Bald</span>
+              </span>
+            </li>
+            <li>
+              <span className="cursor-not-allowed opacity-50 flex items-center gap-2">
+                {t("footer.designs")}
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-alt text-ink-subtle">Bald</span>
+              </span>
+            </li>
             <li><Link className="hover:text-ink" to="/wishlist">{t("footer.wishlist")}</Link></li>
           </ul>
         </div>

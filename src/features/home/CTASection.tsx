@@ -14,14 +14,14 @@ export function CTASection() {
             <h2 className="text-2xl lg:text-3xl font-semibold font-display">{c.title}</h2>
             <p className="mt-3 text-white/85 text-sm lg:text-base">{c.description}</p>
           </div>
-          <div className="flex gap-3">
-            <Link to={c.primaryUrl}>
-              <Button variant="secondary" size="lg" className="bg-white text-brand hover:bg-white/90">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <Link to={c.primaryUrl} className="w-full sm:w-auto">
+              <Button variant="secondary" size="lg" className="bg-white text-brand hover:bg-white/90 w-full sm:w-auto">
                 {c.primaryText}
               </Button>
             </Link>
-            <Link to={c.secondaryUrl}>
-              <Button size="lg" className="bg-brand-600 hover:bg-brand-700 text-white border border-white/20">
+            <Link to={c.secondaryUrl} className="w-full sm:w-auto">
+              <Button size="lg" className="bg-brand-600 hover:bg-brand-700 text-white border border-white/20 w-full sm:w-auto">
                 {c.secondaryText}
               </Button>
             </Link>

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Stage, Layer as KLayer, Rect, Group, Image as KImage, Text as KText, Circle, Transformer, Line } from "react-konva";
+import { Stage, Layer as KLayer, Rect, Group, Image as KImage, Text as KText, Circle, Transformer, Line, Path } from "react-konva";
 import Konva from "konva";
 import useImage from "use-image";
 import { ChevronUp, ChevronDown, Copy, Trash2, Lock, Unlock } from "lucide-react";
@@ -101,7 +101,49 @@ function useGreenScreenRecolor(
   src: string,
   targetHex: string | null
 ): HTMLImageElement | null {
-  const [base] = useImage(src, "anonymous");
+  // For local mockup files, load directly without use-image library
+  const isLocal = src.startsWith('/mockups/') || src.startsWith('./') || src.startsWith('../');
+  
+  // Load local images directly
+  const [localBase, setLocalBase] = useState<HTMLImageElement | null>(null);
+  useEffect(() => {
+    if (!isLocal) {
+      setLocalBase(null);
+      return;
+    }
+    console.log('Loading local mockup:', src);
+    const img = new Image();
+    img.onload = () => {
+      console.log('Local mockup loaded successfully:', src);
+      setLocalBase(img);
+    };
+    img.onerror = (e) => {
+      console.error('Failed to load local mockup:', src, e);
+      // Try without leading slash
+      const altSrc = src.startsWith('/') ? src.slice(1) : src;
+      console.log('Retrying with alternative path:', altSrc);
+      const img2 = new Image();
+      img2.onload = () => {
+        console.log('Alternative path loaded:', altSrc);
+        setLocalBase(img2);
+      };
+      img2.onerror = () => {
+        console.error('Alternative path also failed:', altSrc);
+        setLocalBase(null);
+      };
+      img2.src = altSrc;
+    };
+    img.src = src;
+    return () => {
+      img.onload = null;
+      img.onerror = null;
+    };
+  }, [src, isLocal]);
+  
+  // Load external images with use-image library
+  const [externalBase] = useImage(isLocal ? '' : src, "anonymous");
+  
+  const base = isLocal ? localBase : externalBase;
   const [out, setOut] = useState<HTMLImageElement | null>(null);
 
   useEffect(() => {
@@ -110,9 +152,11 @@ function useGreenScreenRecolor(
       return;
     }
     if (!targetHex) {
+      console.log('No target color, showing original mockup');
       setOut(base);
       return;
     }
+    console.log('Starting recoloring with target:', targetHex);
     const hex = targetHex.replace("#", "");
     let tr = parseInt(hex.slice(0, 2), 16);
     let tg = parseInt(hex.slice(2, 4), 16);
@@ -357,6 +401,23 @@ export function DesignerCanvas() {
     return view.area;
   }, [activePlacement, view.area, refW, refH]);
 
+  // Rotation angle for the print area (only for rectangle mode)
+  const areaRotation = activePlacement?.rotation ?? 0;
+
+  // Polygon corners for non-rectangular print areas
+  const areaCorners = useMemo(() => {
+    if (activePlacement?.printAreaCorners) {
+      const c = activePlacement.printAreaCorners;
+      return {
+        topLeft: { x: (c.topLeft.x / 100) * refW, y: (c.topLeft.y / 100) * refH },
+        topRight: { x: (c.topRight.x / 100) * refW, y: (c.topRight.y / 100) * refH },
+        bottomLeft: { x: (c.bottomLeft.x / 100) * refW, y: (c.bottomLeft.y / 100) * refH },
+        bottomRight: { x: (c.bottomRight.x / 100) * refW, y: (c.bottomRight.y / 100) * refH },
+      };
+    }
+    return null;
+  }, [activePlacement, refW, refH]);
+
   // Safe zone inset (absolute px)
   const safeInsetX = activePlacement ? ((activePlacement.safePct ?? 0) / 100) * area.width : 0;
   const safeInsetY = activePlacement ? ((activePlacement.safePct ?? 0) / 100) * area.height : 0;
@@ -399,6 +460,13 @@ export function DesignerCanvas() {
     const stage = stageRef.current;
     if (!tr || !stage) return;
     if (!selectedId) {
+      tr.nodes([]);
+      tr.getLayer()?.batchDraw();
+      return;
+    }
+    const layer = layers.find((l) => l.id === selectedId);
+    // Don't show transformer for locked layers
+    if (layer?.locked) {
       tr.nodes([]);
       tr.getLayer()?.batchDraw();
       return;
@@ -569,40 +637,90 @@ export function DesignerCanvas() {
 
           {/* Print area + safe zone + bleed */}
           <KLayer listening={false}>
-            {/* Bleed outset — red dashed */}
-            {showBleed && (
-              <Rect
-                x={area.x - bleedOutX}
-                y={area.y - bleedOutY}
-                width={area.width + bleedOutX * 2}
-                height={area.height + bleedOutY * 2}
-                stroke="#C03434"
-                strokeWidth={1}
-                dash={[6, 6]}
-              />
-            )}
-            {/* Print area border — brand blue */}
-            <Rect
-              x={area.x}
-              y={area.y}
-              width={area.width}
-              height={area.height}
-              stroke="#1E5AA8"
-              strokeWidth={1.5}
-              dash={[4, 4]}
-            />
-            {/* Safe zone inset — green dashed */}
-            {(safeInsetX > 0 || safeInsetY > 0) && (
-              <Rect
-                x={area.x + safeInsetX}
-                y={area.y + safeInsetY}
-                width={area.width - safeInsetX * 2}
-                height={area.height - safeInsetY * 2}
-                stroke="#1A8754"
-                strokeWidth={1}
-                dash={[4, 4]}
-                opacity={0.7}
-              />
+            {areaCorners ? (
+              /* Polygon mode - render as SVG path */
+              <>
+                {/* Bleed outset for polygon */}
+                {showBleed && (
+                  <Path
+                    data={`M ${areaCorners.topLeft.x - bleedOutX} ${areaCorners.topLeft.y - bleedOutY} 
+                           L ${areaCorners.topRight.x + bleedOutX} ${areaCorners.topRight.y - bleedOutY}
+                           L ${areaCorners.bottomRight.x + bleedOutX} ${areaCorners.bottomRight.y + bleedOutY}
+                           L ${areaCorners.bottomLeft.x - bleedOutX} ${areaCorners.bottomLeft.y + bleedOutY} Z`}
+                    stroke="#C03434"
+                    strokeWidth={1}
+                    dash={[6, 6]}
+                  />
+                )}
+                {/* Polygon print area border */}
+                <Path
+                  data={`M ${areaCorners.topLeft.x} ${areaCorners.topLeft.y} 
+                         L ${areaCorners.topRight.x} ${areaCorners.topRight.y}
+                         L ${areaCorners.bottomRight.x} ${areaCorners.bottomRight.y}
+                         L ${areaCorners.bottomLeft.x} ${areaCorners.bottomLeft.y} Z`}
+                  stroke="#1E5AA8"
+                  strokeWidth={1.5}
+                  dash={[4, 4]}
+                />
+                {/* Safe zone for polygon - inset by percentage */}
+                {(safeInsetX > 0 || safeInsetY > 0) && (
+                  <Path
+                    data={`M ${areaCorners.topLeft.x + safeInsetX} ${areaCorners.topLeft.y + safeInsetY} 
+                           L ${areaCorners.topRight.x - safeInsetX} ${areaCorners.topRight.y + safeInsetY}
+                           L ${areaCorners.bottomRight.x - safeInsetX} ${areaCorners.bottomRight.y - safeInsetY}
+                           L ${areaCorners.bottomLeft.x + safeInsetX} ${areaCorners.bottomLeft.y - safeInsetY} Z`}
+                    stroke="#1A8754"
+                    strokeWidth={1}
+                    dash={[4, 4]}
+                    opacity={0.7}
+                  />
+                )}
+              </>
+            ) : (
+              /* Rectangle mode - render with rotation */
+              <Group
+                x={area.x + area.width / 2}
+                y={area.y + area.height / 2}
+                rotation={areaRotation}
+                offsetX={area.width / 2}
+                offsetY={area.height / 2}
+              >
+                {/* Bleed outset — red dashed */}
+                {showBleed && (
+                  <Rect
+                    x={-bleedOutX}
+                    y={-bleedOutY}
+                    width={area.width + bleedOutX * 2}
+                    height={area.height + bleedOutY * 2}
+                    stroke="#C03434"
+                    strokeWidth={1}
+                    dash={[6, 6]}
+                  />
+                )}
+                {/* Print area border — brand blue */}
+                <Rect
+                  x={0}
+                  y={0}
+                  width={area.width}
+                  height={area.height}
+                  stroke="#1E5AA8"
+                  strokeWidth={1.5}
+                  dash={[4, 4]}
+                />
+                {/* Safe zone inset — green dashed */}
+                {(safeInsetX > 0 || safeInsetY > 0) && (
+                  <Rect
+                    x={safeInsetX}
+                    y={safeInsetY}
+                    width={area.width - safeInsetX * 2}
+                    height={area.height - safeInsetY * 2}
+                    stroke="#1A8754"
+                    strokeWidth={1}
+                    dash={[4, 4]}
+                    opacity={0.7}
+                  />
+                )}
+              </Group>
             )}
           </KLayer>
 
@@ -709,7 +827,43 @@ export function DesignerCanvas() {
           <KLayer>
             <Group
               clipFunc={(ctx) => {
-                ctx.rect(area.x, area.y, area.width, area.height);
+                if (areaCorners) {
+                  // Polygon clipping
+                  ctx.beginPath();
+                  ctx.moveTo(areaCorners.topLeft.x, areaCorners.topLeft.y);
+                  ctx.lineTo(areaCorners.topRight.x, areaCorners.topRight.y);
+                  ctx.lineTo(areaCorners.bottomRight.x, areaCorners.bottomRight.y);
+                  ctx.lineTo(areaCorners.bottomLeft.x, areaCorners.bottomLeft.y);
+                  ctx.closePath();
+                } else if (areaRotation !== 0) {
+                  // Rotated rectangle clipping
+                  const cx = area.x + area.width / 2;
+                  const cy = area.y + area.height / 2;
+                  const rad = (areaRotation * Math.PI) / 180;
+                  const cos = Math.cos(rad);
+                  const sin = Math.sin(rad);
+                  
+                  // Calculate rotated corners
+                  const hw = area.width / 2;
+                  const hh = area.height / 2;
+                  const corners = [
+                    { x: -hw, y: -hh }, // top-left
+                    { x: hw, y: -hh },  // top-right
+                    { x: hw, y: hh },   // bottom-right
+                    { x: -hw, y: hh },  // bottom-left
+                  ].map(p => ({
+                    x: cx + p.x * cos - p.y * sin,
+                    y: cy + p.x * sin + p.y * cos,
+                  }));
+                  
+                  ctx.beginPath();
+                  ctx.moveTo(corners[0].x, corners[0].y);
+                  corners.slice(1).forEach(c => ctx.lineTo(c.x, c.y));
+                  ctx.closePath();
+                } else {
+                  // Simple rectangle clipping
+                  ctx.rect(area.x, area.y, area.width, area.height);
+                }
               }}
             >
               {currentLayers.map((l) => {
@@ -720,6 +874,7 @@ export function DesignerCanvas() {
                   rotation: l.rotation,
                   opacity: l.opacity,
                   draggable: !l.locked,
+                  listening: true,
                   onClick: () => setSelectedId(l.id),
                   onTap: () => setSelectedId(l.id),
                   onDragMove: (e: Konva.KonvaEventObject<DragEvent>) => {
@@ -785,6 +940,16 @@ export function DesignerCanvas() {
                           fill={l.fill} stroke={l.stroke}
                           strokeWidth={l.strokeWidth ?? 0} />
                 );
+                if (l.type === "line") return (
+                  <Line
+                    key={l.id}
+                    {...common}
+                    points={[0, 0, l.width, 0]}
+                    stroke={l.stroke}
+                    strokeWidth={l.strokeWidth}
+                    lineCap="round"
+                  />
+                );
                 if (l.type === "text") return (
                   <KText
                     key={l.id}
@@ -822,6 +987,23 @@ export function DesignerCanvas() {
                   />
                 );
               }
+              if (l.type === "line") {
+                // For lines, show a thin outline box around the line
+                return (
+                  <Rect
+                    key={`outline-${l.id}`}
+                    x={l.x}
+                    y={l.y - 5}
+                    width={l.width}
+                    height={10}
+                    rotation={l.rotation}
+                    stroke="#1E5AA8"
+                    strokeWidth={1}
+                    dash={[5, 4]}
+                    opacity={0.4}
+                  />
+                );
+              }
               const w = (l as { width: number }).width;
               const h = l.type === "text"
                 ? Math.max(20, (l as { fontSize: number }).fontSize * 1.4)
@@ -843,6 +1025,56 @@ export function DesignerCanvas() {
             })}
           </KLayer>
 
+          {/* Lock indicators for locked layers */}
+          <KLayer listening={false}>
+            {currentLayers
+              .filter((l) => l.locked)
+              .map((l) => {
+                const w = (l as { width: number }).width;
+                const h = l.type === "text"
+                  ? Math.max(20, (l as { fontSize: number }).fontSize * 1.4)
+                  : (l as { height: number }).height;
+                // Position lock icon at top-left corner of the layer
+                const iconSize = 20;
+                const padding = 4;
+                return (
+                  <Group key={`lock-${l.id}`} x={l.x} y={l.y} rotation={l.rotation}>
+                    {/* Background circle for lock icon */}
+                    <Circle
+                      x={padding + iconSize / 2}
+                      y={padding + iconSize / 2}
+                      radius={iconSize / 2}
+                      fill="#1E5AA8"
+                      opacity={0.9}
+                    />
+                    {/* Lock icon - simplified SVG path */}
+                    <Group x={padding + iconSize / 2} y={padding + iconSize / 2}>
+                      {/* Lock body */}
+                      <Rect
+                        x={-5}
+                        y={-2}
+                        width={10}
+                        height={7}
+                        fill="#FFFFFF"
+                        cornerRadius={1}
+                      />
+                      {/* Lock shackle */}
+                      <Rect
+                        x={-3}
+                        y={-6}
+                        width={6}
+                        height={5}
+                        stroke="#FFFFFF"
+                        strokeWidth={1.5}
+                        cornerRadius={3}
+                        fill="transparent"
+                      />
+                    </Group>
+                  </Group>
+                );
+              })}
+          </KLayer>
+
           {/* Rulers / guides */}
           <KLayer listening={false}>
             {guides.x.map((x, i) => (
@@ -853,15 +1085,19 @@ export function DesignerCanvas() {
             ))}
           </KLayer>
 
-          {/* Transformer */}
+          {/* Transformer - only shown for unlocked layers */}
           <KLayer>
             <Transformer
               ref={trRef}
-              rotateEnabled
-              enabledAnchors={[
-                "top-left", "top-right", "bottom-left", "bottom-right",
-                "middle-left", "middle-right", "top-center", "bottom-center",
-              ]}
+              rotateEnabled={!isLocked}
+              enabledAnchors={
+                isLocked
+                  ? []
+                  : [
+                      "top-left", "top-right", "bottom-left", "bottom-right",
+                      "middle-left", "middle-right", "top-center", "bottom-center",
+                    ]
+              }
               borderStroke="#1E5AA8"
               borderStrokeWidth={2}
               borderDash={[]}

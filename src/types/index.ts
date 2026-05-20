@@ -88,11 +88,22 @@ export interface PrintPlacement {
 
   // Print-area rectangle expressed as percentages of the mockup (0–100).
   // (left, top, width, height) — resolution-independent.
+  // This is used for backward compatibility and simple rectangular zones.
   printArea: {
     leftPct: number;
     topPct: number;
     widthPct: number;
     heightPct: number;
+  };
+
+  // Advanced: 4-corner polygon for non-rectangular zones (parallelograms, trapezoids).
+  // When present, this overrides printArea for rendering. Each corner is a percentage
+  // of the mockup dimensions (0-100).
+  printAreaCorners?: {
+    topLeft: { x: number; y: number };
+    topRight: { x: number; y: number };
+    bottomLeft: { x: number; y: number };
+    bottomRight: { x: number; y: number };
   };
 
   // Real-world physical print dimensions for DPI calc + customer info
@@ -114,6 +125,12 @@ export interface PrintPlacement {
   additionalPrice?: number;
   // Optional placement-specific tint/background (e.g. dark t-shirt color)
   backgroundColor?: string;
+
+  // Rotation angle in degrees (0-360). Allows diagonal print zones.
+  // Only used when printAreaCorners is not defined.
+  rotation?: number;
+  // Lock state: when true, zone cannot be moved, resized, or rotated
+  locked?: boolean;
 }
 
 export interface Product {

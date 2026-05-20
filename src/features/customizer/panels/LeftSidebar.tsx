@@ -14,6 +14,7 @@ import {
   ChevronsDown,
   Lock,
   Unlock,
+  Minus,
 } from "lucide-react";
 import { useCustomizer } from "../state/CustomizerContext";
 import { cn } from "@/lib/utils";
@@ -235,6 +236,20 @@ function ShapesPanel() {
         >
           <Circle className="size-7 text-brand" />
         </button>
+        <button
+          onClick={() =>
+            addLayer({
+              type: "line", stroke: "#111111", strokeWidth: 4,
+              x: cx, y: cy + size / 2, width: size, height: 0, rotation: 0, opacity: 1, locked: true,
+            } as never)
+          }
+          className="aspect-square rounded-lg border border-line hover:border-brand flex items-center justify-center"
+        >
+          <Minus className="size-7 text-brand" />
+        </button>
+      </div>
+      <div className="mt-3 text-xs text-ink-muted leading-relaxed">
+        <strong>Tipp:</strong> Linien sind standardmäßig gesperrt. Entsperren Sie sie, um sie diagonal zu drehen und zu verschieben.
       </div>
     </div>
   );
@@ -267,10 +282,12 @@ function LayersPanel() {
             const Icon =
               l.type === "text" ? Type :
               l.type === "image" ? ImageIcon :
+              l.type === "line" ? Minus :
               l.type === "circle" ? Circle : Square;
             const name =
               l.type === "text" ? ((l as { text: string }).text || "Text") :
               l.type === "image" ? "Bild" :
+              l.type === "line" ? "Linie" :
               l.type === "rect" ? "Rechteck" : "Kreis";
             return (
               <li

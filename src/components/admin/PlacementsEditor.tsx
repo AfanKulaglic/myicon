@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Plus, Trash2, Move, Maximize2, Image as ImageIcon } from "lucide-react";
+import { Plus, Trash2, Move, Maximize2, Image as ImageIcon, Lock, Unlock, RotateCw } from "lucide-react";
 import type { PlacementKey, PrintPlacement } from "@/types";
 import { ImageUploader } from "./ImageUploader";
 import { useT } from "@/hooks/useT";
@@ -86,7 +86,7 @@ function newPlacement(key: PlacementKey, label: string): PrintPlacement {
 }
 
 // ─── Visual print-area overlay ───────────────────────────────────────────
-type DragMode = null | "move" | "nw" | "ne" | "sw" | "se";
+type DragMode = null | "move" | "nw" | "ne" | "sw" | "se" | "rotate" | "corner-tl" | "corner-tr" | "corner-bl" | "corner-br";
 
 function PrintAreaCanvas({
   placement,
@@ -101,9 +101,27 @@ function PrintAreaCanvas({
     startX: number;
     startY: number;
     startRect: PrintPlacement["printArea"];
+    startCorners?: PrintPlacement["printAreaCorners"];
+    startRotation: number;
+    centerX: number;
+    centerY: number;
     boxW: number;
     boxH: number;
   } | null>(null);
+
+  // Convert rect to corners if corners don't exist
+  const getCorners = (): NonNullable<PrintPlacement["printAreaCorners"]> => {
+    if (placement.printAreaCorners) {
+      return placement.printAreaCorners;
+    }
+    const r = placement.printArea;
+    return {
+      topLeft: { x: r.leftPct, y: r.topPct },
+      topRight: { x: r.leftPct + r.widthPct, y: r.topPct },
+      bottomLeft: { x: r.leftPct, y: r.topPct + r.heightPct },
+      bottomRight: { x: r.leftPct + r.widthPct, y: r.topPct + r.heightPct },
+    };
+  };
 
   // Detect image intrinsic dimensions
   const onImgLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -118,14 +136,28 @@ function PrintAreaCanvas({
   const startDrag = (mode: DragMode) => (e: React.PointerEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    // Don't allow drag if locked
+    if (placement.locked) return;
+    
     const box = wrapRef.current?.getBoundingClientRect();
     if (!box) return;
     (e.currentTarget as Element).setPointerCapture(e.pointerId);
+    
+    // Calculate center of the print area for rotation
+    const r = placement.printArea;
+    const centerX = box.left + (r.leftPct / 100) * box.width + (r.widthPct / 100) * box.width / 2;
+    const centerY = box.top + (r.topPct / 100) * box.height + (r.heightPct / 100) * box.height / 2;
+    
     setDrag({
       mode,
       startX: e.clientX,
       startY: e.clientY,
       startRect: { ...placement.printArea },
+      startCorners: placement.printAreaCorners ? { ...placement.printAreaCorners } : undefined,
+      startRotation: placement.rotation ?? 0,
+      centerX,
+      centerY,
       boxW: box.width,
       boxH: box.height,
     });
@@ -133,12 +165,81 @@ function PrintAreaCanvas({
 
   const onMove = (e: React.PointerEvent) => {
     if (!drag) return;
+    
+    if (drag.mode === "rotate") {
+      // Calculate angle from center to current mouse position
+      const dx = e.clientX - drag.centerX;
+      const dy = e.clientY - drag.centerY;
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+      // Normalize to 0-360 and add 90 to make 0° point upward
+      const rotation = (angle + 90 + 360) % 360;
+      
+      onChange({
+        ...placement,
+        rotation: Math.round(rotation),
+      });
+      return;
+    }
+
+    // Handle individual corner dragging
+    if (drag.mode?.startsWith("corner-")) {
+      const dxPct = ((e.clientX - drag.startX) / drag.boxW) * 100;
+      const dyPct = ((e.clientY - drag.startY) / drag.boxH) * 100;
+      const clamp = (v: number) => Math.max(0, Math.min(100, v));
+      
+      const corners = drag.startCorners || getCorners();
+      const newCorners = { ...corners };
+      
+      if (drag.mode === "corner-tl") {
+        newCorners.topLeft = {
+          x: clamp(corners.topLeft.x + dxPct),
+          y: clamp(corners.topLeft.y + dyPct),
+        };
+      } else if (drag.mode === "corner-tr") {
+        newCorners.topRight = {
+          x: clamp(corners.topRight.x + dxPct),
+          y: clamp(corners.topRight.y + dyPct),
+        };
+      } else if (drag.mode === "corner-bl") {
+        newCorners.bottomLeft = {
+          x: clamp(corners.bottomLeft.x + dxPct),
+          y: clamp(corners.bottomLeft.y + dyPct),
+        };
+      } else if (drag.mode === "corner-br") {
+        newCorners.bottomRight = {
+          x: clamp(corners.bottomRight.x + dxPct),
+          y: clamp(corners.bottomRight.y + dyPct),
+        };
+      }
+      
+      onChange({
+        ...placement,
+        printAreaCorners: newCorners,
+      });
+      return;
+    }
+    
     const dxPct = ((e.clientX - drag.startX) / drag.boxW) * 100;
     const dyPct = ((e.clientY - drag.startY) / drag.boxH) * 100;
     let { leftPct, topPct, widthPct, heightPct } = drag.startRect;
     const clamp = (v: number) => Math.max(0, Math.min(100, v));
 
     if (drag.mode === "move") {
+      // If using corners, move all corners
+      if (placement.printAreaCorners) {
+        const corners = drag.startCorners!;
+        onChange({
+          ...placement,
+          printAreaCorners: {
+            topLeft: { x: clamp(corners.topLeft.x + dxPct), y: clamp(corners.topLeft.y + dyPct) },
+            topRight: { x: clamp(corners.topRight.x + dxPct), y: clamp(corners.topRight.y + dyPct) },
+            bottomLeft: { x: clamp(corners.bottomLeft.x + dxPct), y: clamp(corners.bottomLeft.y + dyPct) },
+            bottomRight: { x: clamp(corners.bottomRight.x + dxPct), y: clamp(corners.bottomRight.y + dyPct) },
+          },
+        });
+        return;
+      }
+      
       leftPct = clamp(leftPct + dxPct);
       topPct = clamp(topPct + dyPct);
       if (leftPct + widthPct > 100) leftPct = 100 - widthPct;
@@ -166,6 +267,10 @@ function PrintAreaCanvas({
   const r = placement.printArea;
   const safe = placement.safePct ?? 0;
   const bleed = placement.bleedPct ?? 0;
+  const rotation = placement.rotation ?? 0;
+  const isLocked = placement.locked ?? false;
+  const corners = placement.printAreaCorners;
+  const usePolygon = !!corners;
 
   // DPI hint based on physical mm and rectangle pixel size (using assumed export of 300dpi reference)
   const exportPxPerMmAt300 = 300 / 25.4;
@@ -197,61 +302,170 @@ function PrintAreaCanvas({
         </div>
       )}
 
-      {/* Bleed (outside) */}
-      {bleed > 0 && (
-        <div
-          className="absolute border-2 border-dashed border-red-400 pointer-events-none"
-          style={{
-            left: `${r.leftPct - (r.widthPct * bleed) / 100}%`,
-            top: `${r.topPct - (r.heightPct * bleed) / 100}%`,
-            width: `${r.widthPct * (1 + (2 * bleed) / 100)}%`,
-            height: `${r.heightPct * (1 + (2 * bleed) / 100)}%`,
-          }}
-        />
-      )}
+      {/* Render polygon shape when corners are defined */}
+      {usePolygon && corners ? (
+        <>
+          {/* Polygon print area */}
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            style={{ zIndex: 1 }}
+          >
+            <polygon
+              points={`${corners.topLeft.x},${corners.topLeft.y} ${corners.topRight.x},${corners.topRight.y} ${corners.bottomRight.x},${corners.bottomRight.y} ${corners.bottomLeft.x},${corners.bottomLeft.y}`}
+              fill="rgba(59, 130, 246, 0.1)"
+              stroke={isLocked ? "#9ca3af" : "#3b82f6"}
+              strokeWidth="2"
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
 
-      {/* Print area */}
-      <div
-        onPointerDown={startDrag("move")}
-        className="absolute bg-brand/10 border-2 border-brand cursor-move"
-        style={{
-          left: `${r.leftPct}%`,
-          top: `${r.topPct}%`,
-          width: `${r.widthPct}%`,
-          height: `${r.heightPct}%`,
-        }}
-      >
-        {/* Safe zone */}
-        {safe > 0 && (
+          {/* Corner handles for polygon */}
+          {!isLocked && (
+            <>
+              {[
+                { key: "corner-tl", pos: corners.topLeft, label: "TL" },
+                { key: "corner-tr", pos: corners.topRight, label: "TR" },
+                { key: "corner-bl", pos: corners.bottomLeft, label: "BL" },
+                { key: "corner-br", pos: corners.bottomRight, label: "BR" },
+              ].map(({ key, pos, label }) => (
+                <div
+                  key={key}
+                  onPointerDown={startDrag(key as DragMode)}
+                  className="absolute size-4 bg-white border-2 border-brand rounded-full cursor-move hover:scale-125 transition-transform flex items-center justify-center"
+                  style={{
+                    left: `${pos.x}%`,
+                    top: `${pos.y}%`,
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 10,
+                  }}
+                  title={`Ecke ${label}`}
+                >
+                  <div className="size-1.5 bg-brand rounded-full" />
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* Info label for polygon */}
           <div
-            className="absolute border border-dashed border-green-500 pointer-events-none"
+            className="absolute text-[10px] font-medium bg-brand text-white rounded px-1.5 py-0.5 pointer-events-none flex items-center gap-1"
             style={{
-              left: `${safe}%`,
-              top: `${safe}%`,
-              right: `${safe}%`,
-              bottom: `${safe}%`,
+              left: `${(corners.topLeft.x + corners.topRight.x) / 2}%`,
+              top: `${Math.min(corners.topLeft.y, corners.topRight.y) - 3}%`,
+              transform: 'translate(-50%, -100%)',
+              zIndex: 10,
             }}
-          />
-        )}
-        <div className="absolute top-1 left-1 text-[10px] font-medium bg-brand text-white rounded px-1.5 py-0.5 pointer-events-none">
-          {placement.widthMm}×{placement.heightMm} mm · {designPx.w}×{designPx.h}px@300dpi
-        </div>
-        {/* Corner handles */}
-        {(["nw", "ne", "sw", "se"] as const).map((corner) => (
+          >
+            {isLocked && <Lock className="size-2.5" />}
+            {placement.widthMm}×{placement.heightMm} mm · {designPx.w}×{designPx.h}px@300dpi
+            <span className="ml-1 text-yellow-300">⬡ Polygon</span>
+          </div>
+
+          {/* Move handle for entire polygon */}
           <div
-            key={corner}
-            onPointerDown={startDrag(corner)}
-            className="absolute size-3 bg-white border-2 border-brand rounded-sm"
+            onPointerDown={startDrag("move")}
+            className={`absolute size-8 rounded-full flex items-center justify-center ${
+              isLocked ? 'bg-gray-400 cursor-not-allowed' : 'bg-brand cursor-move hover:scale-110'
+            } transition-transform`}
             style={{
-              cursor: `${corner}-resize`,
-              left: corner.includes("w") ? -6 : undefined,
-              right: corner.includes("e") ? -6 : undefined,
-              top: corner.includes("n") ? -6 : undefined,
-              bottom: corner.includes("s") ? -6 : undefined,
+              left: `${(corners.topLeft.x + corners.topRight.x + corners.bottomLeft.x + corners.bottomRight.x) / 4}%`,
+              top: `${(corners.topLeft.y + corners.topRight.y + corners.bottomLeft.y + corners.bottomRight.y) / 4}%`,
+              transform: 'translate(-50%, -50%)',
+              zIndex: 10,
             }}
-          />
-        ))}
-      </div>
+            title="Zone verschieben"
+          >
+            <Move className="size-4 text-white" />
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Original rectangle rendering */}
+          {/* Bleed (outside) - rotated with print area */}
+          {bleed > 0 && (
+            <div
+              className="absolute border-2 border-dashed border-red-400 pointer-events-none"
+              style={{
+                left: `${r.leftPct}%`,
+                top: `${r.topPct}%`,
+                width: `${r.widthPct}%`,
+                height: `${r.heightPct}%`,
+                transform: `rotate(${rotation}deg)`,
+                transformOrigin: 'center',
+              }}
+            >
+              <div
+                className="absolute border-2 border-dashed border-red-400"
+                style={{
+                  left: `${-(bleed * 100) / (100 + 2 * bleed)}%`,
+                  top: `${-(bleed * 100) / (100 + 2 * bleed)}%`,
+                  right: `${-(bleed * 100) / (100 + 2 * bleed)}%`,
+                  bottom: `${-(bleed * 100) / (100 + 2 * bleed)}%`,
+                }}
+              />
+            </div>
+          )}
+
+          {/* Print area */}
+          <div
+            onPointerDown={startDrag("move")}
+            className={`absolute bg-brand/10 border-2 ${isLocked ? 'border-gray-400 cursor-not-allowed' : 'border-brand cursor-move'}`}
+            style={{
+              left: `${r.leftPct}%`,
+              top: `${r.topPct}%`,
+              width: `${r.widthPct}%`,
+              height: `${r.heightPct}%`,
+              transform: `rotate(${rotation}deg)`,
+              transformOrigin: 'center',
+            }}
+          >
+            {/* Safe zone */}
+            {safe > 0 && (
+              <div
+                className="absolute border border-dashed border-green-500 pointer-events-none"
+                style={{
+                  left: `${safe}%`,
+                  top: `${safe}%`,
+                  right: `${safe}%`,
+                  bottom: `${safe}%`,
+                }}
+              />
+            )}
+            <div className="absolute top-1 left-1 text-[10px] font-medium bg-brand text-white rounded px-1.5 py-0.5 pointer-events-none flex items-center gap-1">
+              {isLocked && <Lock className="size-2.5" />}
+              {placement.widthMm}×{placement.heightMm} mm · {designPx.w}×{designPx.h}px@300dpi
+              {rotation !== 0 && <span className="ml-1">· {rotation}°</span>}
+            </div>
+            
+            {/* Rotation handle (top center) */}
+            {!isLocked && (
+              <div
+                onPointerDown={startDrag("rotate")}
+                className="absolute size-5 -top-8 left-1/2 -translate-x-1/2 bg-purple-500 border-2 border-white rounded-full cursor-grab active:cursor-grabbing flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                title="Drehen"
+              >
+                <RotateCw className="size-3 text-white" />
+              </div>
+            )}
+            
+            {/* Corner handles */}
+            {!isLocked && (["nw", "ne", "sw", "se"] as const).map((corner) => (
+              <div
+                key={corner}
+                onPointerDown={startDrag(corner)}
+                className="absolute size-3 bg-white border-2 border-brand rounded-sm hover:scale-125 transition-transform"
+                style={{
+                  cursor: `${corner}-resize`,
+                  left: corner.includes("w") ? -6 : undefined,
+                  right: corner.includes("e") ? -6 : undefined,
+                  top: corner.includes("n") ? -6 : undefined,
+                  bottom: corner.includes("s") ? -6 : undefined,
+                }}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -349,6 +563,90 @@ export function PlacementsEditor({ value, onChange }: Props) {
 
           {/* Right panel */}
           <div className="space-y-3 text-sm">
+            {/* Lock/Unlock Toggle */}
+            <button
+              type="button"
+              onClick={() => update({ ...active, locked: !active.locked })}
+              className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 font-medium transition-all ${
+                active.locked
+                  ? "bg-gray-100 border-gray-400 text-gray-700 hover:bg-gray-200"
+                  : "bg-brand/5 border-brand text-brand hover:bg-brand/10"
+              }`}
+            >
+              {active.locked ? (
+                <>
+                  <Lock className="size-4" />
+                  Zone gesperrt
+                </>
+              ) : (
+                <>
+                  <Unlock className="size-4" />
+                  Zone entsperrt
+                </>
+              )}
+            </button>
+
+            {/* Polygon Mode Toggle */}
+            <button
+              type="button"
+              onClick={() => {
+                if (active.printAreaCorners) {
+                  // Convert back to rectangle
+                  const corners = active.printAreaCorners;
+                  const minX = Math.min(corners.topLeft.x, corners.bottomLeft.x);
+                  const maxX = Math.max(corners.topRight.x, corners.bottomRight.x);
+                  const minY = Math.min(corners.topLeft.y, corners.topRight.y);
+                  const maxY = Math.max(corners.bottomLeft.y, corners.bottomRight.y);
+                  update({
+                    ...active,
+                    printArea: {
+                      leftPct: minX,
+                      topPct: minY,
+                      widthPct: maxX - minX,
+                      heightPct: maxY - minY,
+                    },
+                    printAreaCorners: undefined,
+                    rotation: 0,
+                  });
+                } else {
+                  // Convert to polygon
+                  const r = active.printArea;
+                  update({
+                    ...active,
+                    printAreaCorners: {
+                      topLeft: { x: r.leftPct, y: r.topPct },
+                      topRight: { x: r.leftPct + r.widthPct, y: r.topPct },
+                      bottomLeft: { x: r.leftPct, y: r.topPct + r.heightPct },
+                      bottomRight: { x: r.leftPct + r.widthPct, y: r.topPct + r.heightPct },
+                    },
+                  });
+                }
+              }}
+              className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 font-medium transition-all ${
+                active.printAreaCorners
+                  ? "bg-purple-50 border-purple-500 text-purple-700 hover:bg-purple-100"
+                  : "bg-gray-50 border-gray-300 text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              {active.printAreaCorners ? (
+                <>
+                  <span className="text-lg">⬡</span>
+                  Polygon-Modus (freie Ecken)
+                </>
+              ) : (
+                <>
+                  <span className="text-lg">▭</span>
+                  Rechteck-Modus
+                </>
+              )}
+            </button>
+
+            {active.printAreaCorners && (
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 text-xs text-purple-800">
+                <strong>Polygon-Modus:</strong> Jede Ecke kann einzeln verschoben werden. Ermöglicht diagonale und nicht-rechteckige Zonen (Parallelogramme, Trapeze).
+              </div>
+            )}
+
             <div>
               <label className="label">{t("admin.placements.labelDe")}</label>
               <input
@@ -402,6 +700,31 @@ export function PlacementsEditor({ value, onChange }: Props) {
                 />
               </div>
             </div>
+
+            {/* Only show rotation for rectangle mode */}
+            {!active.printAreaCorners && (
+              <div>
+                <label className="label flex items-center gap-1.5">
+                  <RotateCw className="size-3.5" />
+                  Rotation (Grad)
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  max={360}
+                  step={1}
+                  className="input"
+                  value={active.rotation ?? 0}
+                  onChange={(e) => {
+                    const val = Number(e.target.value) || 0;
+                    update({ ...active, rotation: val % 360 });
+                  }}
+                />
+                <div className="mt-1 text-xs text-ink-muted">
+                  0° = horizontal, 90° = vertikal, beliebiger Winkel möglich
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-3 gap-2">
               <div>

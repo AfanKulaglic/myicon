@@ -22,15 +22,10 @@ export function ProductDetail({ product }: Props) {
   const [qty, setQty] = useState(50);
   const [activeImg, setActiveImg] = useState(0);
   const [tab, setTab] = useState<"details" | "specs" | "faq">("details");
-  const [designerOpen, setDesignerOpen] = useState(false);
   const designerRef = useRef<HTMLDivElement>(null);
 
-  const openDesigner = () => {
-    setDesignerOpen(true);
-    // wait a tick so the section is mounted before scrolling
-    requestAnimationFrame(() => {
-      designerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+  const scrollToDesigner = () => {
+    designerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const addItem = useCartStore((s) => s.addItem);
@@ -182,8 +177,8 @@ export function ProductDetail({ product }: Props) {
 
           {/* CTA */}
           <div className="mt-7 flex flex-wrap gap-3">
-            <Button size="lg" className="flex-1 min-w-[200px]" onClick={openDesigner}>
-              {designerOpen ? "Zum Designer scrollen" : "Jetzt gestalten"}
+            <Button size="lg" className="flex-1 min-w-[200px]" onClick={scrollToDesigner}>
+              Zum Designer scrollen
             </Button>
             <Button size="lg" variant="outline" onClick={onAddToCart}>
               In den Warenkorb
@@ -233,27 +228,16 @@ export function ProductDetail({ product }: Props) {
         </div>
       </div>
 
-      {/* Embedded designer */}
-      {designerOpen && (
-        <section ref={designerRef} className="mt-12 scroll-mt-24">
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <h2 className="text-xl lg:text-2xl font-display font-semibold">Design erstellen</h2>
-              <p className="text-sm text-ink-muted mt-0.5">
-                Laden Sie Ihr Logo hoch, fügen Sie Text hinzu oder wählen Sie aus den Formen. Ihre Auswahl (Farbe · Größe · Stückzahl) bleibt erhalten.
-              </p>
-            </div>
-            <button
-              onClick={() => setDesignerOpen(false)}
-              className="size-9 inline-flex items-center justify-center rounded-lg hover:bg-surface-alt text-ink-muted"
-              aria-label="Designer schließen"
-            >
-              <X className="size-5" />
-            </button>
-          </div>
-          <EmbeddedCustomizer product={product} initialColor={color} />
-        </section>
-      )}
+      {/* Embedded designer - always visible */}
+      <section ref={designerRef} className="mt-12 scroll-mt-24">
+        <div className="mb-3">
+          <h2 className="text-xl lg:text-2xl font-display font-semibold">Design erstellen</h2>
+          <p className="text-sm text-ink-muted mt-0.5">
+            Laden Sie Ihr Logo hoch, fügen Sie Text hinzu oder wählen Sie aus den Formen. Ihre Auswahl (Farbe · Größe · Stückzahl) bleibt erhalten.
+          </p>
+        </div>
+        <EmbeddedCustomizer product={product} initialColor={color} />
+      </section>
 
       {/* Tabs */}
       <div className="mt-14">

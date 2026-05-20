@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useCategories } from "@/hooks/useCategories";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function DesktopNav() {
@@ -79,6 +79,15 @@ export function DesktopNav() {
               )}
             </li>
           ))}
+          <li>
+            <Link
+              to="/order/track"
+              className="inline-flex items-center gap-1.5 px-4 py-3.5 text-sm font-medium text-ink hover:text-brand"
+            >
+              <Package className="size-4" />
+              Bestellungen
+            </Link>
+          </li>
           <li>
             <Link
               to="/help/faq"
