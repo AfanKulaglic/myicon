@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import type { Category } from "@/types";
+import { ImageWithSkeleton } from "@/components/ui/ImageWithSkeleton";
 
 export function CategoryCard({ category }: { category: Category }) {
   return (
@@ -8,13 +9,12 @@ export function CategoryCard({ category }: { category: Category }) {
       to={`/categories/${category.slug}`}
       className="group card overflow-hidden flex flex-col hover:shadow-elevated transition-shadow"
     >
-      <div className="relative aspect-[4/3] bg-surface-alt overflow-hidden">
-        <img
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <ImageWithSkeleton
           src={category.image}
           alt={category.title}
-          loading="lazy"
-          decoding="async"
-          className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+          aspectRatio="auto"
+          className="group-hover:scale-[1.02] transition-transform duration-300"
         />
       </div>
       <div className="p-5">

@@ -1,0 +1,1 @@
+import{r as t}from"./vendor-react-r0Fclxcs.js";import{N as e}from"./index-CUYvyi5Q.js";function r(r=!0){const[o,s]=t.useState([]),[a,n]=t.useState(!0);return t.useEffect(()=>e(t=>{s(t),n(!1)},r),[r]),{products:o,loading:a}}export{r as u};

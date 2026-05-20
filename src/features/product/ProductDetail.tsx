@@ -10,6 +10,7 @@ import { useWishlistStore } from "@/store/wishlist";
 import { useMounted } from "@/hooks/useMounted";
 import { toast } from "@/store/toast";
 import { EmbeddedCustomizer } from "@/features/customizer/EmbeddedCustomizer";
+import { ImageWithSkeleton } from "@/components/ui/ImageWithSkeleton";
 
 interface Props {
   product: Product;
@@ -69,15 +70,16 @@ export function ProductDetail({ product }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
         {/* Gallery */}
         <div>
-          <div className="relative aspect-square rounded-2xl bg-surface-alt overflow-hidden border border-line">
+          <div className="relative aspect-square rounded-2xl overflow-hidden border border-line">
             {(product.gallery[activeImg] ?? product.image) ? (
-              <img
+              <ImageWithSkeleton
                 src={product.gallery[activeImg] ?? product.image}
                 alt={product.title}
-                className="absolute inset-0 w-full h-full object-cover"
+                aspectRatio="auto"
+                priority
               />
             ) : (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-ink-muted">
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-surface-alt text-ink-muted">
                 <svg xmlns="http://www.w3.org/2000/svg" className="size-12 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 <span className="text-xs">Kein Bild hinterlegt</span>
               </div>
@@ -94,7 +96,11 @@ export function ProductDetail({ product }: Props) {
                     activeImg === i ? "border-brand" : "border-line hover:border-ink-subtle"
                   )}
                 >
-                  <img src={g} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                  <ImageWithSkeleton
+                    src={g}
+                    alt=""
+                    aspectRatio="auto"
+                  />
                 </button>
               ))}
             </div>
