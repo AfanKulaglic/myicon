@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight, Sparkles } from "lucide-react";
@@ -6,6 +7,7 @@ import { DEFAULT_HERO, DEFAULT_HERO_EN, type HeroContent } from "@/types/content
 
 export function Hero() {
   const c = useSiteContent<HeroContent>("home_hero", DEFAULT_HERO, DEFAULT_HERO_EN);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <section className="relative bg-gradient-to-b from-surface-alt to-white border-b border-line overflow-hidden">
@@ -48,14 +50,41 @@ export function Hero() {
           </div>
 
           <div className="relative mt-8 lg:mt-0">
-            <div className="aspect-[4/3] sm:aspect-[5/4] rounded-xl sm:rounded-2xl overflow-hidden bg-white border border-line shadow-card">
+            <div className="aspect-[4/3] sm:aspect-[5/4] rounded-xl sm:rounded-2xl overflow-hidden bg-white border border-line shadow-card relative">
+              {/* Skeleton loader */}
+              {!imageLoaded && (
+                <div className="absolute inset-0 bg-gradient-to-br from-surface-alt via-white to-surface-alt animate-pulse">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center space-y-4 px-6">
+                      {/* Animated logo placeholder */}
+                      <div className="w-32 h-32 mx-auto bg-brand/10 rounded-2xl animate-pulse" />
+                      {/* Text placeholder */}
+                      <div className="space-y-2">
+                        <div className="h-3 bg-line rounded-full w-48 mx-auto" />
+                        <div className="h-3 bg-line rounded-full w-36 mx-auto" />
+                      </div>
+                      {/* Loading indicator */}
+                      <div className="flex items-center justify-center gap-1.5 pt-2">
+                        <div className="w-2 h-2 bg-brand/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-2 h-2 bg-brand/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-2 h-2 bg-brand/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Actual image */}
               <img
                 src={c.imageUrl || "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1400&q=80&auto=format&fit=crop"}
                 alt=""
                 fetchPriority="high"
                 loading="eager"
                 decoding="sync"
-                className="size-full object-cover"
+                onLoad={() => setImageLoaded(true)}
+                className={`size-full object-cover transition-opacity duration-500 ${
+                  imageLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
               />
             </div>
             <div className="absolute -left-4 -bottom-4 lg:-left-6 lg:-bottom-6 hidden md:block">
