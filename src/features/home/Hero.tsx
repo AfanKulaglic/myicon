@@ -51,9 +51,9 @@ export function Hero() {
 
           <div className="relative mt-8 lg:mt-0">
             <div className="aspect-[4/3] sm:aspect-[5/4] rounded-xl sm:rounded-2xl overflow-hidden bg-surface-alt border border-line shadow-card relative">
-              {/* Minimal skeleton - no animations for better performance */}
+              {/* Animated skeleton - restored for better UX */}
               {(!c.imageUrl || !imageLoaded) && (
-                <div className="absolute inset-0 bg-surface-alt flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-r from-surface-alt via-surface to-surface-alt animate-pulse flex items-center justify-center">
                   {!c.imageUrl && (
                     <p className="text-xs text-ink-muted">
                       Kein Bild konfiguriert
@@ -73,7 +73,7 @@ export function Hero() {
                   loading="eager"
                   decoding="async"
                   onLoad={() => setImageLoaded(true)}
-                  className={`size-full object-cover transition-opacity duration-300 ${
+                  className={`size-full object-cover transition-opacity duration-500 ${
                     imageLoaded ? 'opacity-100' : 'opacity-0'
                   }`}
                 />

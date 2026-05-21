@@ -44,9 +44,9 @@ export function ImageWithSkeleton({
 
   return (
     <div className={cn("relative overflow-hidden bg-surface-alt", aspectClasses[aspectRatio], className)}>
-      {/* Minimal skeleton - no animations for better mobile performance */}
+      {/* Animated skeleton - restored for better UX */}
       {!loaded && (
-        <div className="absolute inset-0 bg-surface-alt" />
+        <div className="absolute inset-0 bg-gradient-to-r from-surface-alt via-surface to-surface-alt animate-pulse" />
       )}
 
       {/* Actual image */}
@@ -61,7 +61,7 @@ export function ImageWithSkeleton({
         onLoad={() => setLoaded(true)}
         onError={() => setLoaded(true)} // Hide skeleton even on error
         className={cn(
-          "size-full object-cover transition-opacity duration-300",
+          "size-full object-cover transition-opacity duration-500",
           loaded ? "opacity-100" : "opacity-0"
         )}
         style={{
