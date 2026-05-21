@@ -1,5 +1,5 @@
+import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { useImageCache } from "@/hooks/useImageCache";
 
 interface ImageWithSkeletonProps {
   src: string;
@@ -20,8 +20,7 @@ export function ImageWithSkeleton({
   width,
   height,
 }: ImageWithSkeletonProps) {
-  // Use image cache hook for persistent caching across navigations
-  const { loaded, isInCache } = useImageCache(src, priority);
+  const [loaded, setLoaded] = useState(false);
 
   const aspectClasses = {
     square: "aspect-square",
@@ -32,12 +31,12 @@ export function ImageWithSkeleton({
 
   return (
     <div className={cn("relative overflow-hidden bg-surface-alt", aspectClasses[aspectRatio], className)}>
-      {/* Animated skeleton - only show if not in cache */}
+      {/* Simple skeleton */}
       {!loaded && (
-        <div className="absolute inset-0 bg-gradient-to-r from-surface-alt via-surface to-surface-alt animate-pulse" />
+        <div className="absolute inset-0 bg-surface-alt" />
       )}
 
-      {/* Actual image with crossOrigin for better caching */}
+      {/* Actual image */}
       <img
         src={src}
         alt={alt}
@@ -46,16 +45,12 @@ export function ImageWithSkeleton({
         loading={priority ? "eager" : "lazy"}
         decoding="async"
         fetchPriority={priority ? "high" : "auto"}
-        crossOrigin="anonymous"
+        onLoad={() => setLoaded(true)}
+        onError={() => setLoaded(true)}
         className={cn(
-          "size-full object-cover transition-opacity",
-          // Instant display if cached, smooth transition if loading
-          isInCache ? "duration-0" : "duration-500",
+          "size-full object-cover transition-opacity duration-300",
           loaded ? "opacity-100" : "opacity-0"
         )}
-        style={{
-          contentVisibility: priority ? 'auto' : 'auto',
-        }}
       />
     </div>
   );

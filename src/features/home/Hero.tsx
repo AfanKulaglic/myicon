@@ -1,13 +1,13 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
-import { useImageCache } from "@/hooks/useImageCache";
 import { DEFAULT_HERO, DEFAULT_HERO_EN, type HeroContent } from "@/types/content";
 
 export function Hero() {
   const c = useSiteContent<HeroContent>("home_hero", DEFAULT_HERO, DEFAULT_HERO_EN);
-  const { loaded: imageLoaded, isInCache } = useImageCache(c.imageUrl || "", true);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <section className="relative bg-gradient-to-b from-surface-alt to-white border-b border-line overflow-hidden">
@@ -51,9 +51,9 @@ export function Hero() {
 
           <div className="relative mt-8 lg:mt-0">
             <div className="aspect-[4/3] sm:aspect-[5/4] rounded-xl sm:rounded-2xl overflow-hidden bg-surface-alt border border-line shadow-card relative">
-              {/* Animated skeleton - only show if not cached and not loaded */}
+              {/* Simple skeleton - no animations */}
               {(!c.imageUrl || !imageLoaded) && (
-                <div className="absolute inset-0 bg-gradient-to-r from-surface-alt via-surface to-surface-alt animate-pulse flex items-center justify-center">
+                <div className="absolute inset-0 bg-surface-alt flex items-center justify-center">
                   {!c.imageUrl && (
                     <p className="text-xs text-ink-muted">
                       Kein Bild konfiguriert
@@ -72,10 +72,10 @@ export function Hero() {
                   fetchPriority="high"
                   loading="eager"
                   decoding="async"
-                  crossOrigin="anonymous"
-                  className={`size-full object-cover transition-opacity ${
-                    isInCache ? 'duration-0' : 'duration-500'
-                  } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                  onLoad={() => setImageLoaded(true)}
+                  className={`size-full object-cover transition-opacity duration-300 ${
+                    imageLoaded ? 'opacity-100' : 'opacity-0'
+                  }`}
                 />
               )}
             </div>
