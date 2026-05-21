@@ -87,7 +87,7 @@ export function HeroPreview({ c }: { c: HeroContent }) {
                   style={{
                     backgroundImage: c.imageUrl
                       ? `url(${c.imageUrl})`
-                      : "url(https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=60&auto=format&fit=crop)",
+                      : "none", // No fallback - load from Firebase/ImgBB only
                   }}
                 />
               </div>

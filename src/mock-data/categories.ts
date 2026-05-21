@@ -8,8 +8,7 @@ export const CATEGORIES: Category[] = [
     titleLocal: "Tekstil",
     description: "Premium bedruckbare Textilien — T-Shirts, Polos, Hoodies & mehr.",
     descriptionEn: "Premium printable textiles — T-Shirts, Polos, Hoodies & more.",
-    image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&q=80&auto=format&fit=crop",
+    image: "", // Load from Firebase/ImgBB only
     subcategories: [
       { slug: "polo-shirts", title: "Polo-Shirts", titleEn: "Polo Shirts" },
       { slug: "t-shirts", title: "T-Shirts", titleEn: "T-Shirts" },
@@ -27,8 +26,7 @@ export const CATEGORIES: Category[] = [
     titleLocal: "Flajeri",
     description: "Hochwertige Flyer in allen DIN-Formaten — schnell & günstig.",
     descriptionEn: "High-quality flyers in all DIN formats — fast & affordable.",
-    image:
-      "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=900&q=80&auto=format&fit=crop",
+    image: "", // Load from Firebase/ImgBB only
     subcategories: [
       { slug: "flyer-a6", title: "Flyer A6", titleEn: "A6 Flyers" },
       { slug: "flyer-a5", title: "Flyer A5", titleEn: "A5 Flyers" },
@@ -45,8 +43,7 @@ export const CATEGORIES: Category[] = [
     titleLocal: "Brošure",
     description: "Professionelle Broschüren, geheftet oder gefaltet — für jeden Anlass.",
     descriptionEn: "Professional brochures, stapled or folded — for every occasion.",
-    image:
-      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=900&q=80&auto=format&fit=crop",
+    image: "", // Load from Firebase/ImgBB only
     subcategories: [
       { slug: "broschueren-a6", title: "Broschüren A6", titleEn: "A6 Brochures" },
       { slug: "broschueren-a5", title: "Broschüren A5", titleEn: "A5 Brochures" },
@@ -63,8 +60,7 @@ export const CATEGORIES: Category[] = [
     titleLocal: "Vizitke",
     description: "Premium Visitenkarten — laminiert, matt oder glänzend.",
     descriptionEn: "Premium business cards — laminated, matte or glossy.",
-    image:
-      "https://images.unsplash.com/photo-1606293459339-aa5dd9b48049?w=900&q=80&auto=format&fit=crop",
+    image: "", // Load from Firebase/ImgBB only
     subcategories: [
       { slug: "standard", title: "Standard-Visitenkarten", titleEn: "Standard Business Cards" },
       { slug: "doppelseitig", title: "Doppelseitig bedruckte Visitenkarten", titleEn: "Double-Sided Printed Business Cards" },
@@ -80,8 +76,7 @@ export const CATEGORIES: Category[] = [
     titleLocal: "Posters",
     description: "Plakate in Premium-Qualität — bis A0, glanz oder matt.",
     descriptionEn: "Premium quality posters — up to A0, gloss or matte.",
-    image:
-      "https://images.unsplash.com/photo-1561070791-2526d30994b8?w=900&q=80&auto=format&fit=crop",
+    image: "", // Load from Firebase/ImgBB only
     subcategories: [
       { slug: "plakate-a4", title: "Plakate A4", titleEn: "A4 Posters" },
       { slug: "plakate-a3", title: "Plakate A3", titleEn: "A3 Posters" },
@@ -96,8 +91,7 @@ export const CATEGORIES: Category[] = [
     titleLocal: "Reklamni materijal",
     description: "Werbeartikel mit Ihrem Logo — Tassen, Taschen, Schirme & mehr.",
     descriptionEn: "Promotional items with your logo — mugs, bags, umbrellas & more.",
-    image:
-      "https://images.unsplash.com/photo-1542838132-92c53300491e?w=900&q=80&auto=format&fit=crop",
+    image: "", // Load from Firebase/ImgBB only
     subcategories: [
       { slug: "schluesselanhaenger", title: "Schlüsselanhänger", titleEn: "Keychains" },
       { slug: "eiskratzer", title: "Eiskratzer", titleEn: "Ice Scrapers" },

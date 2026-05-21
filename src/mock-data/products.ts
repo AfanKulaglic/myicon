@@ -134,11 +134,11 @@ export const PRODUCTS: Product[] = [
       { id: "chest_left", label: "Brust links", width: 100, height: 100, bleed: 2 },
     ],
     image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1200&q=80&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=1200&q=80&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1200&q=80&auto=format&fit=crop",
+      "",
+      "",
+      "",
     ],
     badge: "Bestseller",
     bestseller: true,
@@ -224,9 +224,9 @@ export const PRODUCTS: Product[] = [
     ],
     zones: [{ id: "front", label: "Brust", width: 80, height: 80, bleed: 2 }],
     image:
-      "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=1200&q=80&auto=format&fit=crop",
+      "",
     ],
     bestseller: true,
   },
@@ -296,9 +296,9 @@ export const PRODUCTS: Product[] = [
     ],
     zones: [{ id: "front", label: "Vorderseite", width: 305, height: 380, bleed: 3 }],
     image:
-      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=1200&q=80&auto=format&fit=crop",
+      "",
     ],
     badge: "Neu",
   },
@@ -436,10 +436,10 @@ export const PRODUCTS: Product[] = [
       { id: "back", label: "Rückseite", width: 280, height: 380, bleed: 3 },
     ],
     image:
-      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1200&q=80&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=1200&q=80&auto=format&fit=crop",
+      "",
+      "",
     ],
     badge: "Bestseller",
     bestseller: true,
@@ -511,9 +511,9 @@ export const PRODUCTS: Product[] = [
       { id: "front", label: "Brust", width: 80, height: 80, bleed: 2 },
     ],
     image:
-      "https://images.unsplash.com/photo-1594938298603-c8148c4b1dea?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1594938298603-c8148c4b1dea?w=1200&q=80&auto=format&fit=crop",
+      "",
     ],
     bestseller: true,
   },
@@ -565,10 +565,10 @@ export const PRODUCTS: Product[] = [
     ],
     zones: [{ id: "front", label: "Vorderseite", width: 300, height: 350, bleed: 3 }],
     image:
-      "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1200&q=80&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1581888227599-779811939961?w=1200&q=80&auto=format&fit=crop",
+      "",
+      "",
     ],
     badge: "Neu",
   },
@@ -610,9 +610,9 @@ export const PRODUCTS: Product[] = [
       { id: "back", label: "Rückseite", width: 148, height: 210, bleed: 3 },
     ],
     image:
-      "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=1200&q=80&auto=format&fit=crop",
+      "",
     ],
     bestseller: true,
   },
@@ -805,9 +805,9 @@ export const PRODUCTS: Product[] = [
       { id: "back", label: "Rückseite", width: 85, height: 55, bleed: 2 },
     ],
     image:
-      "https://images.unsplash.com/photo-1606293459339-aa5dd9b48049?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1606293459339-aa5dd9b48049?w=1200&q=80&auto=format&fit=crop",
+      "",
     ],
     bestseller: true,
   },
@@ -935,9 +935,9 @@ export const PRODUCTS: Product[] = [
     ],
     zones: [{ id: "front", label: "Plakat", width: 297, height: 420, bleed: 3 }],
     image:
-      "https://images.unsplash.com/photo-1561070791-2526d30994b8?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1561070791-2526d30994b8?w=1200&q=80&auto=format&fit=crop",
+      "",
     ],
   },
   {
@@ -1027,9 +1027,9 @@ export const PRODUCTS: Product[] = [
     ],
     zones: [{ id: "cover", label: "Cover", width: 148, height: 210, bleed: 3 }],
     image:
-      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&q=80&auto=format&fit=crop",
+      "",
     ],
   },
   {
@@ -1181,15 +1181,15 @@ export const PRODUCTS: Product[] = [
         id: "front",
         label: "Vorne",
         image:
-          "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=1000&q=80&auto=format&fit=crop",
+          "",
         area: { x: 300, y: 280, width: 400, height: 400 },
       },
     ],
     zones: [{ id: "front", label: "Vorne", width: 220, height: 220, bleed: 3 }],
     image:
-      "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=1200&q=80&auto=format&fit=crop",
+      "",
     ],
   },
   {
@@ -1216,9 +1216,9 @@ export const PRODUCTS: Product[] = [
     ],
     zones: [{ id: "front", label: "Oberseite", width: 220, height: 180, bleed: 3 }],
     image:
-      "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=1200&q=80&auto=format&fit=crop",
+      "",
     ],
   },
   {
@@ -1245,9 +1245,9 @@ export const PRODUCTS: Product[] = [
     ],
     zones: [{ id: "front", label: "Panel", width: 200, height: 200, bleed: 3 }],
     image:
-      "https://images.unsplash.com/photo-1534270804882-6b5048b1c1fc?w=800&q=80&auto=format&fit=crop",
+      "",
     gallery: [
-      "https://images.unsplash.com/photo-1534270804882-6b5048b1c1fc?w=1200&q=80&auto=format&fit=crop",
+      "",
     ],
   },
   {
