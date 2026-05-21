@@ -23,6 +23,8 @@ export function ProductCard({ product }: { product: Product }) {
             src={product.image}
             alt={product.title}
             aspectRatio="auto"
+            width={400}
+            height={400}
             className="group-hover:scale-[1.02] transition-transform duration-300"
           />
         ) : (

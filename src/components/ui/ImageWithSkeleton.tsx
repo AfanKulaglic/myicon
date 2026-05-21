@@ -7,6 +7,8 @@ interface ImageWithSkeletonProps {
   className?: string;
   aspectRatio?: "square" | "video" | "portrait" | "auto";
   priority?: boolean;
+  width?: number;
+  height?: number;
 }
 
 export function ImageWithSkeleton({
@@ -15,6 +17,8 @@ export function ImageWithSkeleton({
   className,
   aspectRatio = "auto",
   priority = false,
+  width,
+  height,
 }: ImageWithSkeletonProps) {
   const [loaded, setLoaded] = useState(false);
 
@@ -40,8 +44,11 @@ export function ImageWithSkeleton({
       <img
         src={src}
         alt={alt}
+        width={width}
+        height={height}
         loading={priority ? "eager" : "lazy"}
         decoding="async"
+        fetchPriority={priority ? "high" : "auto"}
         onLoad={() => setLoaded(true)}
         onError={() => setLoaded(true)} // Hide skeleton even on error
         className={cn(

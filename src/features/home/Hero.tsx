@@ -83,10 +83,12 @@ export function Hero() {
               {c.imageUrl && (
                 <img
                   src={c.imageUrl}
-                  alt=""
+                  alt="Hero image"
+                  width="800"
+                  height="600"
                   fetchPriority="high"
                   loading="eager"
-                  decoding="sync"
+                  decoding="async"
                   onLoad={() => setImageLoaded(true)}
                   className={`size-full object-cover transition-opacity duration-500 ${
                     imageLoaded ? 'opacity-100' : 'opacity-0'
