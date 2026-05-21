@@ -8,7 +8,8 @@
     "build": "tsc -b --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "migrate:imgbb": "node scripts/migrate-to-imgbb.mjs"
+    "migrate:imgbb": "node scripts/migrate-to-imgbb.mjs",
+    "analyze": "node scripts/analyze-bundle.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

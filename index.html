@@ -7,18 +7,30 @@
     <meta name="description" content="MYICON — Premium European custom print platform. Design and order high-quality T-shirts, flyers, business cards, brochures, posters and promotional products online." />
     <title>MYICON — Premium Custom Print & Design</title>
 
-    <!-- Preconnect to critical origins for faster loading -->
+    <!-- Critical resource hints for fastest loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://i.ibb.co" /> <!-- ImgBB CDN -->
-    <link rel="dns-prefetch" href="https://wlab-40444-default-rtdb.firebaseio.com" /> <!-- Firebase -->
+    <link rel="preconnect" href="https://wlab-40444-default-rtdb.firebaseio.com" /> <!-- Firebase -->
+    <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
+    
+    <!-- Preload critical fonts to prevent FOIT (Flash of Invisible Text) -->
+    <link
+      rel="preload"
+      href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://fonts.gstatic.com/s/plusjakartasans/v8/LDIbaomQNQcsA88c7O9yZ4KMCoOg4IA6-91aHEjcWuA_KU7NShXUEKi4Rw.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
-    <!--
-      Non-blocking font load:
-      1. media="print" prevents render-blocking — browser downloads but doesn't apply
-      2. onload switches media to "all" so styles apply once the sheet is ready
-      3. <noscript> fallback for no-JS environments
-    -->
+    <!-- Optimized font loading with font-display: swap to prevent render blocking -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
@@ -28,9 +40,28 @@
     <noscript>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" />
     </noscript>
+
+    <!-- Inline critical CSS for instant first paint -->
+    <style>
+      /* Critical above-the-fold styles */
+      *,::before,::after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}
+      html{line-height:1.5;-webkit-text-size-adjust:100%;tab-size:4;font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+      body{margin:0;line-height:inherit}
+      #root{min-height:100vh;display:flex;flex-direction:column}
+      
+      /* Prevent layout shift with skeleton */
+      .hero-skeleton{height:600px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}
+      @media(max-width:768px){.hero-skeleton{height:500px}}
+      
+      /* Font loading optimization */
+      body{font-family:Inter,system-ui,-apple-system,sans-serif}
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Skeleton loader to prevent blank screen -->
+      <div class="hero-skeleton"></div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
