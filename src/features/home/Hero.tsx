@@ -50,32 +50,15 @@ export function Hero() {
           </div>
 
           <div className="relative mt-8 lg:mt-0">
-            <div className="aspect-[4/3] sm:aspect-[5/4] rounded-xl sm:rounded-2xl overflow-hidden bg-white border border-line shadow-card relative">
-              {/* Skeleton loader - shows when no image or while loading */}
+            <div className="aspect-[4/3] sm:aspect-[5/4] rounded-xl sm:rounded-2xl overflow-hidden bg-surface-alt border border-line shadow-card relative">
+              {/* Minimal skeleton - no animations for better performance */}
               {(!c.imageUrl || !imageLoaded) && (
-                <div className="absolute inset-0 bg-gradient-to-br from-surface-alt via-white to-surface-alt animate-pulse">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center space-y-4 px-6">
-                      {/* Animated logo placeholder */}
-                      <div className="w-32 h-32 mx-auto bg-brand/10 rounded-2xl animate-pulse" />
-                      {/* Text placeholder */}
-                      <div className="space-y-2">
-                        <div className="h-3 bg-line rounded-full w-48 mx-auto" />
-                        <div className="h-3 bg-line rounded-full w-36 mx-auto" />
-                      </div>
-                      {/* Loading indicator */}
-                      <div className="flex items-center justify-center gap-1.5 pt-2">
-                        <div className="w-2 h-2 bg-brand/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <div className="w-2 h-2 bg-brand/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <div className="w-2 h-2 bg-brand/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                      </div>
-                      {!c.imageUrl && (
-                        <p className="text-xs text-ink-muted mt-4">
-                          Kein Bild konfiguriert
-                        </p>
-                      )}
-                    </div>
-                  </div>
+                <div className="absolute inset-0 bg-surface-alt flex items-center justify-center">
+                  {!c.imageUrl && (
+                    <p className="text-xs text-ink-muted">
+                      Kein Bild konfiguriert
+                    </p>
+                  )}
                 </div>
               )}
               
@@ -90,7 +73,7 @@ export function Hero() {
                   loading="eager"
                   decoding="async"
                   onLoad={() => setImageLoaded(true)}
-                  className={`size-full object-cover transition-opacity duration-500 ${
+                  className={`size-full object-cover transition-opacity duration-300 ${
                     imageLoaded ? 'opacity-100' : 'opacity-0'
                   }`}
                 />

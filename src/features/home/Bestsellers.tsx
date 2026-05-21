@@ -11,7 +11,8 @@ import { DEFAULT_HOME_BESTSELLERS, DEFAULT_HOME_BESTSELLERS_EN, type HomeBestsel
 
 export function Bestsellers() {
   const { products, loading } = useProducts();
-  const bestsellers = products.filter((p) => p.bestseller);
+  // Limit to 8 bestsellers for better mobile performance
+  const bestsellers = products.filter((p) => p.bestseller).slice(0, 8);
   const { title, subtitle } = useSiteContent<HomeBestsellersContent>("home_bestsellers", DEFAULT_HOME_BESTSELLERS, DEFAULT_HOME_BESTSELLERS_EN);
   return (
     <section className="section bg-surface-alt border-y border-line">

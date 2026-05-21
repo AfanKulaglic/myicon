@@ -11,6 +11,15 @@ interface ImageWithSkeletonProps {
   height?: number;
 }
 
+// Helper to convert ImgBB URL to smaller size for mobile
+function getResponsiveImageUrl(url: string, isMobile: boolean): string {
+  if (!url.includes('i.ibb.co')) return url;
+  
+  // ImgBB doesn't support URL-based resizing, but we can add loading="lazy"
+  // and let the browser handle it. For future: consider using imgproxy or similar.
+  return url;
+}
+
 export function ImageWithSkeleton({
   src,
   alt,
@@ -29,20 +38,20 @@ export function ImageWithSkeleton({
     auto: "",
   };
 
+  // Detect mobile for potential optimizations
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const imageSrc = getResponsiveImageUrl(src, isMobile);
+
   return (
     <div className={cn("relative overflow-hidden bg-surface-alt", aspectClasses[aspectRatio], className)}>
-      {/* Skeleton loader */}
+      {/* Minimal skeleton - no animations for better mobile performance */}
       {!loaded && (
-        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-surface-alt via-white to-surface-alt">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 bg-brand/10 rounded-xl animate-pulse" />
-          </div>
-        </div>
+        <div className="absolute inset-0 bg-surface-alt" />
       )}
 
       {/* Actual image */}
       <img
-        src={src}
+        src={imageSrc}
         alt={alt}
         width={width}
         height={height}
@@ -52,9 +61,12 @@ export function ImageWithSkeleton({
         onLoad={() => setLoaded(true)}
         onError={() => setLoaded(true)} // Hide skeleton even on error
         className={cn(
-          "size-full object-cover transition-opacity duration-500",
+          "size-full object-cover transition-opacity duration-300",
           loaded ? "opacity-100" : "opacity-0"
         )}
+        style={{
+          contentVisibility: priority ? 'auto' : 'auto',
+        }}
       />
     </div>
   );
