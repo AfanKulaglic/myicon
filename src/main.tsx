@@ -4,7 +4,9 @@ import { BrowserRouter } from "react-router-dom";
 import "./globals.css";
 import { App } from "./App";
 
-// Register service worker for offline caching and performance
+// Service Worker disabled for now - can be enabled later for caching
+// Uncomment below to enable Service Worker:
+/*
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
@@ -17,6 +19,7 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
       });
   });
 }
+*/
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
