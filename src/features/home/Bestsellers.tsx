@@ -11,8 +11,12 @@ import { DEFAULT_HOME_BESTSELLERS, DEFAULT_HOME_BESTSELLERS_EN, type HomeBestsel
 
 export function Bestsellers() {
   const { products, loading } = useProducts();
-  // Show all bestsellers - no artificial limits
-  const bestsellers = products.filter((p) => p.bestseller);
+  
+  // Limit bestsellers on mobile for better performance
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const allBestsellers = products.filter((p) => p.bestseller);
+  const bestsellers = isMobile ? allBestsellers.slice(0, 6) : allBestsellers;
+  
   const { title, subtitle } = useSiteContent<HomeBestsellersContent>("home_bestsellers", DEFAULT_HOME_BESTSELLERS, DEFAULT_HOME_BESTSELLERS_EN);
   return (
     <section className="section bg-surface-alt border-y border-line">
