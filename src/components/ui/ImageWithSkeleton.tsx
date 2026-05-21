@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useImageCache } from "@/hooks/useImageCache";
 
 interface ImageWithSkeletonProps {
   src: string;
@@ -11,15 +11,6 @@ interface ImageWithSkeletonProps {
   height?: number;
 }
 
-// Helper to convert ImgBB URL to smaller size for mobile
-function getResponsiveImageUrl(url: string, isMobile: boolean): string {
-  if (!url.includes('i.ibb.co')) return url;
-  
-  // ImgBB doesn't support URL-based resizing, but we can add loading="lazy"
-  // and let the browser handle it. For future: consider using imgproxy or similar.
-  return url;
-}
-
 export function ImageWithSkeleton({
   src,
   alt,
@@ -29,7 +20,8 @@ export function ImageWithSkeleton({
   width,
   height,
 }: ImageWithSkeletonProps) {
-  const [loaded, setLoaded] = useState(false);
+  // Use image cache hook for persistent caching across navigations
+  const { loaded, isInCache } = useImageCache(src, priority);
 
   const aspectClasses = {
     square: "aspect-square",
@@ -38,30 +30,27 @@ export function ImageWithSkeleton({
     auto: "",
   };
 
-  // Detect mobile for potential optimizations
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const imageSrc = getResponsiveImageUrl(src, isMobile);
-
   return (
     <div className={cn("relative overflow-hidden bg-surface-alt", aspectClasses[aspectRatio], className)}>
-      {/* Animated skeleton - restored for better UX */}
+      {/* Animated skeleton - only show if not in cache */}
       {!loaded && (
         <div className="absolute inset-0 bg-gradient-to-r from-surface-alt via-surface to-surface-alt animate-pulse" />
       )}
 
-      {/* Actual image */}
+      {/* Actual image with crossOrigin for better caching */}
       <img
-        src={imageSrc}
+        src={src}
         alt={alt}
         width={width}
         height={height}
         loading={priority ? "eager" : "lazy"}
         decoding="async"
         fetchPriority={priority ? "high" : "auto"}
-        onLoad={() => setLoaded(true)}
-        onError={() => setLoaded(true)} // Hide skeleton even on error
+        crossOrigin="anonymous"
         className={cn(
-          "size-full object-cover transition-opacity duration-500",
+          "size-full object-cover transition-opacity",
+          // Instant display if cached, smooth transition if loading
+          isInCache ? "duration-0" : "duration-500",
           loaded ? "opacity-100" : "opacity-0"
         )}
         style={{
