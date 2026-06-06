@@ -156,7 +156,7 @@ function InlineToolbar({ slug, onToggleFullscreen, isFullscreen }: { slug: strin
         title: c.product.title,
         image: thumb ?? c.product.image,
         price: c.product.basePrice,
-        quantity: 50,
+        quantity: c.quantity,
         variant: { color: c.productColor, size: c.productSize },
         designId: draftId,
         customDesigns: customDesigns.length > 0 ? customDesigns : undefined,
@@ -307,7 +307,27 @@ function MobileToolsPanel({ hasSelection }: { hasSelection: boolean }) {
  * No body scroll lock, no fixed positioning — flows naturally with the page.
  * Can be toggled to fullscreen mode.
  */
-export function EmbeddedCustomizer({ product, initialColor }: { product: Product; initialColor?: string }) {
+export function EmbeddedCustomizer({ 
+  product, 
+  initialColor,
+  initialSize,
+  initialQuantity,
+  initialOptions,
+  onColorChange,
+  onSizeChange,
+  onQuantityChange,
+  onOptionsChange,
+}: { 
+  product: Product; 
+  initialColor?: string;
+  initialSize?: string;
+  initialQuantity?: number;
+  initialOptions?: Record<string, string>;
+  onColorChange?: (color: string) => void;
+  onSizeChange?: (size: string) => void;
+  onQuantityChange?: (qty: number) => void;
+  onOptionsChange?: (options: Record<string, string>) => void;
+}) {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Lock body scroll when fullscreen
@@ -334,7 +354,17 @@ export function EmbeddedCustomizer({ product, initialColor }: { product: Product
   }, [isFullscreen]);
 
   return (
-    <CustomizerProvider product={product} initialColor={initialColor}>
+    <CustomizerProvider 
+      product={product} 
+      initialColor={initialColor}
+      initialSize={initialSize}
+      initialQuantity={initialQuantity}
+      initialOptions={initialOptions}
+      onColorChange={onColorChange}
+      onSizeChange={onSizeChange}
+      onQuantityChange={onQuantityChange}
+      onOptionsChange={onOptionsChange}
+    >
       <EmbeddedCustomizerInner 
         slug={product.slug} 
         isFullscreen={isFullscreen}

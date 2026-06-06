@@ -28,17 +28,62 @@ export default function SearchPage() {
     setSearchParams({});
   };
 
-  // Filter products based on search query
+  // Fuzzy search - tolerant to typos and partial matches
+  const fuzzyMatch = (text: string, query: string): number => {
+    const textLower = text.toLowerCase();
+    const queryLower = query.toLowerCase();
+    
+    // Exact match gets highest score
+    if (textLower.includes(queryLower)) return 100;
+    
+    // Split query into words and check each word
+    const queryWords = queryLower.split(/\s+/).filter(w => w.length > 0);
+    let matchScore = 0;
+    
+    for (const word of queryWords) {
+      // Check if any part of text contains the word
+      if (textLower.includes(word)) {
+        matchScore += 50;
+        continue;
+      }
+      
+      // Check character overlap (fuzzy matching)
+      let overlap = 0;
+      for (let i = 0; i < word.length; i++) {
+        if (textLower.includes(word[i])) {
+          overlap++;
+        }
+      }
+      
+      // If most characters match, give partial score
+      const overlapRatio = overlap / word.length;
+      if (overlapRatio > 0.5) {
+        matchScore += Math.floor(overlapRatio * 30);
+      }
+    }
+    
+    return matchScore;
+  };
+
+  // Filter products based on fuzzy search
   const filteredProducts = query
-    ? products.filter((product) => {
-        const searchLower = query.toLowerCase();
-        return (
-          product.title.toLowerCase().includes(searchLower) ||
-          product.description?.toLowerCase().includes(searchLower) ||
-          product.category.toLowerCase().includes(searchLower) ||
-          product.subcategory?.toLowerCase().includes(searchLower)
-        );
-      })
+    ? products
+        .map((product) => {
+          const titleScore = fuzzyMatch(product.title, query);
+          const descScore = product.description ? fuzzyMatch(product.description, query) * 0.5 : 0;
+          const categoryScore = fuzzyMatch(product.category, query) * 0.7;
+          const subcategoryScore = product.subcategory ? fuzzyMatch(product.subcategory, query) * 0.7 : 0;
+          
+          const totalScore = Math.max(titleScore, descScore, categoryScore, subcategoryScore);
+          
+          return {
+            product,
+            score: totalScore
+          };
+        })
+        .filter(item => item.score > 20) // Only show results with reasonable match
+        .sort((a, b) => b.score - a.score) // Sort by relevance
+        .map(item => item.product)
     : [];
 
   return (

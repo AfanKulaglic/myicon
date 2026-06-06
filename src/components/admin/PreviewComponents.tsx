@@ -37,14 +37,14 @@ const ABOUT_ICON_MAP: Record<string, LucideIcon> = { Award, Truck, Leaf, Users }
 export function HeroPreview({ c }: { c: HeroContent }) {
   return (
     <section className="relative bg-gradient-to-b from-surface-alt to-white border-b border-line overflow-hidden">
-      <div className="container py-8 lg:py-12">
-        <div className="grid lg:grid-cols-2 gap-8 items-center">
-          <div className="max-w-xl space-y-3">
-            <PreviewEl fieldId="badge" section="hero" as="span" className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-brand/10 text-brand">
+      <div className="container py-8 sm:py-12 lg:py-20">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-14 items-center">
+          <div className="max-w-xl">
+            <PreviewEl fieldId="badge" section="hero" as="span" className="chip bg-brand/10 text-brand mb-4 sm:mb-5">
               <Sparkles className="size-3.5" /> {c.badge}
             </PreviewEl>
             <PreviewEl fieldId="title" section="hero" className="block">
-              <h1 className="text-2xl font-bold font-display text-ink leading-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-ink leading-tight">
                 {c.title.split("\n").map((line, i) => (
                   <span key={i}>{i > 0 && <br />}{line}</span>
                 ))}{" "}
@@ -54,53 +54,58 @@ export function HeroPreview({ c }: { c: HeroContent }) {
               </h1>
             </PreviewEl>
             <PreviewEl fieldId="subtitle" section="hero">
-              <p className="text-sm text-ink-muted leading-relaxed">{c.subtitle}</p>
+              <p className="mt-4 sm:mt-5 text-sm sm:text-base lg:text-lg text-ink-muted leading-relaxed">{c.subtitle}</p>
             </PreviewEl>
-            <div className="flex flex-wrap gap-2 pt-1">
-              <PreviewEl fieldId="ctaPrimaryText" section="hero" className="inline-flex">
-                <button className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-brand text-white text-sm font-medium">
-                  {c.ctaPrimaryText} <ArrowRight className="size-3.5" />
+            <div className="mt-6 sm:mt-7 flex flex-col sm:flex-row flex-wrap gap-3">
+              <PreviewEl fieldId="ctaPrimaryText" section="hero" className="w-full sm:w-auto">
+                <button className="btn-primary w-full sm:w-auto h-11 px-6 text-sm">
+                  {c.ctaPrimaryText} <ArrowRight className="size-4" />
                 </button>
               </PreviewEl>
-              <PreviewEl fieldId="ctaSecondaryText" section="hero" className="inline-flex">
-                <button className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-line text-ink text-sm font-medium">
+              <PreviewEl fieldId="ctaSecondaryText" section="hero" className="w-full sm:w-auto">
+                <button className="btn-outline w-full sm:w-auto h-11 px-6 text-sm">
                   {c.ctaSecondaryText}
                 </button>
               </PreviewEl>
             </div>
             {(c.stats ?? []).length > 0 && (
-              <dl className="grid grid-cols-3 gap-4 pt-2">
+              <dl className="mt-8 sm:mt-10 grid grid-cols-3 gap-4 sm:gap-6 max-w-md">
                 {(c.stats ?? []).map((s, i) => (
-                  <PreviewEl key={i} fieldId={`stats.${i}.value`} section="hero" className="block">
-                    <dt className="text-lg font-semibold font-display text-ink">{s.value}</dt>
-                    <dd className="text-xs text-ink-muted mt-0.5">{s.label}</dd>
-                  </PreviewEl>
+                  <div key={i}>
+                    <PreviewEl fieldId={`stats.${i}.value`} section="hero" as="dt" className="text-xl sm:text-2xl font-semibold text-ink font-display">
+                      {s.value}
+                    </PreviewEl>
+                    <dd className="text-[10px] sm:text-xs text-ink-muted mt-0.5 sm:mt-1 leading-tight">{s.label}</dd>
+                  </div>
                 ))}
               </dl>
             )}
           </div>
-          <div className="relative">
+          <div className="relative mt-8 lg:mt-0">
             <PreviewEl fieldId="imageUrl" section="hero" className="block">
-              <div className="aspect-[5/4] rounded-xl overflow-hidden bg-white border border-line shadow-sm">
-                <div
-                  className="size-full bg-cover bg-center"
-                  style={{
-                    backgroundImage: c.imageUrl
-                      ? `url(${c.imageUrl})`
-                      : "none", // No fallback - load from Firebase/ImgBB only
-                  }}
-                />
+              <div className="aspect-[4/3] sm:aspect-[5/4] rounded-xl sm:rounded-2xl overflow-hidden bg-surface-alt border border-line shadow-card relative">
+                {c.imageUrl ? (
+                  <img
+                    src={c.imageUrl}
+                    alt="Hero image"
+                    className="size-full object-cover"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-surface-alt flex items-center justify-center">
+                    <p className="text-xs text-ink-muted">Kein Bild konfiguriert</p>
+                  </div>
+                )}
               </div>
             </PreviewEl>
-            {c.promoCard && (
-              <PreviewEl fieldId="promoCard.tag" section="hero" className="absolute -left-2 -bottom-2 block">
-                <div className="card p-3 shadow-elevated bg-white w-52 text-xs">
-                  <div className="text-ink-muted">{c.promoCard.tag}</div>
-                  <div className="mt-1 font-semibold text-ink text-sm">{c.promoCard.title}</div>
-                  <div className="mt-1 text-ink-muted">{c.promoCard.text}</div>
+            <div className="absolute -left-4 -bottom-4 lg:-left-6 lg:-bottom-6 hidden md:block">
+              <PreviewEl fieldId="promoCard.tag" section="hero" className="card p-4 shadow-elevated bg-white w-64">
+                <div className="text-xs text-ink-muted">{c.promoCard?.tag ?? "Tiefpreis-Garantie"}</div>
+                <div className="mt-1 font-semibold text-ink">{c.promoCard?.title ?? "30 Tage erstattet"}</div>
+                <div className="mt-2 text-xs text-ink-muted">
+                  {c.promoCard?.text ?? "Sollten Sie einen günstigeren Preis finden, erstatten wir die Differenz."}
                 </div>
               </PreviewEl>
-            )}
+            </div>
           </div>
         </div>
       </div>

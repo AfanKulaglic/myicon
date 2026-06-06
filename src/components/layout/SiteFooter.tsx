@@ -5,12 +5,15 @@ import { Mail, Phone, ShieldCheck, Truck, CreditCard } from "lucide-react";
 import { useT } from "@/hooks/useT";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { DEFAULT_FOOTER, DEFAULT_FOOTER_EN, type FooterContent } from "@/types/content";
+import { useAuthStore } from "@/store/auth";
 
 const FOOTER_TRUST_ICONS = [Truck, ShieldCheck, CreditCard, Phone];
 
 export function SiteFooter() {
   const t = useT();
   const c = useSiteContent<FooterContent>("site_footer", DEFAULT_FOOTER, DEFAULT_FOOTER_EN);
+  const user = useAuthStore((s) => s.user);
+  
   return (
     <footer className="bg-surface-alt border-t border-line mt-16">
       {/* Trust strip */}
@@ -62,29 +65,31 @@ export function SiteFooter() {
         <div>
           <div className="text-sm font-semibold text-ink mb-3">{c.colAccountLabel}</div>
           <ul className="space-y-2 text-sm text-ink-muted">
+            {!user && (
+              <>
+                <li>
+                  <Link className="hover:text-ink" to="/login">
+                    {t("footer.login")}
+                  </Link>
+                </li>
+                <li>
+                  <Link className="hover:text-ink" to="/register">
+                    {t("footer.register")}
+                  </Link>
+                </li>
+              </>
+            )}
+            {user && (
+              <li>
+                <Link className="hover:text-ink" to="/account">
+                  Mein Konto
+                </Link>
+              </li>
+            )}
             <li>
-              <span className="cursor-not-allowed opacity-50 flex items-center gap-2">
-                {t("footer.login")}
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-alt text-ink-subtle">Bald</span>
-              </span>
-            </li>
-            <li>
-              <span className="cursor-not-allowed opacity-50 flex items-center gap-2">
-                {t("footer.register")}
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-alt text-ink-subtle">Bald</span>
-              </span>
-            </li>
-            <li>
-              <span className="cursor-not-allowed opacity-50 flex items-center gap-2">
+              <Link className="hover:text-ink" to={user ? "/account/orders" : "/login"}>
                 {t("footer.orders")}
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-alt text-ink-subtle">Bald</span>
-              </span>
-            </li>
-            <li>
-              <span className="cursor-not-allowed opacity-50 flex items-center gap-2">
-                {t("footer.designs")}
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-alt text-ink-subtle">Bald</span>
-              </span>
+              </Link>
             </li>
             <li><Link className="hover:text-ink" to="/wishlist">{t("footer.wishlist")}</Link></li>
           </ul>

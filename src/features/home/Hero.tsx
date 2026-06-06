@@ -69,7 +69,7 @@ export function Hero() {
                   alt="Hero image"
                   width="800"
                   height="600"
-                  fetchPriority="high"
+                  fetchpriority="high"
                   loading="eager"
                   decoding="async"
                   onLoad={() => setImageLoaded(true)}

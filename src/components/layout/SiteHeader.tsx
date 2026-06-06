@@ -6,6 +6,7 @@ import { DesktopNav } from "./DesktopNav";
 import { MobileMenu } from "./MobileMenu";
 import { useCartStore } from "@/store/cart";
 import { useWishlistStore } from "@/store/wishlist";
+import { useAuthStore } from "@/store/auth";
 import { useMounted } from "@/hooks/useMounted";
 import { useT } from "@/hooks/useT";
 import { useSiteContent } from "@/hooks/useSiteContent";
@@ -21,6 +22,7 @@ export function SiteHeader({ onMenuOpen }: Props) {
   const cartCount = useCartStore((s) => s.count());
   const openCart = useCartStore((s) => s.openCart);
   const wishlistCount = useWishlistStore((s) => s.productIds.length);
+  const user = useAuthStore((s) => s.user);
   const mounted = useMounted();
   const t = useT();
   const c = useSiteContent<NavbarContent>("site_navbar", DEFAULT_NAVBAR, DEFAULT_NAVBAR_EN);
@@ -35,20 +37,66 @@ export function SiteHeader({ onMenuOpen }: Props) {
   const desktopSearchRef = useRef<HTMLDivElement>(null);
   const mobileSearchRef = useRef<HTMLDivElement>(null);
 
-  // Filter products based on search query
+  // Fuzzy search - tolerant to typos and partial matches
+  const fuzzyMatch = (text: string, query: string): number => {
+    const textLower = text.toLowerCase();
+    const queryLower = query.toLowerCase();
+    
+    // Exact match gets highest score
+    if (textLower.includes(queryLower)) return 100;
+    
+    // Split query into words and check each word
+    const queryWords = queryLower.split(/\s+/).filter(w => w.length > 0);
+    let matchScore = 0;
+    
+    for (const word of queryWords) {
+      // Check if any part of text contains the word
+      if (textLower.includes(word)) {
+        matchScore += 50;
+        continue;
+      }
+      
+      // Check character overlap (fuzzy matching)
+      let overlap = 0;
+      for (let i = 0; i < word.length; i++) {
+        if (textLower.includes(word[i])) {
+          overlap++;
+        }
+      }
+      
+      // If most characters match, give partial score
+      const overlapRatio = overlap / word.length;
+      if (overlapRatio > 0.5) {
+        matchScore += Math.floor(overlapRatio * 30);
+      }
+    }
+    
+    return matchScore;
+  };
+
+  // Filter products based on fuzzy search
   const getFilteredProducts = (query: string) => {
     if (!query.trim()) return [];
-    const searchLower = query.toLowerCase();
-    return products
-      .filter((product) => {
-        return (
-          product.title.toLowerCase().includes(searchLower) ||
-          product.description?.toLowerCase().includes(searchLower) ||
-          product.category.toLowerCase().includes(searchLower) ||
-          product.subcategory?.toLowerCase().includes(searchLower)
-        );
-      })
-      .slice(0, 5); // Show max 5 results
+    
+    const scored = products.map((product) => {
+      const titleScore = fuzzyMatch(product.title, query);
+      const descScore = product.description ? fuzzyMatch(product.description, query) * 0.5 : 0;
+      const categoryScore = fuzzyMatch(product.category, query) * 0.7;
+      const subcategoryScore = product.subcategory ? fuzzyMatch(product.subcategory, query) * 0.7 : 0;
+      
+      const totalScore = Math.max(titleScore, descScore, categoryScore, subcategoryScore);
+      
+      return {
+        product,
+        score: totalScore
+      };
+    });
+    
+    return scored
+      .filter(item => item.score > 20) // Only show results with reasonable match
+      .sort((a, b) => b.score - a.score) // Sort by relevance
+      .slice(0, 5) // Show max 5 results
+      .map(item => item.product);
   };
 
   const desktopResults = getFilteredProducts(desktopSearch);
@@ -151,15 +199,16 @@ export function SiteHeader({ onMenuOpen }: Props) {
 
           <form
             role="search"
-            className="hidden md:flex flex-1 max-w-2xl mx-2 lg:mx-6"
+            className="hidden md:flex flex-1 max-w-2xl mx-2 lg:mx-6 relative"
             onSubmit={handleDesktopSearch}
+            ref={desktopSearchRef}
           >
             <div className="flex w-full items-center gap-2 rounded-xl border border-line bg-surface-alt focus-within:bg-white focus-within:border-brand focus-within:ring-1 focus-within:ring-brand transition-colors">
               <Search className="size-4 ml-3.5 text-ink-subtle shrink-0" />
               <input
                 type="search"
                 value={desktopSearch}
-                onChange={(e) => setDesktopSearch(e.target.value)}
+                onChange={(e) => handleDesktopInputChange(e.target.value)}
                 placeholder={c.searchPlaceholder}
                 className="flex-1 bg-transparent py-2.5 pr-2 text-sm outline-none placeholder:text-ink-subtle"
               />
@@ -170,57 +219,163 @@ export function SiteHeader({ onMenuOpen }: Props) {
                 {c.searchBtnText}
               </button>
             </div>
+
+            {/* Desktop Dropdown */}
+            {showDesktopDropdown && desktopResults.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl border border-line shadow-lg z-50 overflow-hidden">
+                {desktopResults.map((product) => (
+                  <button
+                    key={product.id}
+                    onClick={() => handleProductClick(product.slug, false)}
+                    className="w-full flex items-center gap-3 p-3 hover:bg-surface-alt transition-colors text-left"
+                  >
+                    {product.image && (
+                      <img
+                        src={product.image}
+                        alt={product.title}
+                        className="w-12 h-12 object-cover rounded-lg"
+                      />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-ink text-sm truncate">{product.title}</p>
+                      <p className="text-xs text-ink-muted truncate">{product.category}</p>
+                    </div>
+                    <p className="text-sm font-semibold text-ink">{formatCurrency(product.basePrice)}</p>
+                  </button>
+                ))}
+                {desktopResults.length >= 5 && (
+                  <button
+                    onClick={() => handleViewAllResults(desktopSearch, false)}
+                    className="w-full p-3 text-center text-sm font-medium text-brand hover:bg-surface-alt transition-colors border-t border-line"
+                  >
+                    Alle Ergebnisse anzeigen
+                  </button>
+                )}
+              </div>
+            )}
           </form>
 
-          <div className="ml-auto flex items-center gap-1 md:gap-2">
+          <div className="ml-auto flex items-center gap-0 md:gap-2">
             <Link
               to="/order/track"
-              className="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-ink hover:bg-surface-alt"
-              title="Bestellungen verfolgen"
+              className="relative inline-flex items-center gap-2 px-1.5 md:px-3 py-2 rounded-lg text-sm text-ink hover:bg-surface-alt group overflow-hidden"
+              aria-label="Bestellungen verfolgen"
             >
-              <Package className="size-5" />
-              <span className="hidden lg:inline">Bestellungen</span>
+              <Package className="size-5 shrink-0" />
+              <span className="max-w-0 group-hover:max-w-xs overflow-hidden transition-all duration-300 ease-out whitespace-nowrap">
+                Bestellungen
+              </span>
             </Link>
+            
+            {mounted && user && (
+              <Link
+                to="/account"
+                className="relative inline-flex items-center gap-2 px-1.5 md:px-3 py-2 rounded-lg text-sm text-ink hover:bg-surface-alt group overflow-hidden"
+                aria-label="Mein Konto"
+              >
+                <User className="size-5 shrink-0" />
+                <span className="max-w-0 group-hover:max-w-xs overflow-hidden transition-all duration-300 ease-out whitespace-nowrap">
+                  Mein Konto
+                </span>
+              </Link>
+            )}
+            
+            {mounted && !user && (
+              <Link
+                to="/login"
+                className="relative inline-flex items-center gap-2 px-1.5 md:px-3 py-2 rounded-lg text-sm text-ink hover:bg-surface-alt group overflow-hidden"
+                aria-label="Anmelden"
+              >
+                <User className="size-5 shrink-0" />
+                <span className="max-w-0 group-hover:max-w-xs overflow-hidden transition-all duration-300 ease-out whitespace-nowrap">
+                  Anmelden
+                </span>
+              </Link>
+            )}
+            
             <Link
               to="/wishlist"
-              className="relative size-10 inline-flex items-center justify-center rounded-lg hover:bg-surface-alt"
+              className="relative inline-flex items-center gap-2 px-1.5 md:px-3 py-2 rounded-lg text-sm text-ink hover:bg-surface-alt group overflow-hidden"
               aria-label="Merkliste"
             >
-              <Heart className="size-5" />
+              <Heart className="size-5 shrink-0" />
               {mounted && wishlistCount > 0 ? (
-                <span className="absolute -top-0.5 -right-0.5 min-w-5 h-5 px-1 rounded-full bg-brand text-white text-[10px] font-medium inline-flex items-center justify-center">
+                <span className="absolute -top-0.5 left-5 min-w-5 h-5 px-1 rounded-full bg-brand text-white text-[10px] font-medium inline-flex items-center justify-center">
                   {wishlistCount}
                 </span>
               ) : null}
+              <span className="max-w-0 group-hover:max-w-xs overflow-hidden transition-all duration-300 ease-out whitespace-nowrap">
+                Merkliste
+              </span>
             </Link>
+            
             <button
               onClick={openCart}
-              className="relative size-10 inline-flex items-center justify-center rounded-lg hover:bg-surface-alt"
+              className="relative inline-flex items-center gap-2 px-1.5 md:px-3 py-2 rounded-lg text-sm text-ink hover:bg-surface-alt group overflow-hidden"
               aria-label="Warenkorb"
             >
-              <ShoppingBag className="size-5" />
+              <ShoppingBag className="size-5 shrink-0" />
               {mounted && cartCount > 0 ? (
-                <span className="absolute -top-0.5 -right-0.5 min-w-5 h-5 px-1 rounded-full bg-brand text-white text-[10px] font-medium inline-flex items-center justify-center">
+                <span className="absolute -top-0.5 left-5 min-w-5 h-5 px-1 rounded-full bg-brand text-white text-[10px] font-medium inline-flex items-center justify-center">
                   {cartCount}
                 </span>
               ) : null}
+              <span className="max-w-0 group-hover:max-w-xs overflow-hidden transition-all duration-300 ease-out whitespace-nowrap">
+                Warenkorb
+              </span>
             </button>
           </div>
         </div>
 
         {/* Mobile search */}
-        <form className="md:hidden mt-3" onSubmit={handleMobileSearch}>
-          <div className="flex w-full items-center gap-2 rounded-xl border border-line bg-surface-alt focus-within:bg-white focus-within:border-brand transition-colors">
-            <Search className="size-4 ml-3.5 text-ink-subtle shrink-0" />
-            <input
-              type="search"
-              value={mobileSearch}
-              onChange={(e) => setMobileSearch(e.target.value)}
-              placeholder={c.searchPlaceholder}
-              className="flex-1 bg-transparent py-2.5 pr-3 text-sm outline-none placeholder:text-ink-subtle"
-            />
-          </div>
-        </form>
+        <div className="md:hidden mt-3 relative" ref={mobileSearchRef}>
+          <form onSubmit={handleMobileSearch}>
+            <div className="flex w-full items-center gap-2 rounded-xl border border-line bg-surface-alt focus-within:bg-white focus-within:border-brand transition-colors">
+              <Search className="size-4 ml-3.5 text-ink-subtle shrink-0" />
+              <input
+                type="search"
+                value={mobileSearch}
+                onChange={(e) => handleMobileInputChange(e.target.value)}
+                placeholder={c.searchPlaceholder}
+                className="flex-1 bg-transparent py-2.5 pr-3 text-sm outline-none placeholder:text-ink-subtle"
+              />
+            </div>
+          </form>
+
+          {/* Mobile Dropdown */}
+          {showMobileDropdown && mobileResults.length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl border border-line shadow-lg z-50 overflow-hidden">
+              {mobileResults.map((product) => (
+                <button
+                  key={product.id}
+                  onClick={() => handleProductClick(product.slug, true)}
+                  className="w-full flex items-center gap-3 p-3 hover:bg-surface-alt transition-colors text-left"
+                >
+                  {product.image && (
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="w-12 h-12 object-cover rounded-lg"
+                    />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-ink text-sm truncate">{product.title}</p>
+                    <p className="text-xs text-ink-muted truncate">{product.category}</p>
+                  </div>
+                  <p className="text-sm font-semibold text-ink">{formatCurrency(product.basePrice)}</p>
+                </button>
+              ))}
+              {mobileResults.length >= 5 && (
+                <button
+                  onClick={() => handleViewAllResults(mobileSearch, true)}
+                  className="w-full p-3 text-center text-sm font-medium text-brand hover:bg-surface-alt transition-colors border-t border-line"
+                >
+                  Alle Ergebnisse anzeigen
+                </button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       <DesktopNav />

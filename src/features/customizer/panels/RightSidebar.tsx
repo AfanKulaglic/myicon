@@ -57,7 +57,7 @@ function ViewSwitcher() {
 }
 
 function ProductOptions() {
-  const { product, productColor, setProductColor, productSize, setProductSize } = useCustomizer();
+  const { product, productColor, setProductColor, productSize, setProductSize, quantity, setQuantity, selectedOptions, setSelectedOptions } = useCustomizer();
   // Use Firebase colors if available, otherwise fall back to 4 standard colors
   const colors = (product.colors && product.colors.length > 0) ? product.colors : DEFAULT_PRODUCT_COLORS;
   
@@ -80,7 +80,7 @@ function ProductOptions() {
           ))}
         </div>
       </div>
-      {product.sizes && product.sizes.length > 0 ? (
+      {product.sizes && product.sizes.length > 0 && (
         <div>
           <div className="text-xs font-semibold text-ink-muted uppercase mb-2">Größe</div>
           <div className="flex flex-wrap gap-1.5">
@@ -98,7 +98,74 @@ function ProductOptions() {
             ))}
           </div>
         </div>
-      ) : null}
+      )}
+      
+      {/* Quantity Selector */}
+      <div>
+        <div className="text-xs font-semibold text-ink-muted uppercase mb-2">Stückzahl</div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setQuantity(Math.max(1, quantity - 10))}
+            className="size-8 rounded-md border border-line flex items-center justify-center hover:bg-surface-alt"
+          >
+            −
+          </button>
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+            className="flex-1 h-8 px-2 text-center border border-line rounded-md text-sm"
+            min="1"
+          />
+          <button
+            onClick={() => setQuantity(quantity + 10)}
+            className="size-8 rounded-md border border-line flex items-center justify-center hover:bg-surface-alt"
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+      {/* Custom Options */}
+      {product.customOptions && product.customOptions.length > 0 && (
+        <>
+          {product.customOptions.map((option) => {
+            const selected = selectedOptions[option.id];
+            return (
+              <div key={option.id}>
+                <div className="text-xs font-semibold text-ink-muted uppercase mb-2">
+                  {option.name}
+                  {option.required && <span className="text-red-500 ml-1">*</span>}
+                </div>
+                <div className="space-y-1.5">
+                  {option.choices.map((choice) => {
+                    const isSelected = selected === choice.id;
+                    return (
+                      <button
+                        key={choice.id}
+                        onClick={() => setSelectedOptions({ ...selectedOptions, [option.id]: choice.id })}
+                        className={cn(
+                          "w-full px-3 py-2 rounded-md border text-left text-xs transition-colors",
+                          isSelected
+                            ? "border-brand bg-brand/5 text-brand font-medium"
+                            : "border-line hover:border-brand/50"
+                        )}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span>{choice.label}</span>
+                          {choice.priceModifier > 0 && (
+                            <span className="text-[10px] opacity-70">+{choice.priceModifier.toFixed(2)}€</span>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </>
+      )}
     </div>
   );
 }

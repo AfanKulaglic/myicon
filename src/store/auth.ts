@@ -6,6 +6,8 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  signInWithPopup,
+  GoogleAuthProvider,
   type User as FirebaseUser,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -24,6 +26,7 @@ interface AuthState {
   loading: boolean;
   // Firebase Auth actions
   loginWithEmail: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   registerWithEmail: (email: string, password: string, name: string) => Promise<void>;
   logout: () => Promise<void>;
   // Legacy / guest login used in checkout
@@ -47,6 +50,25 @@ export const useAuthStore = create<AuthState>()(
         set({ loading: true });
         try {
           const cred = await signInWithEmailAndPassword(auth, email, password);
+          set({
+            user: {
+              id: cred.user.uid,
+              email: cred.user.email!,
+              name: cred.user.displayName ?? cred.user.email!.split("@")[0],
+            },
+            loading: false,
+          });
+        } catch (e) {
+          set({ loading: false });
+          throw e;
+        }
+      },
+
+      loginWithGoogle: async () => {
+        set({ loading: true });
+        try {
+          const provider = new GoogleAuthProvider();
+          const cred = await signInWithPopup(auth, provider);
           set({
             user: {
               id: cred.user.uid,
@@ -110,4 +132,3 @@ onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
     }
   }
 });
-

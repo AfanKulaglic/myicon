@@ -91,6 +91,7 @@ function CategoryCard({ category }: { category: Category }) {
               onChange={(url) => setValue("image", url, { shouldDirty: true })}
               folder="categories"
               label="Bild"
+              recommendation="Empfohlen: 800×600px (4:3), JPG/WebP, max. 300KB — wird auf Kategorie-Karten angezeigt"
             />
           </div>
 

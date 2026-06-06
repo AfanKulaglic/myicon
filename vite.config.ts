@@ -103,10 +103,10 @@ export default defineConfig({
       "react-router-dom",
       "zustand",
       "lucide-react",
-    ],
-    exclude: [
       "konva",
       "react-konva",
+    ],
+    exclude: [
       "firebase",
     ],
   },

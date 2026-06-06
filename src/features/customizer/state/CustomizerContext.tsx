@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -68,6 +69,10 @@ interface CustomizerState {
   setProductColor: (c: string) => void;
   productSize?: string;
   setProductSize: (s: string) => void;
+  quantity: number;
+  setQuantity: (q: number) => void;
+  selectedOptions: Record<string, string>;
+  setSelectedOptions: (opts: Record<string, string>) => void;
   layers: Layer[];
   selectedId: string | null;
   setSelectedId: (id: string | null) => void;
@@ -99,10 +104,24 @@ const Ctx = createContext<CustomizerState | null>(null);
 export function CustomizerProvider({
   product,
   initialColor,
+  initialSize,
+  initialQuantity,
+  initialOptions,
+  onColorChange,
+  onSizeChange,
+  onQuantityChange,
+  onOptionsChange,
   children,
 }: {
   product: Product;
   initialColor?: string;
+  initialSize?: string;
+  initialQuantity?: number;
+  initialOptions?: Record<string, string>;
+  onColorChange?: (color: string) => void;
+  onSizeChange?: (size: string) => void;
+  onQuantityChange?: (qty: number) => void;
+  onOptionsChange?: (options: Record<string, string>) => void;
   children: ReactNode;
 }) {
   const [viewId, setViewId] = useState(
@@ -111,7 +130,13 @@ export function CustomizerProvider({
   const [productColor, setProductColor] = useState(
     initialColor ?? product.colors?.[0]?.name ?? "Weiß"
   );
-  const [productSize, setProductSize] = useState<string | undefined>(product.sizes?.[3]);
+  const [productSize, setProductSize] = useState<string | undefined>(
+    initialSize ?? product.sizes?.[3]
+  );
+  const [quantity, setQuantity] = useState(initialQuantity ?? 1);
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>(
+    initialOptions ?? {}
+  );
   const [layers, setLayers] = useState<Layer[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
@@ -119,6 +144,52 @@ export function CustomizerProvider({
   const [showBleed, setShowBleed] = useState(true);
 
   const exportRef = useRef<(() => string | null) | null>(null);
+
+  // Sync FROM parent component when props change
+  useEffect(() => {
+    if (initialColor !== undefined && initialColor !== productColor) {
+      setProductColor(initialColor);
+    }
+  }, [initialColor]);
+
+  useEffect(() => {
+    if (initialSize !== undefined && initialSize !== productSize) {
+      setProductSize(initialSize);
+    }
+  }, [initialSize]);
+
+  useEffect(() => {
+    if (initialQuantity !== undefined && initialQuantity !== quantity) {
+      setQuantity(initialQuantity);
+    }
+  }, [initialQuantity]);
+
+  useEffect(() => {
+    if (initialOptions !== undefined) {
+      setSelectedOptions(initialOptions);
+    }
+  }, [initialOptions]);
+
+  // Sync TO parent component
+  const handleColorChange = useCallback((color: string) => {
+    setProductColor(color);
+    onColorChange?.(color);
+  }, [onColorChange]);
+
+  const handleSizeChange = useCallback((size: string) => {
+    setProductSize(size);
+    onSizeChange?.(size);
+  }, [onSizeChange]);
+
+  const handleQuantityChange = useCallback((qty: number) => {
+    setQuantity(qty);
+    onQuantityChange?.(qty);
+  }, [onQuantityChange]);
+
+  const handleOptionsChange = useCallback((opts: Record<string, string>) => {
+    setSelectedOptions(opts);
+    onOptionsChange?.(opts);
+  }, [onOptionsChange]);
 
   // History
   const past = useRef<HistoryEntry[]>([]);
@@ -246,9 +317,13 @@ export function CustomizerProvider({
       viewId,
       setViewId,
       productColor,
-      setProductColor,
+      setProductColor: handleColorChange,
       productSize,
-      setProductSize,
+      setProductSize: handleSizeChange,
+      quantity,
+      setQuantity: handleQuantityChange,
+      selectedOptions,
+      setSelectedOptions: handleOptionsChange,
       layers,
       selectedId,
       setSelectedId,
@@ -275,10 +350,11 @@ export function CustomizerProvider({
       exportRef,
     }),
     [
-      product, viewId, productColor, productSize, layers, selectedId, zoom,
+      product, viewId, productColor, productSize, quantity, selectedOptions, layers, selectedId, zoom,
       showRulers, showBleed, addLayer, updateLayer, removeLayer, duplicateLayer,
       bringForward, sendBackward, bringToFront, sendToBack, undo, redo,
-      serialize, loadFromSerialized,
+      serialize, loadFromSerialized, handleColorChange, handleSizeChange, 
+      handleQuantityChange, handleOptionsChange,
     ]
   );
 

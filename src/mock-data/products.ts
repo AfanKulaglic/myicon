@@ -1031,6 +1031,40 @@ export const PRODUCTS: Product[] = [
     gallery: [
       "",
     ],
+    // Custom options example - will be saved to Firebase when admin edits
+    customOptions: [
+      {
+        id: "opt_paper",
+        name: "Papierart",
+        required: true,
+        choices: [
+          { id: "paper_matt_170", label: "Matt 170g/m²", priceModifier: 0 },
+          { id: "paper_glossy_200", label: "Glossy 200g/m²", priceModifier: 3.5 },
+          { id: "paper_premium_250", label: "Premium Glossy 250g/m²", priceModifier: 7.0 },
+        ],
+      },
+      {
+        id: "opt_pages",
+        name: "Seitenanzahl",
+        required: true,
+        choices: [
+          { id: "pages_16", label: "16 Seiten", priceModifier: 0 },
+          { id: "pages_24", label: "24 Seiten", priceModifier: 5.0 },
+          { id: "pages_32", label: "32 Seiten", priceModifier: 10.0 },
+          { id: "pages_48", label: "48 Seiten", priceModifier: 18.0 },
+        ],
+      },
+      {
+        id: "opt_finish",
+        name: "Veredelung",
+        required: false,
+        choices: [
+          { id: "finish_none", label: "Keine", priceModifier: 0 },
+          { id: "finish_uv", label: "UV-Lackierung", priceModifier: 4.5 },
+          { id: "finish_lamination", label: "Folienkaschierung", priceModifier: 6.0 },
+        ],
+      },
+    ],
   },
   {
     id: "p_broschuere_a6",

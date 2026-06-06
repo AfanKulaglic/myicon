@@ -8,11 +8,12 @@ import { useCategories } from "@/hooks/useCategories";
 import { saveProduct } from "@/lib/firestore";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { PlacementsEditor } from "@/components/admin/PlacementsEditor";
+import { CustomOptionsEditor } from "@/components/admin/CustomOptionsEditor";
 import { Button } from "@/components/ui/Button";
 import { useT } from "@/hooks/useT";
 import { Plus, Trash2, ChevronLeft } from "lucide-react";
 import { uid } from "@/lib/utils";
-import type { PrintPlacement } from "@/types";
+import type { PrintPlacement, ProductOption } from "@/types";
 
 const schema = z.object({
   title: z.string().min(2, "Titel erforderlich"),
@@ -66,6 +67,7 @@ export default function AdminProductForm() {
 
   const imageValue = watch("image") ?? "";
   const [placements, setPlacements] = useState<PrintPlacement[]>([]);
+  const [customOptions, setCustomOptions] = useState<ProductOption[]>([]);
 
   // Populate form when editing
   useEffect(() => {
@@ -92,6 +94,7 @@ export default function AdminProductForm() {
       zonesJson: JSON.stringify(existing.zones ?? [], null, 2),
     });
     setPlacements(existing.placements ?? []);
+    setCustomOptions(existing.customOptions ?? []);
   }, [existing, reset]);
 
   const onSubmit = async (values: FormValues) => {
@@ -123,6 +126,7 @@ export default function AdminProductForm() {
       views,
       zones,
       placements,
+      customOptions,
       bestseller: values.bestseller ?? false,
     };
 
@@ -259,6 +263,7 @@ export default function AdminProductForm() {
             onChange={(url) => setValue("image", url)}
             folder="products"
             label={t("admin.products.mainImage")}
+            recommendation="Empfohlen: 1200×1200px (1:1), JPG/WebP, max. 500KB — für beste Darstellung auf Produktkarten und Detail-Seiten"
           />
         </div>
 
@@ -297,6 +302,17 @@ export default function AdminProductForm() {
             <p className="text-xs text-ink-muted mt-0.5">{t("admin.placements.subtitle")}</p>
           </div>
           <PlacementsEditor value={placements} onChange={setPlacements} />
+        </div>
+
+        {/* Custom Options */}
+        <div className="card p-5 space-y-4">
+          <div>
+            <h2 className="font-semibold">Custom Produkt-Optionen</h2>
+            <p className="text-xs text-ink-muted mt-0.5">
+              Definieren Sie zusätzliche Auswahlmöglichkeiten wie Papierart, Finish, Größe, etc. mit individuellen Preisaufschlägen.
+            </p>
+          </div>
+          <CustomOptionsEditor value={customOptions} onChange={setCustomOptions} />
         </div>
 
         {/* Advanced JSON */}

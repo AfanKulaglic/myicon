@@ -160,6 +160,23 @@ export interface Product {
   gallery: string[];
   badge?: string;
   bestseller?: boolean;
+  /** Custom product options (e.g., paper type, finish, dimensions) */
+  customOptions?: ProductOption[];
+}
+
+/** Custom configurable option for a product */
+export interface ProductOption {
+  id: string;
+  name: string;          // e.g., "Papierart", "Veredelung", "Größe"
+  required: boolean;     // Is this option mandatory?
+  choices: ProductOptionChoice[];
+}
+
+/** Individual choice within a product option */
+export interface ProductOptionChoice {
+  id: string;
+  label: string;         // e.g., "Matt 170g", "Glossy 250g"
+  priceModifier: number; // Additional cost, e.g., +2.00 for glossy
 }
 
 export interface CartItem {
@@ -173,6 +190,14 @@ export interface CartItem {
     color?: string;
     size?: string;
   };
+  /** Selected custom options with their chosen values */
+  selectedOptions?: {
+    optionId: string;
+    optionName: string;
+    choiceId: string;
+    choiceLabel: string;
+    priceModifier: number;
+  }[];
   designId?: string;   // reference to saved draft
   /**
    * Per-view design previews uploaded to remote hosting (catbox).

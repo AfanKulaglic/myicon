@@ -7,9 +7,10 @@ interface Props {
   onChange: (url: string) => void;
   folder?: string;
   label?: string;
+  recommendation?: string; // Image size and format recommendation
 }
 
-export function ImageUploader({ value, onChange, folder, label = "Bild" }: Props) {
+export function ImageUploader({ value, onChange, folder, label = "Bild", recommendation }: Props) {
   const [tab, setTab] = useState<"url" | "upload">("url");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -98,6 +99,9 @@ export function ImageUploader({ value, onChange, folder, label = "Bild" }: Props
       {error && <p className="text-xs text-red-500">{error}</p>}
       {info && !error && (
         <p className="text-xs text-ink-muted">{info}</p>
+      )}
+      {recommendation && !error && !info && (
+        <p className="text-xs text-ink-muted/70 italic">💡 {recommendation}</p>
       )}
 
       {value && (

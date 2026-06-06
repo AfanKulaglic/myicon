@@ -676,6 +676,7 @@ export function PlacementsEditor({ value, onChange }: Props) {
               onChange={(url) => update({ ...active, mockup: url })}
               folder="mockups"
               label={t("admin.placements.mockup")}
+              recommendation="Empfohlen: 1000×1000px (1:1), PNG mit Transparenz, max. 500KB — Mockup-Bild für Produktvisualisierung"
             />
 
             <div className="grid grid-cols-2 gap-2">

@@ -4,6 +4,7 @@ import { Heart, ShieldCheck, Truck, Save, ChevronRight, Star, X } from "lucide-r
 import type { Product } from "@/types";
 import { Button } from "@/components/ui/Button";
 import { QuantitySelector } from "@/components/ui/QuantitySelector";
+import { CustomOptionsSelector } from "@/components/product/CustomOptionsSelector";
 import { cn, formatCurrency } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
 import { useWishlistStore } from "@/store/wishlist";
@@ -19,9 +20,10 @@ interface Props {
 export function ProductDetail({ product }: Props) {
   const [color, setColor] = useState(product.colors?.[0]?.name);
   const [size, setSize] = useState(product.sizes?.[0]);
-  const [qty, setQty] = useState(50);
+  const [qty, setQty] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
   const [tab, setTab] = useState<"details" | "specs" | "faq">("details");
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
   const designerRef = useRef<HTMLDivElement>(null);
 
   const scrollToDesigner = () => {
@@ -34,10 +36,52 @@ export function ProductDetail({ product }: Props) {
   const mounted = useMounted();
   const liked = mounted && has(product.id);
 
-  const price = product.basePrice;
+  // Calculate price with custom options
+  const optionsCost = (product.customOptions ?? []).reduce((sum, option) => {
+    const choiceId = selectedOptions[option.id];
+    if (!choiceId) return sum;
+    const choice = option.choices.find((c) => c.id === choiceId);
+    return sum + (choice?.priceModifier ?? 0);
+  }, 0);
+
+  const price = product.basePrice + optionsCost;
   const total = price * qty;
 
+  const handleOptionChange = (optionId: string, choiceId: string) => {
+    setSelectedOptions((prev) => ({ ...prev, [optionId]: choiceId }));
+  };
+
   const onAddToCart = () => {
+    // Check if all required options are selected
+    const missingRequired = (product.customOptions ?? []).filter(
+      (opt) => opt.required && !selectedOptions[opt.id]
+    );
+
+    if (missingRequired.length > 0) {
+      toast({
+        title: "Pflichtfelder fehlen",
+        description: `Bitte wählen Sie: ${missingRequired.map((o) => o.name).join(", ")}`,
+      });
+      return;
+    }
+
+    // Build selected options array for cart
+    const selectedOptionsArray = (product.customOptions ?? [])
+      .map((option) => {
+        const choiceId = selectedOptions[option.id];
+        if (!choiceId) return null;
+        const choice = option.choices.find((c) => c.id === choiceId);
+        if (!choice) return null;
+        return {
+          optionId: option.id,
+          optionName: option.name,
+          choiceId: choice.id,
+          choiceLabel: choice.label,
+          priceModifier: choice.priceModifier,
+        };
+      })
+      .filter(Boolean) as NonNullable<typeof selectedOptionsArray>[number][];
+
     addItem({
       productId: product.id,
       title: product.title,
@@ -45,6 +89,7 @@ export function ProductDetail({ product }: Props) {
       price,
       quantity: qty,
       variant: { color, size },
+      selectedOptions: selectedOptionsArray.length > 0 ? selectedOptionsArray : undefined,
     });
     toast({ title: "Zum Warenkorb hinzugefügt", description: product.title });
     openCart();
@@ -165,6 +210,17 @@ export function ProductDetail({ product }: Props) {
             </div>
           ) : null}
 
+          {/* Custom Options */}
+          {product.customOptions && product.customOptions.length > 0 && (
+            <div className="mt-6">
+              <CustomOptionsSelector
+                options={product.customOptions}
+                selectedOptions={selectedOptions}
+                onChange={handleOptionChange}
+              />
+            </div>
+          )}
+
           <div className="mt-6">
             <label className="label">Stückzahl</label>
             <div className="flex items-center gap-4">
@@ -236,7 +292,17 @@ export function ProductDetail({ product }: Props) {
             Laden Sie Ihr Logo hoch, fügen Sie Text hinzu oder wählen Sie aus den Formen. Ihre Auswahl (Farbe · Größe · Stückzahl) bleibt erhalten.
           </p>
         </div>
-        <EmbeddedCustomizer product={product} initialColor={color} />
+        <EmbeddedCustomizer 
+          product={product} 
+          initialColor={color}
+          initialSize={size}
+          initialQuantity={qty}
+          initialOptions={selectedOptions}
+          onColorChange={setColor}
+          onSizeChange={setSize}
+          onQuantityChange={setQty}
+          onOptionsChange={setSelectedOptions}
+        />
       </section>
 
       {/* Tabs */}

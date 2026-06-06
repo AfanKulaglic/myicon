@@ -239,7 +239,13 @@ function HeroEditor({ locale, onDataChange }: { locale: Locale; onDataChange: (d
         <div data-field-id="ctaSecondaryUrl"><label className="label">{t("admin.field.ctaSecondaryUrl")}</label><input className="input" {...register("ctaSecondaryUrl")} /></div>
       </div>
       <div data-field-id="imageUrl">
-        <ImageUploader value={watch("imageUrl") ?? ""} onChange={(url) => setValue("imageUrl", url)} folder="hero" label={t("admin.field.heroImage")} />
+        <ImageUploader 
+          value={watch("imageUrl") ?? ""} 
+          onChange={(url) => setValue("imageUrl", url)} 
+          folder="hero" 
+          label={t("admin.field.heroImage")}
+          recommendation="Empfohlen: 1920×1080px (16:9), JPG/WebP, max. 800KB — Hero-Bild auf der Startseite"
+        />
       </div>
       <div>
         <label className="label flex items-center justify-between">
