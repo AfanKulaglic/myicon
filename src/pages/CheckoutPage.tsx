@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { formatCurrency, uid } from "@/lib/utils";
 import { Lock, ShieldCheck } from "lucide-react";
 import { saveOrderToFirestore } from "@/lib/firestore";
+import { PromoCodeInput } from "@/components/cart/PromoCodeInput";
 
 const schema = z.object({
   email: z.string().email("Bitte gültige E-Mail eingeben"),
@@ -23,7 +24,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 export default function CheckoutPage() {
-  const { items, subtotal, clear } = useCartStore();
+  const { items, subtotal, discount, promo, clear } = useCartStore();
   const addOrder = useAuthStore((s) => s.addOrder);
   const addAddress = useAuthStore((s) => s.addAddress);
   const login = useAuthStore((s) => s.login);
@@ -32,8 +33,9 @@ export default function CheckoutPage() {
   const [processing, setProcessing] = useState(false);
 
   const sub = subtotal();
-  const vat = sub * 0.19;
-  const total = sub + vat;
+  const disc = discount();
+  const vat = (sub - disc) * 0.19;
+  const total = sub - disc + vat;
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -74,6 +76,7 @@ export default function CheckoutPage() {
       total,
       status: "pending" as const,
       address,
+      ...(promo ? { promo: { ...promo, discountAmount: disc } } : {}),
     };
     addOrder(order);
     // Await the RTDB write so admin actually sees the order and the customer's
@@ -173,8 +176,16 @@ export default function CheckoutPage() {
               </li>
             ))}
           </ul>
+          <div className="mb-4">
+            <PromoCodeInput />
+          </div>
           <dl className="space-y-1.5 text-sm border-t border-line pt-4">
             <div className="flex justify-between"><dt className="text-ink-muted">Zwischensumme</dt><dd>{formatCurrency(sub)}</dd></div>
+            {disc > 0 && (
+              <div className="flex justify-between text-green-600">
+                <dt>Rabatt {promo ? `(${promo.code})` : ""}</dt><dd>−{formatCurrency(disc)}</dd>
+              </div>
+            )}
             <div className="flex justify-between"><dt className="text-ink-muted">MwSt.</dt><dd>{formatCurrency(vat)}</dd></div>
             <div className="flex justify-between"><dt className="text-ink-muted">Versand</dt><dd className="text-success">Gratis</dd></div>
           </dl>

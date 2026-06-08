@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, ShieldCheck, Truck, Save, ChevronRight, Star, X } from "lucide-react";
-import type { Product } from "@/types";
+import type { Product, CartItem } from "@/types";
 import { Button } from "@/components/ui/Button";
 import { QuantitySelector } from "@/components/ui/QuantitySelector";
 import { CustomOptionsSelector } from "@/components/product/CustomOptionsSelector";
@@ -66,8 +66,9 @@ export function ProductDetail({ product }: Props) {
     }
 
     // Build selected options array for cart
+    type SelectedOption = NonNullable<CartItem["selectedOptions"]>[number];
     const selectedOptionsArray = (product.customOptions ?? [])
-      .map((option) => {
+      .map((option): SelectedOption | null => {
         const choiceId = selectedOptions[option.id];
         if (!choiceId) return null;
         const choice = option.choices.find((c) => c.id === choiceId);
@@ -80,7 +81,7 @@ export function ProductDetail({ product }: Props) {
           priceModifier: choice.priceModifier,
         };
       })
-      .filter(Boolean) as NonNullable<typeof selectedOptionsArray>[number][];
+      .filter((o): o is SelectedOption => o !== null);
 
     addItem({
       productId: product.id,

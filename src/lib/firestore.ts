@@ -8,7 +8,7 @@ import {
   onValue,
 } from "firebase/database";
 import { rtdb } from "./firebase";
-import type { Product, Category, Order } from "@/types";
+import type { Product, Category, Order, PromoCode } from "@/types";
 import { PRODUCTS } from "@/mock-data/products";
 import { CATEGORIES } from "@/mock-data/categories";
 
@@ -236,4 +236,55 @@ export async function getAdminCode(): Promise<string | null> {
 
 export async function setAdminCode(code: string) {
   await set(ref(rtdb, "adminConfig/settings/code"), code);
+}
+
+// ─── Promo Codes ──────────────────────────────────────────────────────────────
+// Structure: promoCodes/{id} = { ...PromoCode }
+
+export function subscribeToPromoCodes(cb: (codes: PromoCode[]) => void) {
+  return onValue(
+    ref(rtdb, "promoCodes"),
+    (snap) => {
+      const val = snap.val() as Record<string, PromoCode> | null;
+      if (!val) { cb([]); return; }
+      const list = Object.entries(val).map(([id, data]) => ({ ...data, id }));
+      list.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
+      cb(list);
+    },
+    (err) => { console.error(err); cb([]); }
+  );
+}
+
+export async function savePromoCode(promo: Partial<PromoCode> & { id?: string }): Promise<string> {
+  const { id, ...data } = promo;
+  if (id) {
+    await update(ref(rtdb, `promoCodes/${id}`), stripUndefined({ ...data, updatedAt: Date.now() }));
+    return id;
+  }
+  const newRef = push(ref(rtdb, "promoCodes"));
+  await set(newRef, stripUndefined({ ...data, createdAt: Date.now() }));
+  return newRef.key!;
+}
+
+export async function deletePromoCode(id: string) {
+  await remove(ref(rtdb, `promoCodes/${id}`));
+}
+
+/**
+ * Validate a code entered by a customer (one-time read).
+ * Returns the matching active PromoCode or null.
+ */
+export async function findPromoByCode(code: string): Promise<PromoCode | null> {
+  try {
+    const snap = await get(ref(rtdb, "promoCodes"));
+    if (!snap.exists()) return null;
+    const val = snap.val() as Record<string, PromoCode>;
+    const normalized = code.trim().toUpperCase();
+    const match = Object.entries(val)
+      .map(([id, data]) => ({ ...data, id }))
+      .find((p) => p.code?.trim().toUpperCase() === normalized && p.active);
+    return match ?? null;
+  } catch {
+    return null;
+  }
 }

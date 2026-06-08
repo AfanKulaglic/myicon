@@ -391,6 +391,13 @@ export default function AdminOrders() {
                                 </div>
                               ))}
                             </div>
+                            {o.promo && (
+                              <div className="mt-3 inline-flex items-center gap-2 rounded-lg bg-green-50 border border-green-200 px-3 py-1.5 text-xs text-green-700">
+                                <span className="font-mono font-semibold">{o.promo.code}</span>
+                                <span>·</span>
+                                <span>−{formatCurrency(o.promo.discountAmount)} Rabatt</span>
+                              </div>
+                            )}
                           </td>
                         </tr>
                       )}

@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { CartItem } from "@/types";
+import type { CartItem, AppliedPromo } from "@/types";
 import { uid } from "@/lib/utils";
+import { computeDiscount } from "@/lib/promo";
 
 interface CartState {
   items: CartItem[];
   isOpen: boolean;
+  promo: AppliedPromo | null;
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
@@ -13,7 +15,10 @@ interface CartState {
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clear: () => void;
+  applyPromo: (promo: AppliedPromo) => void;
+  removePromo: () => void;
   subtotal: () => number;
+  discount: () => number;
   count: () => number;
 }
 
@@ -22,6 +27,7 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       items: [],
       isOpen: false,
+      promo: null,
       openCart: () => set({ isOpen: true }),
       closeCart: () => set({ isOpen: false }),
       toggleCart: () => set((s) => ({ isOpen: !s.isOpen })),
@@ -52,8 +58,17 @@ export const useCartStore = create<CartState>()(
             i.id === id ? { ...i, quantity: Math.max(1, quantity) } : i
           ),
         })),
-      clear: () => set({ items: [] }),
+      clear: () => set({ items: [], promo: null }),
+      applyPromo: (promo) => set({ promo }),
+      removePromo: () => set({ promo: null }),
       subtotal: () => get().items.reduce((sum, i) => sum + i.price * i.quantity, 0),
+      // Recompute discount live against current items so it stays correct
+      // when quantities change after a code was applied.
+      discount: () => {
+        const { promo, items } = get();
+        if (!promo) return 0;
+        return computeDiscount(promo, items);
+      },
       count: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
     }),
     { name: "myicon-cart" }

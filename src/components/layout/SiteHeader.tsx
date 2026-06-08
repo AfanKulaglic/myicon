@@ -34,7 +34,7 @@ export function SiteHeader({ onMenuOpen }: Props) {
   const [showDesktopDropdown, setShowDesktopDropdown] = useState(false);
   const [showMobileDropdown, setShowMobileDropdown] = useState(false);
   
-  const desktopSearchRef = useRef<HTMLDivElement>(null);
+  const desktopSearchRef = useRef<HTMLFormElement>(null);
   const mobileSearchRef = useRef<HTMLDivElement>(null);
 
   // Fuzzy search - tolerant to typos and partial matches

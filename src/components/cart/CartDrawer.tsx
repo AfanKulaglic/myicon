@@ -4,15 +4,18 @@ import { useCartStore } from "@/store/cart";
 import { formatCurrency } from "@/lib/utils";
 import { QuantitySelector } from "@/components/ui/QuantitySelector";
 import { Button } from "@/components/ui/Button";
+import { PromoCodeInput } from "@/components/cart/PromoCodeInput";
 import { useMounted } from "@/hooks/useMounted";
 
 export function CartDrawer() {
-  const { isOpen, closeCart, items, updateQuantity, removeItem, subtotal } = useCartStore();
+  const { isOpen, closeCart, items, updateQuantity, removeItem, subtotal, discount } = useCartStore();
   const mounted = useMounted();
 
   if (!mounted || !isOpen) return null;
 
   const sub = subtotal();
+  const disc = discount();
+  const shipping = sub - disc >= 99 ? 0 : 4.9;
 
   return (
     <div className="fixed inset-0 z-[90]">
@@ -90,18 +93,25 @@ export function CartDrawer() {
 
         {items.length > 0 && (
           <footer className="border-t border-line p-5 space-y-3">
+            <PromoCodeInput />
             <div className="flex items-center justify-between text-sm">
               <span className="text-ink-muted">Zwischensumme</span>
               <span className="font-medium">{formatCurrency(sub)}</span>
             </div>
+            {disc > 0 && (
+              <div className="flex items-center justify-between text-sm text-green-600">
+                <span>Rabatt</span>
+                <span className="font-medium">−{formatCurrency(disc)}</span>
+              </div>
+            )}
             <div className="flex items-center justify-between text-sm">
               <span className="text-ink-muted">Versand</span>
-              <span className="font-medium">{sub >= 99 ? "Kostenlos" : formatCurrency(4.9)}</span>
+              <span className="font-medium">{shipping === 0 ? "Kostenlos" : formatCurrency(shipping)}</span>
             </div>
             <div className="flex items-center justify-between pt-2 border-t border-line">
               <span className="font-semibold">Gesamt</span>
               <span className="font-semibold text-lg">
-                {formatCurrency(sub + (sub >= 99 ? 0 : 4.9))}
+                {formatCurrency(sub - disc + shipping)}
               </span>
             </div>
             <Link to="/checkout" onClick={closeCart}>

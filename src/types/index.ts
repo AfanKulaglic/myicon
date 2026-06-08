@@ -266,4 +266,32 @@ export interface Order {
   total: number;
   status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
   address: Address;
+  /** Promo code applied to this order, if any */
+  promo?: AppliedPromo;
+}
+
+/** Promo / discount code (admin-managed, stored in Firebase) */
+export interface PromoCode {
+  id: string;
+  code: string;                 // normalized to UPPERCASE, e.g. "SOMMER20"
+  description?: string;         // optional internal note shown to admin
+  discountType: "percentage" | "fixed";
+  discountValue: number;        // 20 = 20% (percentage) or 20 = 20€ (fixed)
+  appliesTo: "all" | "specific";
+  productIds: string[];         // used only when appliesTo === "specific"
+  active: boolean;
+  minOrderValue?: number;       // optional minimum subtotal to qualify (€)
+  createdAt?: number;
+  updatedAt?: number;
+}
+
+/** Snapshot of a redeemed promo, stored on cart + order */
+export interface AppliedPromo {
+  code: string;
+  discountType: "percentage" | "fixed";
+  discountValue: number;
+  appliesTo: "all" | "specific";
+  productIds: string[];
+  /** Computed € amount actually discounted (snapshot at apply time) */
+  discountAmount: number;
 }

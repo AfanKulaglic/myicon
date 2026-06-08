@@ -3,12 +3,13 @@ import { Trash2, ShoppingBag } from "lucide-react";
 import { useCartStore } from "@/store/cart";
 import { Button } from "@/components/ui/Button";
 import { QuantitySelector } from "@/components/ui/QuantitySelector";
+import { PromoCodeInput } from "@/components/cart/PromoCodeInput";
 import { formatCurrency } from "@/lib/utils";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { DEFAULT_CART, DEFAULT_CART_EN, type CartContent } from "@/types/content";
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, subtotal } = useCartStore();
+  const { items, removeItem, updateQuantity, subtotal, discount } = useCartStore();
   const c = useSiteContent<CartContent>("page_cart", DEFAULT_CART, DEFAULT_CART_EN);
 
   if (items.length === 0) {
@@ -25,8 +26,9 @@ export default function CartPage() {
   }
 
   const sub = subtotal();
-  const vat = sub * 0.19;
-  const total = sub + vat;
+  const disc = discount();
+  const vat = (sub - disc) * 0.19;
+  const total = sub - disc + vat;
 
   return (
     <div className="container py-10 lg:py-14">
@@ -69,8 +71,18 @@ export default function CartPage() {
 
         <aside className="card p-4 sm:p-6 h-fit lg:sticky lg:top-24">
           <h2 className="font-semibold text-ink mb-4">{c.summaryTitle}</h2>
+
+          <div className="mb-4">
+            <PromoCodeInput />
+          </div>
+
           <dl className="space-y-2 text-sm">
             <div className="flex justify-between"><dt className="text-ink-muted">{c.labelSubtotal}</dt><dd>{formatCurrency(sub)}</dd></div>
+            {disc > 0 && (
+              <div className="flex justify-between text-green-600">
+                <dt>Rabatt</dt><dd>−{formatCurrency(disc)}</dd>
+              </div>
+            )}
             <div className="flex justify-between"><dt className="text-ink-muted">{c.labelVat}</dt><dd>{formatCurrency(vat)}</dd></div>
             <div className="flex justify-between"><dt className="text-ink-muted">{c.labelShipping}</dt><dd className="text-success">{c.labelShippingFree}</dd></div>
           </dl>

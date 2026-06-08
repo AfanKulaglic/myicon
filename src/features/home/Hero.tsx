@@ -69,6 +69,7 @@ export function Hero() {
                   alt="Hero image"
                   width="800"
                   height="600"
+                  // @ts-expect-error - fetchpriority is a valid HTML attribute not yet in React types
                   fetchpriority="high"
                   loading="eager"
                   decoding="async"
