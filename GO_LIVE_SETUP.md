@@ -25,15 +25,15 @@ Resend je servis koji šalje emailove. Besplatan je za tvoj obim:
 - Klikni **"Sign Up"** (gore desno)
 - Registruj se sa Google ili email adresom
 
-**2. Verifikuj domen (VAŽNO!)**
+**2. Verifikuj domen (VAŽNO!)** — ✅ URAĐENO
 - Resend neće slati emailove sa tvoje adrese dok ne dokažeš da je tvoj domen tvoj.
 - U dashboardu klikni **"Add Domain"**
 - Unesi svoj domen: **my-icon.shop**
 - Resend će ti dati **DNS zapise** (tri stvari: `MX`, `TXT`/`SPF`, `DKIM` — to su redovi teksta).
-- Idi na sajt gdje si kupio domen (npr. GoDaddy, IONOS, Strato, Hostinger...) → **DNS Management** → dodaj te zapise.
+- Pošto su nameserveri tvoje domene na Vercelu, ti zapisi se dodaju u **Vercel → Settings → Domains → `my-icon.shop` → DNS Records** (ne u Porkbun).
 - Vrati se u Resend i klikni **"Verify"** — za 5–30 minuta domen postaje verifikovan (zeleno "Verified").
 
-> 💡 **ZA TESTIRANJE (opciono):** Ako ne želiš odmah da se petljaš sa DNS-om, Resend dozvoljava slanje sa `onboarding@resend.dev` — emailovi stižu, ali samo tebi (ili na adrese koje odobriš). Za pravu prodaju ti ipak treba verifikovan domen.
+> ✅ **Status:** domen `my-icon.shop` je verifikovan (potvrđeno — slanje sa `info@my-icon.shop` radi na bilo koju adresu).
 
 **3. Napravi API ključ**
 - U dashboardu lijevo klikni **"API Keys"**
@@ -46,16 +46,25 @@ Resend je servis koji šalje emailove. Besplatan je za tvoj obim:
   re_XXXXXXXXXXXXXX_XXXXXXXXXXXXXXXXXXXX
   ```
 
-**4. Daj mi ključ**
-- Pošalji mi ključ u chat (ili ga upiši u `.env` — objašnjeno ispod).
+**4. Ključ u Vercel (najvažniji korak!)**
+Ključ **NE ide u browser kod** — njega čita serverless funkcija `api/send-email.ts` na Vercelu. Da bi emailovi radili na živom sajtu:
 
-> ✅ **Status:** Ključ je unesen u `.env` kao `VITE_RESEND_API_KEY`.
+- Idi na **vercel.com** → tvoj projekat **myicon** → **Settings** → **Environment Variables**
+- Klikni **Add New** i upiši:
+  - **Key:** `RESEND_API_KEY`
+  - **Value:** tvoj ključ (`re_...`)
+  - Ostavi **Production** označeno → **Save**
+- Idi na **Deployments** → kod zadnjeg deploymenta klikni **⋯** → **Redeploy**
+- Sačekaj 1–2 min da se build završi
+
+> ✅ **Status:** ključ je u `.env` (lokalno) i poslan je test koji radi. Provjeri samo da je `RESEND_API_KEY` dodat u Vercel env vars (korak iznad) — bez toga živi sajt ne šalje emailove.
 
 ### Gdje emailovi stižu
 - Emailovi o narudžbama (potvrda sa IBAN-om, potvrda uplate) idu **kupcu** na adresu koju unese na checkout-u.
 - **Svaki email se automatski šalje i kao kopija (BCC) na `myicon2025@gmail.com`** — tvoj poslovni inbox, da ništa ne propustiš. Podešeno preko `VITE_EMAIL_COPY_TO` u `.env`.
+- **Admin obavijest „Neue Bestellung"** za svaku narudžbu ide na `myicon2025@gmail.com` — sa proizvodima, iznosom i podacima kupca.
 
-> ⚠️ **Dok ne verifikuješ domen:** Resend (besplatan plan) šalje sa `onboarding@resend.dev` **samo na adresu s kojom si registrovao račun**. Ako si račun napravio sa `afankul42@gmail.com`, test emailovi će stizati tamo — to je normalno. Čim verifikuješ domen `my-icon.shop`, emailovi idu svima (i kupcima, i BCC na tvoj gmail).
+> ℹ️ **Zašto je potreban server (`/api/send-email`):** Resend **blokira direktne pozive iz browsera** (CORS — ne šalje `Access-Control-Allow-Origin` zaglavlje). Zato aplikacija šalje email preko svoje serverless funkcije `api/send-email.ts` koja drži ključ na serveru i prosljeđuje Resendu. Ovo je urađeno i radi.
 
 ### 🎨 Dizajn emailova — logo i boje sajta (VEĆ URAĐENO)
 
@@ -65,7 +74,7 @@ Emailovi **nisu generički** — napravljeni su da izgledaju kao tvoja stranica:
 - Plavo **dugme „Bestellung verfolgen"** kao na sajtu
 - **Slika proizvoda** pored svakog artikla u emailu (slika koju je kupac vidio na sajtu). Ako proizvod nema sliku, prikazuje se sivi placeholder sa „MYiCON" — nijedan proizvod ne može biti bez slike u emailu
 
-**Slike i linkovi u emailu koriste Vercel sajt:** `https://myicon-one.vercel.app` (podešeno preko `VITE_PUBLIC_URL` u `.env`). Dugme „Bestellung verfolgen" vodi na tvoj Vercel sajt.
+**Slike i linkovi u emailu koriste Vercel sajt:** `https://www.my-icon.shop` (podešeno preko `VITE_PUBLIC_URL` u `.env`). Dugme „Bestellung verfolgen" vodi na tvoj Vercel sajt.
 
 **Ko dobija koji email (potvrđeno):**
 - **Kupac** — za SVAKU narudžbu (PayPal i Vorkasse) dobija email sa **listom proizvoda** (slika, količina, naziv, cijena) + ukupnim iznosom. Za Vorkasse dodatno IBAN + Verwendungszweck.
@@ -101,26 +110,22 @@ Ako želiš da **svi emailovi** (testni i oni za kupce) idu na tvoj poslovni gma
 
 ### 🛡️ KAKO SAKRITI KLJUČ (najbolje moguće)
 
-Trenutno je tvoja aplikacija **frontend-only** (Vite SPA — sav kod se šalje u browser korisnika). To znači da **svaki ključ koji počne sa `VITE_` može svako vidjeti** u developer alatima (F12 → Network/JS fajlovi).
+Tvoja aplikacija je **frontend-only** (Vite SPA — sav kod se šalje u browser korisnika). Zato se Resend ključ **ne smije** nalaziti u browser kodu — svako bi ga mogao vidjeti (F12 → JS fajlovi).
 
-Zato postoje **dva nivoa** zaštite:
+#### ✅ URAĐENO — Sigurno (Nivo 2) ⭐
+Ključ se drži **na serveru**, browser ga nikad ne vidi:
 
-#### Nivo 1 — Minimalno (radimo sada, default)
-Ključ stoji u `.env` kao `VITE_RESEND_API_KEY`. Radi, ali je vidljiv. **OK samo dok testiraš.**
-
-#### Nivo 2 — Sigurno (preporučeno za lansiranje) ⭐
-Ključ se drži **na serveru**, browser ga nikad ne vidi. Pošto se tvoja aplikacija deploy-uje na **Vercel** (već imaš `vercel.json`), najlakši način je:
-
-**Plan:**
-1. Napravimo jednu malu **Vercel serverless funkciju**: `/api/send-email` — ona drži ključ i šalje email.
-2. Tvoja aplikacija poziva **svoju** funkciju (`/api/send-email`), a ne Resend direktno.
+1. Napravljena je **Vercel serverless funkcija**: `api/send-email.ts` — ona drži ključ i šalje email.
+2. Aplikacija poziva **svoju** funkciju (`/api/send-email`), a ne Resend direktno. (Ovo je i tehnički obavezno — Resend blokira direktne pozive iz browsera zbog CORS-a, pa emailovi bez ove funkcije uopće ne bi stizali.)
 3. Ključ ide u **Vercel Environment Variables** (tamo je siguran, browser ga nikad ne dobije).
-4. `VITE_RESEND_API_KEY` se **briše** iz `.env` i koda.
 
-**Šta trebaš uraditi za ovo (kad budeš spreman):**
-- [ ] Daj mi zeleno svjetlo u chatu da napravim `/api/send-email` funkciju
-- [ ] Kad deploy-uješ na Vercel: **Settings → Environment Variables** → dodaj `RESEND_API_KEY` = tvoj ključ
-- [ ] Lokalno za testiranje, ključ stavi u `.env` kao `RESEND_API_KEY` (bez `VITE_` prefiksa)
+**Šta trebaš uraditi (jednom, ako već nisi):**
+- [ ] U **Vercel → Settings → Environment Variables** dodaj:
+  - **Key:** `RESEND_API_KEY`
+  - **Value:** tvoj Resend ključ (`re_...`)
+  - Označi **Production** → **Save**
+- [ ] Poslije toga idi na **Deployments** → zadnji deployment → **⋯** → **Redeploy**
+- [ ] Lokalno za testiranje, ključ stoji u `.env` kao `RESEND_API_KEY` (bez `VITE_` prefiksa)
 
 > 🔒 **Pravilo:** ključ šalji samo meni (ili ga sam upiši u `.env`). **Nikad ga ne šalji** kupcima, ne stavljaj u GitHub, ne lijepi u chat grupe. Ako ikad procure — u Resend dashboardu obriši stari ključ i napravi novi (5 sekundi).
 
@@ -156,7 +161,7 @@ samo se kreira narudžba. **Nema stvarnog plaćanja** — niko ne šalje novac.
 - PayPal ti **automatski javi** (webhook) da je uplata stigla
 - Narudžba prelazi u „In Bearbeitung" automatski — **bez ručne potvrde**
 
-> ⚠️ **Napomena:** PayPal integracija zahtijeva server (webhook mora negdje da „čuči"). Radićemo je preko Vercel serverless funkcije — isto mjesto gdje će ići Resend ključ.
+> ⚠️ **Napomena:** PayPal integracija zahtijeva server (webhook mora negdje da „čuči"). Radićemo je preko Vercel serverless funkcije — isto mjesto gdje je i Resend ključ.
 
 ---
 
@@ -308,7 +313,7 @@ export const BANK_ACCOUNT = {
 
 ### Prije lansiranja
 - [ ] **Resend:** račun prebačen na `myicon2025@gmail.com`, domen `my-icon.shop` verifikovan, API ključ kreiran
-- [ ] **Resend ključ:** (preporučeno) stavljen u Vercel env vars + `/api/send-email` funkcija; ili (za test) u `.env` kao `VITE_RESEND_API_KEY`
+- [x] **Resend ključ:** `/api/send-email` serverless funkcija napravljena ✅ — samo još provjeri da je `RESEND_API_KEY` dodat u Vercel env vars (Settings → Environment Variables → Redeploy)
 - [ ] **PayPal:** Business račun kreiran; Client ID + Secret predati meni
 - [ ] **Kartica (Stripe):** račun kreiran + verifikovan; Publishable + Secret key predati meni
 - [ ] **Banka:** pravi IBAN + BIC + ime upisani u `src/lib/bank.ts`
@@ -316,7 +321,7 @@ export const BANK_ACCOUNT = {
 - [ ] Test narudžba: kupi proizvod preko Vorkasse → dobiješ email sa IBAN-om → u adminu klikneš "Zahlung erhalten" → kupac dobije email o uplati
 
 ### Šta mi treba da pošalješ da krenemo
-1. **Resend API ključ** ✅ već poslan — sljedeći korak: promijeni email računa na `myicon2025@gmail.com` (koraci u sekciji 1)
+1. **Resend API ključ** ✅ već poslan — sljedeći korak: provjeri `RESEND_API_KEY` u Vercel env vars
 2. **Pravi bankovni podaci** (holder, IBAN, BIC, banka) — ili reci "ostavi fejk za sad"
 3. **PayPal:** Business račun + Client ID + Secret
 4. **Kartica:** Stripe račun + Publishable key + Secret key
