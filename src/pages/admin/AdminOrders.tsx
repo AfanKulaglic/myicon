@@ -2,14 +2,16 @@ import { useEffect, useState, Fragment, useRef } from "react";
 import { subscribeToOrders, updateOrderStatus, deleteOrder } from "@/lib/firestore";
 import { formatCurrency } from "@/lib/utils";
 import { useT } from "@/hooks/useT";
-import { ChevronDown, ChevronRight, Image as ImageIcon, Bell, BellOff, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Image as ImageIcon, Bell, BellOff, Trash2, Landmark, CheckCircle2 } from "lucide-react";
 import type { Order } from "@/types";
 import { useAdminNotificationsStore } from "@/store/adminNotifications";
 import { toast } from "@/store/toast";
+import { sendPaymentReceivedEmail } from "@/lib/email";
 
-const STATUSES = ["pending", "processing", "shipped", "delivered", "cancelled"] as const;
+const STATUSES = ["awaiting_payment", "pending", "processing", "shipped", "delivered", "cancelled"] as const;
 
 const STATUS_COLORS: Record<string, string> = {
+  awaiting_payment: "bg-orange-100 text-orange-700",
   pending: "bg-yellow-100 text-yellow-800",
   processing: "bg-blue-100 text-blue-800",
   shipped: "bg-brand/10 text-brand",
@@ -36,6 +38,7 @@ export default function AdminOrders() {
   };
 
   const STATUS_LABELS: Record<string, string> = {
+    awaiting_payment: t("admin.status.awaitingPayment"),
     pending: t("admin.status.pending"),
     processing: t("admin.status.processing"),
     shipped: t("admin.status.shipped"),
@@ -108,6 +111,33 @@ export default function AdminOrders() {
   const handleStatus = async (orderId: string, status: string) => {
     setUpdating(orderId);
     try { await updateOrderStatus(orderId, status as Order["status"]); } finally { setUpdating(null); }
+  };
+
+  /**
+   * Mark a Vorkasse (bank transfer) order as paid: status → processing and
+   * notify the customer by email that the payment arrived.
+   */
+  const handlePaymentReceived = async (o: Order) => {
+    setUpdating(o.id);
+    try {
+      await updateOrderStatus(o.id, "processing");
+      if (o.email) {
+        // Non-blocking: a failed email must never block the status change.
+        const sent = await sendPaymentReceivedEmail(o).catch(() => false);
+        toast({
+          title: "Zahlung bestätigt",
+          description: sent
+            ? `E-Mail an ${o.email} gesendet`
+            : "E-Mail nicht gesendet (kein API-Key konfiguriert)",
+        });
+      } else {
+        toast({ title: "Zahlung bestätigt", description: "Keine Kunden-E-Mail hinterlegt" });
+      }
+    } catch {
+      toast({ title: "Fehler beim Bestätigen der Zahlung" });
+    } finally {
+      setUpdating(null);
+    }
   };
 
   const handleDelete = async (orderId: string) => {
@@ -207,16 +237,30 @@ export default function AdminOrders() {
                           <span className="text-xs">{o.address?.city}</span>
                         </td>
                         <td className="px-4 py-3">
-                          <select
-                            value={o.status}
-                            disabled={updating === o.id}
-                            onChange={(e) => handleStatus(o.id, e.target.value)}
-                            className={`text-xs px-2 py-1 rounded-full font-medium border-0 cursor-pointer outline-none ${STATUS_COLORS[o.status] ?? ""}`}
-                          >
-                            {STATUSES.map((s) => (
-                              <option key={s} value={s}>{STATUS_LABELS[s]}</option>
-                            ))}
-                          </select>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            {o.paymentMethod === "bank_transfer" && o.status === "awaiting_payment" && (
+                              <button
+                                type="button"
+                                disabled={updating === o.id}
+                                onClick={() => handlePaymentReceived(o)}
+                                className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-semibold bg-green-100 text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50"
+                                title="Zahlungseingang bestätigen und E-Mail an den Kunden senden"
+                              >
+                                <CheckCircle2 className="size-3.5" />
+                                Zahlung erhalten
+                              </button>
+                            )}
+                            <select
+                              value={o.status}
+                              disabled={updating === o.id}
+                              onChange={(e) => handleStatus(o.id, e.target.value)}
+                              className={`text-xs px-2 py-1 rounded-full font-medium border-0 cursor-pointer outline-none ${STATUS_COLORS[o.status] ?? ""}`}
+                            >
+                              {STATUSES.map((s) => (
+                                <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                              ))}
+                            </select>
+                          </div>
                         </td>
                         <td className="px-4 py-3 text-right font-semibold">{formatCurrency(o.total)}</td>
                         <td className="px-4 py-3 text-right">
@@ -391,13 +435,19 @@ export default function AdminOrders() {
                                 </div>
                               ))}
                             </div>
-                            {o.promo && (
-                              <div className="mt-3 inline-flex items-center gap-2 rounded-lg bg-green-50 border border-green-200 px-3 py-1.5 text-xs text-green-700">
-                                <span className="font-mono font-semibold">{o.promo.code}</span>
-                                <span>·</span>
-                                <span>−{formatCurrency(o.promo.discountAmount)} Rabatt</span>
-                              </div>
-                            )}
+                          {o.promo && (
+                            <div className="mt-3 inline-flex items-center gap-2 rounded-lg bg-green-50 border border-green-200 px-3 py-1.5 text-xs text-green-700">
+                              <span className="font-mono font-semibold">{o.promo.code}</span>
+                              <span>·</span>
+                              <span>−{formatCurrency(o.promo.discountAmount)} Rabatt</span>
+                            </div>
+                          )}
+                          {o.paymentMethod === "bank_transfer" && (
+                            <div className="mt-3 inline-flex items-center gap-2 rounded-lg bg-orange-50 border border-orange-200 px-3 py-1.5 text-xs text-orange-700">
+                              <Landmark className="size-3.5" />
+                              Vorkasse / Überweisung
+                            </div>
+                          )}
                           </td>
                         </tr>
                       )}

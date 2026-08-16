@@ -1,1 +1,0 @@
-import{c as s,p as d}from"./vendor-state-CWvRD9P0.js";const e=s()(d(s=>({ids:[],add:d=>s(s=>s.ids.includes(d)?s:{ids:[d,...s.ids]}),remove:d=>s(s=>({ids:s.ids.filter(s=>s!==d)}))}),{name:"myicon-tracked-orders"}));export{e as u};

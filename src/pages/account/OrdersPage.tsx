@@ -9,6 +9,7 @@ import { DEFAULT_ACCOUNT, DEFAULT_ACCOUNT_EN, type AccountContent } from "@/type
 import type { Order } from "@/types";
 
 const STATUS_LABELS: Record<string, string> = {
+  awaiting_payment: "Zahlung ausstehend",
   pending: "Eingegangen",
   processing: "In Bearbeitung",
   shipped: "Versendet",
@@ -17,6 +18,7 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const STATUS_COLORS: Record<string, string> = {
+  awaiting_payment: "bg-orange-100 text-orange-700",
   pending: "bg-yellow-100 text-yellow-800",
   processing: "bg-blue-100 text-blue-800",
   shipped: "bg-brand/10 text-brand",

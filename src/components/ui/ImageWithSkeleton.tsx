@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn, optimizeImage } from "@/lib/utils";
 
 interface ImageWithSkeletonProps {
   src: string;
@@ -21,6 +21,9 @@ export function ImageWithSkeleton({
   height,
 }: ImageWithSkeletonProps) {
   const [loaded, setLoaded] = useState(false);
+  // Remote images are optimized on the fly (resized + WebP) via wsrv.nl,
+  // so e.g. a 2.7 MB ImgBB PNG becomes ~20 KB at card size.
+  const optimizedSrc = optimizeImage(src, width ?? 800);
 
   const aspectClasses = {
     square: "aspect-square",
@@ -38,7 +41,7 @@ export function ImageWithSkeleton({
 
       {/* Actual image */}
       <img
-        src={src}
+        src={optimizedSrc}
         alt={alt}
         width={width}
         height={height}

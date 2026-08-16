@@ -11,32 +11,48 @@ import {
   Copy,
   Check,
   Trash2,
+  Landmark,
+  Banknote,
 } from "lucide-react";
 import { subscribeToOrder } from "@/lib/firestore";
 import { useAuthStore } from "@/store/auth";
 import { useTrackedOrdersStore } from "@/store/trackedOrders";
 import { formatCurrency } from "@/lib/utils";
 import { toast } from "@/store/toast";
+import { BANK_ACCOUNT, paymentReference } from "@/lib/bank";
 import type { Order } from "@/types";
 
 type Status = Order["status"];
 
-const STEPS: { key: Status; label: string; Icon: React.ElementType }[] = [
-  { key: "pending", label: "Eingegangen", Icon: Clock },
-  { key: "processing", label: "In Bearbeitung", Icon: Factory },
-  { key: "shipped", label: "Versandt", Icon: Truck },
-  { key: "delivered", label: "Geliefert", Icon: CheckCircle2 },
-];
-
-const STATUS_INDEX: Record<Status, number> = {
-  pending: 0,
-  processing: 1,
-  shipped: 2,
-  delivered: 3,
-  cancelled: -1,
+/**
+ * Progress steps depend on the payment method:
+ * - PayPal orders start at "Eingegangen" (paid immediately)
+ * - Bank transfer (Vorkasse) orders start at "Zahlung ausstehend" and only
+ *   move to "In Bearbeitung" once the admin confirms the payment.
+ */
+const STEPS_BY_METHOD: Record<Order["paymentMethod"], { key: Status; label: string; Icon: React.ElementType }[]> = {
+  paypal: [
+    { key: "pending", label: "Eingegangen", Icon: Clock },
+    { key: "processing", label: "In Bearbeitung", Icon: Factory },
+    { key: "shipped", label: "Versandt", Icon: Truck },
+    { key: "delivered", label: "Geliefert", Icon: CheckCircle2 },
+  ],
+  bank_transfer: [
+    { key: "awaiting_payment", label: "Zahlung ausstehend", Icon: Landmark },
+    { key: "processing", label: "In Bearbeitung", Icon: Factory },
+    { key: "shipped", label: "Versandt", Icon: Truck },
+    { key: "delivered", label: "Geliefert", Icon: CheckCircle2 },
+  ],
 };
 
+/** Index of a status inside its payment-method step list (-1 = cancelled). */
+function statusIndex(status: Status, method: Order["paymentMethod"]): number {
+  if (status === "cancelled") return -1;
+  return STEPS_BY_METHOD[method].findIndex((s) => s.key === status);
+}
+
 const STATUS_LABEL: Record<Status, string> = {
+  awaiting_payment: "Zahlung ausstehend",
   pending: "Eingegangen",
   processing: "In Bearbeitung",
   shipped: "Versandt",
@@ -46,6 +62,7 @@ const STATUS_LABEL: Record<Status, string> = {
 
 function StatusBadge({ status }: { status: Status }) {
   const map: Record<Status, string> = {
+    awaiting_payment: "bg-orange-100 text-orange-700",
     pending: "bg-yellow-100 text-yellow-800",
     processing: "bg-blue-100 text-blue-800",
     shipped: "bg-brand/10 text-brand",
@@ -59,8 +76,8 @@ function StatusBadge({ status }: { status: Status }) {
   );
 }
 
-function ProgressBar({ status }: { status: Status }) {
-  if (status === "cancelled") {
+function ProgressBar({ order }: { order: Order }) {
+  if (order.status === "cancelled") {
     return (
       <div className="flex items-center gap-2 text-red-600 text-sm font-medium">
         <XCircle className="size-5" />
@@ -68,11 +85,13 @@ function ProgressBar({ status }: { status: Status }) {
       </div>
     );
   }
-  const current = STATUS_INDEX[status];
+  const method = order.paymentMethod ?? "paypal";
+  const steps = STEPS_BY_METHOD[method];
+  const current = statusIndex(order.status, method);
   return (
     <div className="relative">
       <div className="grid grid-cols-4 gap-1 sm:gap-2 relative z-10">
-        {STEPS.map((step, i) => {
+        {steps.map((step, i) => {
           const done = i <= current;
           const Icon = step.Icon;
           return (
@@ -101,7 +120,7 @@ function ProgressBar({ status }: { status: Status }) {
       <div className="absolute top-5 left-[12.5%] right-[12.5%] h-0.5 bg-line -z-0">
         <div
           className="h-full bg-brand transition-all"
-          style={{ width: `${(current / (STEPS.length - 1)) * 100}%` }}
+          style={{ width: `${(current / (steps.length - 1)) * 100}%` }}
         />
       </div>
     </div>
@@ -221,7 +240,7 @@ function OrderCard({ id, defaultOpen, onRemove }: OrderCardProps) {
         </div>
 
         <div className="mt-5">
-          <ProgressBar status={order.status} />
+          <ProgressBar order={order} />
         </div>
       </button>
 
@@ -240,6 +259,31 @@ function OrderCard({ id, defaultOpen, onRemove }: OrderCardProps) {
             <div>
               <p className="text-xs font-medium text-ink-muted mb-1">Status</p>
               <p className="text-sm">{STATUS_LABEL[order.status]}</p>
+              {order.status === "awaiting_payment" && order.paymentMethod === "bank_transfer" && (
+                <div className="mt-3 rounded-lg border border-orange-200 bg-orange-50 p-3">
+                  <p className="flex items-center gap-1.5 text-xs font-medium text-orange-700">
+                    <Banknote className="size-3.5" />
+                    Warten auf Zahlungseingang
+                  </p>
+                  <p className="text-xs text-ink-muted mt-1.5">
+                    Bitte überweisen Sie {formatCurrency(order.total)} an:
+                  </p>
+                  <dl className="mt-2 space-y-1 text-xs">
+                    <div className="flex justify-between gap-3">
+                      <dt className="text-ink-muted">Empfänger</dt>
+                      <dd className="font-medium">{BANK_ACCOUNT.holder}</dd>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <dt className="text-ink-muted">IBAN</dt>
+                      <dd className="font-mono">{BANK_ACCOUNT.iban}</dd>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <dt className="text-ink-muted">Verwendungszweck</dt>
+                      <dd className="font-mono font-semibold">{paymentReference(order.id)}</dd>
+                    </div>
+                  </dl>
+                </div>
+              )}
               <p className="text-xs text-ink-muted mt-2">
                 Der Status wird automatisch aktualisiert, sobald wir Ihre Bestellung weiterverarbeiten.
               </p>

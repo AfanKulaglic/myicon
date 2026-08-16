@@ -7,9 +7,12 @@ import { useCartStore } from "@/store/cart";
 import { useAuthStore } from "@/store/auth";
 import { Button } from "@/components/ui/Button";
 import { formatCurrency, uid } from "@/lib/utils";
-import { Lock, ShieldCheck } from "lucide-react";
+import { Banknote, Landmark, Lock, ShieldCheck } from "lucide-react";
 import { saveOrderToFirestore } from "@/lib/firestore";
 import { PromoCodeInput } from "@/components/cart/PromoCodeInput";
+import { BANK_ACCOUNT, paymentReference } from "@/lib/bank";
+import { sendNewOrderAdminEmail, sendOrderConfirmationEmail } from "@/lib/email";
+import type { PaymentMethod } from "@/types";
 
 const schema = z.object({
   email: z.string().email("Bitte gültige E-Mail eingeben"),
@@ -31,6 +34,7 @@ export default function CheckoutPage() {
   const user = useAuthStore((s) => s.user);
   const navigate = useNavigate();
   const [processing, setProcessing] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("paypal");
 
   const sub = subtotal();
   const disc = discount();
@@ -53,8 +57,13 @@ export default function CheckoutPage() {
 
   const onSubmit = async (values: FormValues) => {
     setProcessing(true);
-    // Simulate PayPal redirect/payment
-    await new Promise((r) => setTimeout(r, 1200));
+
+    // PayPal: simulate the redirect + payment roundtrip.
+    // Bank transfer (Vorkasse): no payment happens at checkout — the customer
+    // transfers the money afterwards, so we skip the fake delay.
+    if (paymentMethod === "paypal") {
+      await new Promise((r) => setTimeout(r, 1200));
+    }
 
     if (!user) login(values.email, values.fullName);
 
@@ -69,12 +78,18 @@ export default function CheckoutPage() {
     addAddress(address);
 
     const orderId = uid("ord");
+    // Bank transfer orders wait for the admin to confirm the payment;
+    // PayPal orders are considered paid immediately.
+    const status: "awaiting_payment" | "pending" =
+      paymentMethod === "bank_transfer" ? "awaiting_payment" : "pending";
     const order = {
       id: orderId,
       createdAt: Date.now(),
       items,
       total,
-      status: "pending" as const,
+      status,
+      paymentMethod,
+      email: values.email,
       address,
       ...(promo ? { promo: { ...promo, discountAmount: disc } } : {}),
     };
@@ -93,8 +108,14 @@ export default function CheckoutPage() {
       return;
     }
 
+    // Fire the order confirmation email (with bank details for Vorkasse) and
+    // the admin "new order" notification. Both go out for PayPal AND Vorkasse.
+    // Non-blocking: a failed email must never break the checkout.
+    sendOrderConfirmationEmail(order).catch(() => {});
+    sendNewOrderAdminEmail(order).catch(() => {});
+
     clear();
-    navigate(`/order/success?id=${orderId}`);
+    navigate(`/order/success?id=${orderId}&method=${paymentMethod}`);
   };
 
   return (
@@ -149,13 +170,72 @@ export default function CheckoutPage() {
 
           <section className="card p-6">
             <h2 className="font-semibold mb-4">Zahlung</h2>
-            <div className="flex items-center gap-3 p-4 rounded-lg border border-line bg-surface-alt">
-              <div className="size-10 rounded-md bg-[#FFC439] grid place-items-center font-bold text-[#003087]">P</div>
-              <div>
-                <div className="font-medium">PayPal</div>
-                <div className="text-xs text-ink-muted">Sicher bezahlen mit Käuferschutz</div>
-              </div>
-              <ShieldCheck className="size-5 text-success ml-auto" />
+            <div className="space-y-3">
+              <label
+                className={`flex items-start gap-3 p-4 rounded-lg border cursor-pointer transition-colors ${
+                  paymentMethod === "paypal"
+                    ? "border-brand ring-1 ring-brand/30 bg-brand/5"
+                    : "border-line bg-surface-alt hover:border-ink-subtle"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="paypal"
+                  checked={paymentMethod === "paypal"}
+                  onChange={() => setPaymentMethod("paypal")}
+                  className="mt-1 accent-[#003087]"
+                />
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <div className="size-8 rounded-md bg-[#FFC439] grid place-items-center font-bold text-[#003087] text-sm">P</div>
+                    <div className="font-medium">PayPal</div>
+                  </div>
+                  <div className="text-xs text-ink-muted mt-1">Sicher bezahlen mit Käuferschutz</div>
+                </div>
+                <ShieldCheck className="size-5 text-success mt-1" />
+              </label>
+
+              <label
+                className={`flex items-start gap-3 p-4 rounded-lg border cursor-pointer transition-colors ${
+                  paymentMethod === "bank_transfer"
+                    ? "border-brand ring-1 ring-brand/30 bg-brand/5"
+                    : "border-line bg-surface-alt hover:border-ink-subtle"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="bank_transfer"
+                  checked={paymentMethod === "bank_transfer"}
+                  onChange={() => setPaymentMethod("bank_transfer")}
+                  className="mt-1 accent-[#1E5AA8]"
+                />
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <div className="size-8 rounded-md bg-brand/10 grid place-items-center text-brand">
+                      <Landmark className="size-4" />
+                    </div>
+                    <div className="font-medium">Banküberweisung / Vorkasse</div>
+                  </div>
+                  <div className="text-xs text-ink-muted mt-1">
+                    Sie zahlen im Voraus per Überweisung — Produktion startet nach Zahlungseingang
+                  </div>
+                </div>
+              </label>
+
+              {paymentMethod === "bank_transfer" && (
+                <div className="rounded-lg border border-line bg-white p-4 text-xs text-ink-muted space-y-1.5">
+                  <div className="flex items-center gap-2 font-medium text-ink">
+                    <Banknote className="size-4 text-brand" />
+                    Überweisungsdaten (per E-Mail erhalten Sie alle Details)
+                  </div>
+                  <div>Empfänger: {BANK_ACCOUNT.holder}</div>
+                  <div className="font-mono">IBAN: {BANK_ACCOUNT.iban}</div>
+                  <div className="font-mono">BIC: {BANK_ACCOUNT.bic}</div>
+                  <div className="font-mono">Verwendungszweck: {paymentReference("…")}</div>
+                </div>
+              )}
             </div>
           </section>
         </div>
@@ -193,7 +273,8 @@ export default function CheckoutPage() {
             <span>Gesamt</span><span>{formatCurrency(total)}</span>
           </div>
           <Button type="submit" loading={processing} className="w-full mt-5 justify-center">
-            <Lock className="size-4" /> Mit PayPal bezahlen
+            <Lock className="size-4" />
+            {paymentMethod === "paypal" ? "Mit PayPal bezahlen" : "Bestellung aufgeben (Vorkasse)"}
           </Button>
           <p className="text-xs text-ink-muted text-center mt-3">
             Sichere Verschlüsselung · SSL geschützt

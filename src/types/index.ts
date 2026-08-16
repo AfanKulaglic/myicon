@@ -259,12 +259,26 @@ export interface Address {
   phone?: string;
 }
 
+export type OrderStatus =
+  | "awaiting_payment" // Vorkasse: customer must transfer the money first
+  | "pending"          // PayPal: paid, awaiting processing
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
+
+export type PaymentMethod = "paypal" | "bank_transfer";
+
 export interface Order {
   id: string;
   createdAt: number;
   items: CartItem[];
   total: number;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  status: OrderStatus;
+  /** Which payment method the customer chose at checkout */
+  paymentMethod: PaymentMethod;
+  /** Customer email (used for order + payment confirmation emails) */
+  email?: string;
   address: Address;
   /** Promo code applied to this order, if any */
   promo?: AppliedPromo;

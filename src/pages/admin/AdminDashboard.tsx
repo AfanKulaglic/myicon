@@ -8,6 +8,7 @@ import { Package, ShoppingBag, TrendingUp, AlertCircle } from "lucide-react";
 import type { Order } from "@/types";
 
 const STATUS_COLORS: Record<string, string> = {
+  awaiting_payment: "bg-orange-100 text-orange-700",
   pending: "bg-yellow-100 text-yellow-800",
   processing: "bg-blue-100 text-blue-800",
   shipped: "bg-brand/10 text-brand",
@@ -21,6 +22,7 @@ export default function AdminDashboard() {
   const { products } = useProducts(false);
 
   const STATUS_LABELS: Record<string, string> = {
+    awaiting_payment: t("admin.status.awaitingPayment"),
     pending: t("admin.status.pending"),
     processing: t("admin.status.processing"),
     shipped: t("admin.status.shipped"),
