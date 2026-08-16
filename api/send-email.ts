@@ -13,44 +13,31 @@
  *   VITE_RESEND_API_KEY — accepted as a fallback if RESEND_API_KEY is unset
  */
 
-export default async function handler(request: Request): Promise<Response> {
-  if (request.method === "OPTIONS") {
-    // Preflight for cross-origin calls (Vercel functions respond same-origin,
-    // but keep this for safety with custom domains).
-    return new Response(null, { status: 204 });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function handler(req: any, res: any) {
+  // Vercel parses the JSON body automatically for Node.js functions.
+  if (req.method === "OPTIONS") {
+    res.status(204).end();
+    return;
   }
-
-  if (request.method !== "POST") {
-    return new Response(JSON.stringify({ error: "Method not allowed" }), {
-      status: 405,
-      headers: { "Content-Type": "application/json" },
-    });
+  if (req.method !== "POST") {
+    res.status(405).json({ error: "Method not allowed" });
+    return;
   }
 
   const apiKey = process.env.RESEND_API_KEY || process.env.VITE_RESEND_API_KEY;
   if (!apiKey) {
-    return new Response(
-      JSON.stringify({ error: "RESEND_API_KEY not configured" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    res.status(500).json({ error: "RESEND_API_KEY not configured" });
+    return;
   }
 
-  let body: Record<string, unknown>;
-  try {
-    body = await request.json();
-  } catch {
-    return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
-  const { from, to, subject, html, text, bcc } = body ?? {};
+  const body = req.body ?? {};
+  const { from, to, subject, html, text, bcc } = body;
   if (!to || !subject || !html) {
-    return new Response(
-      JSON.stringify({ error: "Missing required fields: to, subject, html" }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
-    );
+    res
+      .status(400)
+      .json({ error: "Missing required fields: to, subject, html" });
+    return;
   }
 
   const payload: Record<string, unknown> = {
@@ -66,7 +53,7 @@ export default async function handler(request: Request): Promise<Response> {
   if (bcc) payload.bcc = Array.isArray(bcc) ? bcc : [bcc];
 
   try {
-    const res = await fetch("https://api.resend.com/emails", {
+    const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -74,21 +61,13 @@ export default async function handler(request: Request): Promise<Response> {
       },
       body: JSON.stringify(payload),
     });
-    const data = await res.json();
-    if (!res.ok) {
-      return new Response(JSON.stringify({ error: data }), {
-        status: res.status,
-        headers: { "Content-Type": "application/json" },
-      });
+    const data = await r.json();
+    if (!r.ok) {
+      res.status(r.status).json({ error: data });
+      return;
     }
-    return new Response(JSON.stringify(data), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    res.status(200).json(data);
   } catch (err) {
-    return new Response(JSON.stringify({ error: String(err) }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    res.status(500).json({ error: String(err) });
   }
 }
