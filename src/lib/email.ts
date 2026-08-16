@@ -19,7 +19,7 @@ import { formatCurrency, optimizeImage } from "./utils";
 const API_KEY = (import.meta.env.VITE_RESEND_API_KEY as string | undefined) ?? "";
 const FROM_EMAIL =
   (import.meta.env.VITE_EMAIL_FROM as string | undefined) ??
-  "MYICON <onboarding@resend.dev>";
+  "MYICON <info@my-icon.shop>";
 /**
  * The shop owner's business inbox. Every customer email is also delivered
  * (BCC) here, and the admin "new order" notification is addressed to it.
