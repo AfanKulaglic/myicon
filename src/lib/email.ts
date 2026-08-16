@@ -6,17 +6,18 @@ import { formatCurrency, optimizeImage } from "./utils";
  * Transactional emails via Resend (https://resend.com — free tier: 3,000
  * emails/month, 100/day).
  *
- * SECURITY NOTE: This app is frontend-only (Vite SPA, no server), so the API
- * key is read from `VITE_RESEND_API_KEY` and would be visible in the client
- * bundle. That is acceptable for the current prototype, but for production the
- * sending should be moved behind a serverless function (e.g. a Vercel API
- * route or Firebase Cloud Function) so the key never ships to the browser.
+ * The Resend API key lives SERVER-SIDE only — it is read by the Vercel
+ * serverless function `api/send-email.ts` from `RESEND_API_KEY`, so it never
+ * ships to the browser. This client module renders the email HTML and posts
+ * it to its own `/api/send-email` endpoint, which relays it to Resend.
+ * Sending through the server also avoids Resend's CORS restriction: direct
+ * browser calls to api.resend.com are blocked (no Access-Control-Allow-Origin
+ * header), which is why a serverless relay is required.
  *
- * If no API key is configured, the functions log to the console and resolve
- * without throwing — the order flow must never break because of email.
+ * If the endpoint fails, the functions log to the console and resolve without
+ * throwing — the order flow must never break because of email.
  */
 
-const API_KEY = (import.meta.env.VITE_RESEND_API_KEY as string | undefined) ?? "";
 const FROM_EMAIL =
   (import.meta.env.VITE_EMAIL_FROM as string | undefined) ??
   "MYICON <info@my-icon.shop>";
@@ -66,35 +67,31 @@ interface SendEmailInput {
 }
 
 /**
- * Low-level sender. Returns true when the email was accepted by Resend,
- * false when it was skipped (no key) or failed.
+ * Low-level sender. Renders are built by this client module; the actual
+ * delivery happens through the serverless endpoint `/api/send-email` (which
+ * holds the Resend API key server-side). Returns true when the email was
+ * accepted, false when it was skipped or failed.
  */
 export async function sendEmail({ to, subject, html, text }: SendEmailInput): Promise<boolean> {
-  if (!API_KEY) {
-    // Dev fallback: no key configured — log instead of sending.
-    console.info(`[email:mock] To: ${to} | ${subject}`);
-    return false;
-  }
   try {
-    const res = await fetch("https://api.resend.com/emails", {
+    const res = await fetch("/api/send-email", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         from: FROM_EMAIL,
-        to: [to],
+        to,
         // BCC a copy to the shop owner — unless the email is already for them
         // (the admin notification), to avoid duplicates.
-        ...(COPY_TO && COPY_TO !== to ? { bcc: [COPY_TO] } : {}),
+        ...(COPY_TO && COPY_TO !== to ? { bcc: COPY_TO } : {}),
         subject,
         html,
         ...(text ? { text } : {}),
       }),
     });
     if (!res.ok) {
-      console.error("[email] Resend error", res.status, await res.text());
+      console.error("[email] Relay error", res.status, await res.text());
       return false;
     }
     return true;
