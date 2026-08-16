@@ -25,7 +25,9 @@ const FROM_EMAIL =
  * (BCC) here, and the admin "new order" notification is addressed to it.
  * Set via VITE_EMAIL_COPY_TO.
  */
-const COPY_TO = (import.meta.env.VITE_EMAIL_COPY_TO as string | undefined) ?? "";
+const COPY_TO =
+  (import.meta.env.VITE_EMAIL_COPY_TO as string | undefined) ??
+  "myicon2025@gmail.com";
 /**
  * Public base URL of the live shop (Vercel). Used for the logo fallback and
  * for links inside emails (tracking page). Override via VITE_PUBLIC_URL.
