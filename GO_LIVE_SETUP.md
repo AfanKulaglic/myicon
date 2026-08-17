@@ -131,6 +131,40 @@ Ključ se drži **na serveru**, browser ga nikad ne vidi:
 
 ---
 
+## 6. 🤖 GROQ — AI podrška u chatu (besplatno)
+
+### Šta je Groq?
+Groq je AI provajder sa **besplatnim nivoom** (bez kartice) koji nudi OpenAI GPT-OSS modele. Koristi se za **AI chat podršku** na sajtu — dugme dole desno gdje kupci mogu pitati o proizvodima, narudžbama, dostavi itd.
+
+### Korak po korak (5 minuta)
+
+**1. Kreiraj račun**
+- Idi na: **https://console.groq.com**
+- Registruj se (Google ili email) — **bez kartice**
+
+**2. Napravi API ključ**
+- U dashboardu klikni **"API Keys"**
+- Klikni **"Create API Key"** → ime npr. `myicon` → **Create**
+- **Kopiraj ključ** (izgleda kao `gsk_...`)
+
+**3. Ključ u Vercel (najvažnije!)**
+- **vercel.com** → projekat **myicon** → **Settings** → **Environment Variables**
+- **Add New**: Key `GROQ_API_KEY`, Value tvoj ključ (`gsk_...`), označi **Production** → **Save**
+- **Deployments** → zadnji deployment → **⋯** → **Redeploy**
+
+### Kako AI radi
+- **Poznaje sve proizvode** iz baze (naslov, cijena, opis, boje, veličine — uživo)
+- **Provjerava status narudžbe** — kupac napiše broj `ord_...` i AI mu kaže status
+- Odgovara **na njemačkom**
+- **NE otkriva IBAN/BIC** u chatu — kupca šalje na email (pravilo u system promptu)
+- Ključ se čuva **samo na serveru** (`api/chat.ts`) — nikad u browseru
+
+> ✅ **Status:** kod napravljen i testiran lokalno — radi. Treba samo dodati `GROQ_API_KEY` u Vercel env vars + Redeploy.
+
+---
+
+
+
 ## 2. 💳 PAYPAL — šta ti treba za PRAVA plaćanja
 
 ### Trenutno stanje
