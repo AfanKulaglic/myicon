@@ -17,6 +17,7 @@ import {
   EyeOff,
   Menu,
   X,
+  BarChart3,
 } from "lucide-react";
 
 function CodeGate() {
@@ -79,6 +80,7 @@ export default function AdminLayout() {
     { to: "/admin/products", icon: Package, label: t("admin.nav.products") },
     { to: "/admin/categories", icon: Tag, label: t("admin.nav.categories") },
     { to: "/admin/orders", icon: ShoppingBag, label: t("admin.nav.orders") },
+    { to: "/admin/analytics", icon: BarChart3, label: t("admin.nav.analytics") },
     { to: "/admin/promo-codes", icon: Ticket, label: t("admin.nav.promoCodes") },
     { to: "/admin/content", icon: FileText, label: t("admin.nav.content") },
     { to: "/admin/settings", icon: Settings, label: t("admin.nav.settings") },

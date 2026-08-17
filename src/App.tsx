@@ -6,6 +6,7 @@ import { MobileMenu } from "@/components/layout/MobileMenu";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Toaster } from "@/components/ui/Toaster";
 import AiChatWidget from "@/components/chat/AiChatWidget";
+import { trackPageView } from "@/lib/analytics";
 
 // Route-level code splitting — each page gets its own chunk
 const HomePage = lazy(() => import("@/pages/HomePage"));
@@ -47,12 +48,14 @@ const AdminCategories = lazy(() => import("@/pages/admin/AdminCategories"));
 const AdminOrders = lazy(() => import("@/pages/admin/AdminOrders"));
 const AdminContent = lazy(() => import("@/pages/admin/AdminContent"));
 const AdminSettings = lazy(() => import("@/pages/admin/AdminSettings"));
+const AdminAnalytics = lazy(() => import("@/pages/admin/AdminAnalytics"));
 const AdminPromoCodes = lazy(() => import("@/pages/admin/AdminPromoCodes"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
+    trackPageView(pathname);
   }, [pathname]);
   return null;
 }
@@ -84,6 +87,7 @@ export function App() {
           <Route path="products/:id" element={<AdminProductForm />} />
           <Route path="categories" element={<AdminCategories />} />
           <Route path="orders" element={<AdminOrders />} />
+          <Route path="analytics" element={<AdminAnalytics />} />
           <Route path="promo-codes" element={<AdminPromoCodes />} />
           <Route path="content" element={<AdminContent />} />
           <Route path="settings" element={<AdminSettings />} />

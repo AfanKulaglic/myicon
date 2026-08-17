@@ -6,9 +6,17 @@
  * Firebase (product catalog, and the order the customer is asking about) and
  * relays it to Groq's OpenAI-compatible endpoint.
  *
+ * Model fallback: three free-tier models are tried in order. If one returns a
+ * rate-limit (429) or any error, the next model is used automatically, so the
+ * chat keeps working even when the daily limit of one model is exhausted.
+ *
+ * Every conversation is logged to Firebase under `chatLogs/` with the
+ * timestamp, country (Vercel header) and device type so the shop owner can
+ * review questions and answers in the admin panel.
+ *
  * Environment variables (Vercel → Settings → Environment Variables):
  *   GROQ_API_KEY  — Groq API key (free tier, https://console.groq.com)
- *   GROQ_MODEL    — optional, defaults to "openai/gpt-oss-120b"
+ *   GROQ_MODEL    — optional, overrides the primary model
  *   VITE_FIREBASE_DATABASE_URL — optional, defaults to the shop's RTDB URL
  */
 
@@ -18,6 +26,13 @@ const GROQ_MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-120b";
 const DB_URL =
   process.env.VITE_FIREBASE_DATABASE_URL ||
   "https://wlab-40444-default-rtdb.firebaseio.com";
+
+/** Fallback chain: primary + two reserves (all free on Groq's free tier). */
+const MODEL_CHAIN = [
+  GROQ_MODEL,
+  "openai/gpt-oss-20b",
+  "qwen/qwen3.6-27b",
+].filter((m, i, arr) => m && arr.indexOf(m) === i);
 
 interface ChatMessage {
   role: "system" | "user" | "assistant";
@@ -32,6 +47,14 @@ async function fetchJson(url: string): Promise<unknown> {
     throw new Error(`Firebase ${res.status}`);
   }
   return res.json();
+}
+
+/** Guess device type from the User-Agent header. */
+function detectDevice(ua: string): "mobile" | "tablet" | "desktop" {
+  const u = ua.toLowerCase();
+  if (/(ipad|tablet)/.test(u)) return "tablet";
+  if (/(iphone|ipod|android|mobile)/.test(u)) return "mobile";
+  return "desktop";
 }
 
 /** Compact product catalog for the AI — id, title, category, price, blurb. */
@@ -109,8 +132,6 @@ async function getOrder(orderId: string): Promise<string | null> {
 async function buildSystemPrompt(latestUserText: string): Promise<string> {
   const catalog = await getCatalog();
 
-  // If the customer mentions an order number, fetch it and give the AI
-  // the live status so it can answer accurately.
   const orderMatch = latestUserText.match(/ord_[A-Za-z0-9]+/i);
   const orderInfo = orderMatch ? await getOrder(orderMatch[0]) : null;
 
@@ -135,6 +156,42 @@ Aktueller Produktkatalog:
 ${catalog || "(Katalog derzeit nicht verfügbar)"}`;
 }
 
+/** Write a chat log entry to Firebase (best-effort, never blocks the reply). */
+async function logChat({
+  question,
+  reply,
+  model,
+  country,
+  device,
+  userAgent,
+}: {
+  question: string;
+  reply: string;
+  model: string;
+  country: string;
+  device: string;
+  userAgent: string;
+}): Promise<void> {
+  try {
+    const entry = {
+      ts: Date.now(),
+      question: question.slice(0, 1000),
+      reply: reply.slice(0, 4000),
+      model,
+      country: country || "",
+      device,
+      userAgent: userAgent.slice(0, 300),
+    };
+    await fetch(`${DB_URL}/chatLogs.json`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(entry),
+    });
+  } catch {
+    /* logging must never break the chat */
+  }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function handler(req: any, res: any) {
   if (req.method === "OPTIONS") {
@@ -157,34 +214,69 @@ export default async function handler(req: any, res: any) {
     return;
   }
 
-  // Only the last user message is used for context lookups (order number etc.)
   const lastUser =
     [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
+
+  // Request metadata for analytics
+  const country = String(req.headers["x-vercel-ip-country"] ?? "");
+  const device = detectDevice(String(req.headers["user-agent"] ?? ""));
 
   try {
     const system = await buildSystemPrompt(lastUser);
     const payload = {
-      model: GROQ_MODEL,
+      model: MODEL_CHAIN[0],
       messages: [{ role: "system", content: system }, ...messages],
       temperature: 0.4,
       max_tokens: 600,
     };
 
-    const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${GROQ_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-    const data = await r.json();
-    if (!r.ok) {
-      res.status(r.status).json({ error: data });
+    // Try each model in the fallback chain until one answers.
+    let reply = "";
+    let usedModel = "";
+    let lastError: unknown = null;
+    for (const model of MODEL_CHAIN) {
+      try {
+        const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${GROQ_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...payload, model }),
+        });
+        if (!r.ok) {
+          // 429 = rate limit (daily quota used up) → try the next model
+          lastError = `model ${model} failed with ${r.status}`;
+          continue;
+        }
+        const data = await r.json();
+        reply = data?.choices?.[0]?.message?.content ?? "";
+        usedModel = model;
+        break;
+      } catch (err) {
+        lastError = err;
+        continue;
+      }
+    }
+
+    if (!reply) {
+      res.status(502).json({
+        error: `All models unavailable: ${String(lastError)}`,
+      });
       return;
     }
-    const text = data?.choices?.[0]?.message?.content ?? "";
-    res.status(200).json({ reply: text });
+
+    // Fire-and-forget the log entry so the admin can review it later.
+    void logChat({
+      question: lastUser,
+      reply,
+      model: usedModel,
+      country,
+      device,
+      userAgent: String(req.headers["user-agent"] ?? ""),
+    });
+
+    res.status(200).json({ reply, model: usedModel });
   } catch (err) {
     res.status(500).json({ error: String(err) });
   }

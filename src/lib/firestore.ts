@@ -274,6 +274,58 @@ export async function deletePromoCode(id: string) {
  * Validate a code entered by a customer (one-time read).
  * Returns the matching active PromoCode or null.
  */
+
+// ─── Analytics: chat logs + page views ───────────────────────────────────────
+
+export interface ChatLogEntry {
+  id: string;
+  ts: number;
+  question: string;
+  reply: string;
+  model?: string;
+  country?: string;
+  device?: string;
+  userAgent?: string;
+}
+
+export function subscribeToChatLogs(cb: (logs: ChatLogEntry[]) => void) {
+  return onValue(
+    ref(rtdb, "chatLogs"),
+    (snap) => {
+      const val = snap.val() as Record<string, ChatLogEntry> | null;
+      if (!val) { cb([]); return; }
+      const list = Object.entries(val).map(([id, data]) => ({ ...data, id }));
+      list.sort((a, b) => (b.ts ?? 0) - (a.ts ?? 0));
+      cb(list);
+    },
+    (err) => { console.error(err); cb([]); }
+  );
+}
+
+export interface PageViewEntry {
+  id: string;
+  ts: number;
+  path: string;
+  sessionId: string;
+  ref?: string;
+  country?: string;
+  device?: string;
+}
+
+export function subscribeToPageViews(cb: (views: PageViewEntry[]) => void) {
+  return onValue(
+    ref(rtdb, "pageViews"),
+    (snap) => {
+      const val = snap.val() as Record<string, PageViewEntry> | null;
+      if (!val) { cb([]); return; }
+      const list = Object.entries(val).map(([id, data]) => ({ ...data, id }));
+      list.sort((a, b) => (b.ts ?? 0) - (a.ts ?? 0));
+      cb(list);
+    },
+    (err) => { console.error(err); cb([]); }
+  );
+}
+
 export async function findPromoByCode(code: string): Promise<PromoCode | null> {
   try {
     const snap = await get(ref(rtdb, "promoCodes"));
