@@ -6,7 +6,7 @@ import { ChevronDown, ChevronRight, Image as ImageIcon, Bell, BellOff, Trash2, L
 import type { Order } from "@/types";
 import { useAdminNotificationsStore } from "@/store/adminNotifications";
 import { toast } from "@/store/toast";
-import { sendPaymentReceivedEmail } from "@/lib/email";
+import { sendPaymentReceivedEmail, sendOrderShippedEmail, sendOrderDeliveredEmail } from "@/lib/email";
 
 const STATUSES = ["awaiting_payment", "pending", "processing", "shipped", "delivered", "cancelled"] as const;
 
@@ -55,9 +55,6 @@ export default function AdminOrders() {
   }, []);
 
   // ── New-order notifications ────────────────────────────────────────────────
-  // First snapshot from RTDB is *all existing orders* — those must NOT
-  // trigger a notification. We seed `markSeen` with their ids on first run,
-  // then any id appearing in a later snapshot that we haven't seen is "new".
   const seenIds = useAdminNotificationsStore((s) => s.seenOrderIds);
   const markSeen = useAdminNotificationsStore((s) => s.markSeen);
   const initialised = useRef(false);
@@ -69,7 +66,6 @@ export default function AdminOrders() {
   useEffect(() => {
     if (orders.length === 0) return;
     if (!initialised.current) {
-      // Seed: on first load, treat every currently-known id as already seen.
       markSeen(orders.map((o) => o.id));
       initialised.current = true;
       return;
@@ -77,7 +73,6 @@ export default function AdminOrders() {
     const seenSet = new Set(seenIds);
     const fresh = orders.filter((o) => !seenSet.has(o.id));
     if (fresh.length === 0) return;
-    // Play chime
     try {
       audioRef.current?.play().catch(() => {});
     } catch {
@@ -108,9 +103,45 @@ export default function AdminOrders() {
     setNotifAllowed(res);
   };
 
-  const handleStatus = async (orderId: string, status: string) => {
+  /**
+   * Handle status change from the dropdown. Sends a customer email when the
+   * status moves to "shipped" or "delivered".
+   */
+  const handleStatus = async (orderId: string, newStatus: string) => {
+    const order = orders.find((o) => o.id === orderId);
     setUpdating(orderId);
-    try { await updateOrderStatus(orderId, status as Order["status"]); } finally { setUpdating(null); }
+    try {
+      await updateOrderStatus(orderId, newStatus as Order["status"]);
+
+      // Notify the customer on key status transitions
+      if (order?.email) {
+        if (newStatus === "shipped") {
+          const sent = await sendOrderShippedEmail(order).catch(() => false);
+          toast({
+            title: "Versendet",
+            description: sent
+              ? `E-Mail an ${order.email} gesendet — Bestellung ist unterwegs`
+              : "Bestellung als versendet markiert",
+          });
+        } else if (newStatus === "delivered") {
+          const sent = await sendOrderDeliveredEmail(order).catch(() => false);
+          toast({
+            title: "Zugestellt",
+            description: sent
+              ? `E-Mail an ${order.email} gesendet — Bestellung zugestellt`
+              : "Bestellung als zugestellt markiert",
+          });
+        } else {
+          toast({ title: "Status aktualisiert" });
+        }
+      } else {
+        toast({ title: "Status aktualisiert" });
+      }
+    } catch {
+      toast({ title: "Fehler beim Aktualisieren des Status" });
+    } finally {
+      setUpdating(null);
+    }
   };
 
   /**
@@ -122,7 +153,6 @@ export default function AdminOrders() {
     try {
       await updateOrderStatus(o.id, "processing");
       if (o.email) {
-        // Non-blocking: a failed email must never block the status change.
         const sent = await sendPaymentReceivedEmail(o).catch(() => false);
         toast({
           title: "Zahlung bestätigt",
@@ -155,7 +185,6 @@ export default function AdminOrders() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
-      {/* Embedded short chime (base64 WAV) — no extra HTTP roundtrip, plays on new order */}
       <audio
         ref={audioRef}
         preload="auto"

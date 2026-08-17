@@ -285,6 +285,70 @@ export async function sendPaymentReceivedEmail(order: Order): Promise<boolean> {
 }
 
 /**
+ * Order shipped notification — sent to the customer when the admin marks the
+ * order as "shipped" (Versandt).
+ */
+export async function sendOrderShippedEmail(order: Order): Promise<boolean> {
+  const to = order.email;
+  if (!to) return false;
+
+  const html = shell(`
+    <h2 style="margin:0 0 12px;font-size:18px;">Ihre Bestellung ist auf dem Weg! 🚚</h2>
+    <p style="margin:0 0 16px;">
+      Ihre Bestellung <strong style="font-family:monospace;">${esc(order.id)}</strong> wurde
+      soeben versendet und ist nun <strong>unterwegs zu Ihnen</strong>.
+    </p>
+
+    ${itemsTableHtml(order)}
+
+    <p style="margin:0 0 16px;font-size:13px;color:${BRAND.muted};">
+      Sie erhalten eine weitere E-Mail, sobald Ihre Bestellung zugestellt wurde.
+    </p>
+
+    <p style="margin:0 0 20px;font-size:13px;color:${BRAND.muted};">
+      Den Status Ihrer Bestellung können Sie jederzeit online verfolgen.
+    </p>
+    ${ctaButton(`${PUBLIC_URL}/order/track/${esc(order.id)}`, "Bestellung verfolgen")}
+  `);
+
+  return sendEmail({
+    to,
+    subject: `Ihre Bestellung ${order.id} bei MYICON — ist unterwegs!`,
+    html,
+  });
+}
+
+/**
+ * Order delivered notification — sent to the customer when the admin marks the
+ * order as "delivered" (Geliefert).
+ */
+export async function sendOrderDeliveredEmail(order: Order): Promise<boolean> {
+  const to = order.email;
+  if (!to) return false;
+
+  const html = shell(`
+    <h2 style="margin:0 0 12px;font-size:18px;">Ihre Bestellung wurde zugestellt! ✅</h2>
+    <p style="margin:0 0 16px;">
+      Ihre Bestellung <strong style="font-family:monospace;">${esc(order.id)}</strong> wurde
+      erfolgreich zugestellt. Wir hoffen, Ihnen hat das Produkt gefallen!
+    </p>
+
+    ${itemsTableHtml(order)}
+
+    <p style="margin:0 0 16px;font-size:13px;color:${BRAND.muted};">
+      Bei Fragen oder Problemen stehen wir Ihnen gerne zur Verfügung.
+    </p>
+    ${ctaButton(`${PUBLIC_URL}/order/track/${esc(order.id)}`, "Bestellung ansehen")}
+  `);
+
+  return sendEmail({
+    to,
+    subject: `Ihre Bestellung ${order.id} bei MYICON — zugestellt`,
+    html,
+  });
+}
+
+/**
  * Admin "new order" notification — sent to the shop owner's inbox
  * (VITE_EMAIL_COPY_TO) for EVERY order. Lists the ordered products with their
  * images, the total and the customer's data so the admin can start fulfilling.
