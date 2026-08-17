@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -7,7 +7,7 @@ import { useCartStore } from "@/store/cart";
 import { useAuthStore } from "@/store/auth";
 import { Button } from "@/components/ui/Button";
 import { formatCurrency, uid } from "@/lib/utils";
-import { Landmark, Lock, ShieldCheck, Mail } from "lucide-react";
+import { Landmark, Lock, ShieldCheck, Mail, Loader2 } from "lucide-react";
 import { saveOrderToFirestore } from "@/lib/firestore";
 import { PromoCodeInput } from "@/components/cart/PromoCodeInput";
 import { sendNewOrderAdminEmail, sendOrderConfirmationEmail } from "@/lib/email";
@@ -24,6 +24,9 @@ const schema = z.object({
 });
 
 type FormValues = z.infer<typeof schema>;
+
+/** Pending PayPal order kept in sessionStorage while the customer is on paypal.com */
+const PENDING_KEY = "pendingPaypal";
 
 export default function CheckoutPage() {
   const { items, subtotal, discount, promo, clear } = useCartStore();
@@ -45,27 +48,89 @@ export default function CheckoutPage() {
     defaultValues: { country: "Deutschland", email: user?.email ?? "", fullName: user?.name ?? "" },
   });
 
-  if (items.length === 0 && !processing) {
-    return (
-      <div className="container py-16 text-center">
-        <h1 className="h-section">Ihr Warenkorb ist leer</h1>
-        <Link to="/categories" className="btn btn-primary mt-6 inline-flex">Weiter einkaufen</Link>
-      </div>
-    );
-  }
+  // ─── PayPal return / cancel handling ───────────────────────────────────────
+  // After the customer approves on paypal.com they are redirected back to
+  // /checkout?paypal=return&token=...&PayerID=... ; if they cancel it's
+  // /checkout?paypal=cancel. We capture the approved payment here and only
+  // then create the order in Firebase (a PayPal order is paid immediately).
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const paypal = params.get("paypal");
+    const token = params.get("token");
 
-  const onSubmit = async (values: FormValues) => {
-    setProcessing(true);
-
-    // PayPal: simulate the redirect + payment roundtrip.
-    // Bank transfer (Vorkasse): no payment happens at checkout — the customer
-    // transfers the money afterwards, so we skip the fake delay.
-    if (paymentMethod === "paypal") {
-      await new Promise((r) => setTimeout(r, 1200));
+    if (paypal === "cancel") {
+      sessionStorage.removeItem(PENDING_KEY);
+      window.history.replaceState({}, "", "/checkout");
+      setProcessing(false);
+      alert("Die PayPal-Zahlung wurde abgebrochen. Sie können es erneut versuchen.");
+      return;
     }
 
-    if (!user) login(values.email, values.fullName);
+    if (paypal === "return" && token) {
+      window.history.replaceState({}, "", "/checkout");
+      completePayPalPayment(token);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  const completePayPalPayment = async (paypalOrderId: string) => {
+    const raw = sessionStorage.getItem(PENDING_KEY);
+    if (!raw) {
+      setProcessing(false);
+      alert("Ihre Bestellung konnte nicht zugeordnet werden. Bitte versuchen Sie es erneut.");
+      return;
+    }
+    let pending: { order: ReturnType<typeof buildOrder> };
+    try {
+      pending = JSON.parse(raw);
+    } catch {
+      sessionStorage.removeItem(PENDING_KEY);
+      setProcessing(false);
+      alert("Ihre Bestellung konnte nicht zugeordnet werden. Bitte versuchen Sie es erneut.");
+      return;
+    }
+
+    setProcessing(true);
+    try {
+      const res = await fetch("/api/paypal/capture-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: paypalOrderId }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.status !== "COMPLETED") {
+        console.error("[paypal] capture failed", res.status, data);
+        alert(
+          "Die PayPal-Zahlung konnte nicht abgeschlossen werden. Falls das Geld abgebucht wurde, kontaktieren Sie uns bitte unter myicon2025@gmail.com.",
+        );
+        return;
+      }
+
+      const order = pending.order;
+      // Sanity check: captured amount should match what the customer was charged.
+      const captured = Number(data.amount);
+      if (Number.isFinite(captured) && Math.abs(captured - order.total) > 0.01) {
+        console.warn("[paypal] amount mismatch", captured, order.total);
+      }
+
+      // Payment confirmed — persist the order, notify customer + admin.
+      await saveOrderToFirestore(order);
+      sendOrderConfirmationEmail(order).catch(() => {});
+      sendNewOrderAdminEmail(order).catch(() => {});
+      addOrder(order);
+      sessionStorage.removeItem(PENDING_KEY);
+      clear();
+      navigate(`/order/success?id=${order.id}&method=paypal`);
+    } catch (err) {
+      console.error("[paypal] capture error", err);
+      alert("PayPal-Zahlung fehlgeschlagen. Bitte versuchen Sie es erneut.");
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const buildOrder = (values: FormValues) => {
+    const orderId = uid("ord");
     const address = {
       fullName: values.fullName,
       street: values.street,
@@ -74,14 +139,11 @@ export default function CheckoutPage() {
       country: values.country,
       phone: values.phone,
     };
-    addAddress(address);
-
-    const orderId = uid("ord");
     // Bank transfer orders wait for the admin to confirm the payment;
-    // PayPal orders are considered paid immediately.
+    // PayPal orders are paid immediately.
     const status: "awaiting_payment" | "pending" =
       paymentMethod === "bank_transfer" ? "awaiting_payment" : "pending";
-    const order = {
+    return {
       id: orderId,
       createdAt: Date.now(),
       items,
@@ -92,10 +154,64 @@ export default function CheckoutPage() {
       address,
       ...(promo ? { promo: { ...promo, discountAmount: disc } } : {}),
     };
-    addOrder(order);
-    // Await the RTDB write so admin actually sees the order and the customer's
-    // tracking page can find it. If it fails, surface the error instead of
-    // navigating to a success page for an order that doesn't exist server-side.
+  };
+
+  const onSubmit = async (values: FormValues) => {
+    setProcessing(true);
+
+    if (!user) login(values.email, values.fullName);
+    addAddress({
+      fullName: values.fullName,
+      street: values.street,
+      city: values.city,
+      zip: values.zip,
+      country: values.country,
+      phone: values.phone,
+    });
+
+    const order = buildOrder(values);
+
+    // PayPal: create the PayPal order server-side and redirect the customer to
+    // paypal.com for approval. The shop order is only created AFTER the
+    // payment is captured (see completePayPalPayment above).
+    if (paymentMethod === "paypal") {
+      try {
+        const res = await fetch("/api/paypal/create-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount: total,
+            returnUrl: `${window.location.origin}/checkout?paypal=return`,
+            cancelUrl: `${window.location.origin}/checkout?paypal=cancel`,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.approvalUrl) {
+          console.error("[paypal] create-order failed", res.status, data);
+          alert(
+            "PayPal ist momentan nicht erreichbar. Bitte wählen Sie Banküberweisung (Vorkasse) oder versuchen Sie es später erneut.",
+          );
+          setProcessing(false);
+          return;
+        }
+        sessionStorage.setItem(
+          PENDING_KEY,
+          JSON.stringify({ paypalOrderId: data.id, order }),
+        );
+        window.location.href = data.approvalUrl;
+        return; // page unloads — do not continue
+      } catch (err) {
+        console.error("[paypal] create-order error", err);
+        alert(
+          "PayPal ist momentan nicht erreichbar. Bitte wählen Sie Banküberweisung (Vorkasse) oder versuchen Sie es später erneut.",
+        );
+        setProcessing(false);
+        return;
+      }
+    }
+
+    // Bank transfer (Vorkasse): no payment happens at checkout — the customer
+    // transfers the money afterwards, so the order is created immediately.
     try {
       await saveOrderToFirestore(order);
     } catch (err) {
@@ -104,21 +220,40 @@ export default function CheckoutPage() {
         "Bestellung konnte nicht an unseren Server übertragen werden. Bitte versuchen Sie es erneut.\n\n" +
           (err instanceof Error ? err.message : ""),
       );
+      setProcessing(false);
       return;
     }
 
     // Fire the order confirmation email (with bank details for Vorkasse) and
-    // the admin "new order" notification. Both go out for PayPal AND Vorkasse.
-    // Non-blocking: a failed email must never break the checkout.
+    // the admin "new order" notification. Non-blocking: a failed email must
+    // never break the checkout.
     sendOrderConfirmationEmail(order).catch(() => {});
     sendNewOrderAdminEmail(order).catch(() => {});
 
+    addOrder(order);
     clear();
-    navigate(`/order/success?id=${orderId}&method=${paymentMethod}`);
+    navigate(`/order/success?id=${order.id}&method=${paymentMethod}`);
   };
+
+  if (items.length === 0 && !processing) {
+    return (
+      <div className="container py-16 text-center">
+        <h1 className="h-section">Ihr Warenkorb ist leer</h1>
+        <Link to="/categories" className="btn btn-primary mt-6 inline-flex">Weiter einkaufen</Link>
+      </div>
+    );
+  }
 
   return (
     <div className="container py-10 lg:py-14">
+      {processing && (
+        <div className="fixed inset-0 z-[90] bg-white/80 backdrop-blur-sm grid place-items-center">
+          <div className="flex flex-col items-center gap-3 text-ink">
+            <Loader2 className="size-8 text-brand animate-spin" />
+            <p className="font-medium">Zahlung wird bestätigt…</p>
+          </div>
+        </div>
+      )}
       <h1 className="h-display mb-8">Kasse</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-4 sm:gap-6 lg:gap-8">
         <div className="space-y-6">

@@ -165,39 +165,50 @@ Groq je AI provajder sa **besplatnim nivoom** (bez kartice) koji nudi OpenAI GPT
 
 
 
-## 2. 💳 PAYPAL — šta ti treba za PRAVA plaćanja
+## 2. 💳 PAYPAL — PRAVA plaćanja (INTEGRISANO ✅)
 
 ### Trenutno stanje
-U aplikaciji je **simuliran PayPal** — klikneš „Mit PayPal bezahlen" i poslije 1,2 s
-samo se kreira narudžba. **Nema stvarnog plaćanja** — niko ne šalje novac.
+✅ **PayPal integracija je napravljena i radi sa PRAVIM (Live) plaćanjem.** Kada kupac klikne
+„Mit PayPal bezahlen", prebacuje se na **paypal.com**, tamo se prijavi i plati, i tek kad je
+uplata potvrđena, narudžba se kreira u bazi (status „Eingegangen / bezahlt"). Kupac i admin
+dobijaju emailove kao i do sada.
 
-### Šta ti treba da PayPal radi realno
+### Kako radi (tehnički)
+```
+Kupac klikne „Mit PayPal bezahlen"
+        ↓
+Serverless funkcija api/paypal/create-order.ts kreira PayPal narudžbu
+        ↓
+Kupac se prebaci na paypal.com i odobri plaćanje
+        ↓
+Vraća se na sajt → api/paypal/capture-order.ts potvrđuje (capture) uplatu
+        ↓
+Tek sada se narudžba upisuje u Firebase + šalju se emailovi
+        ↓
+Kupac vidi „Vielen Dank für Ihre Bestellung!"
+```
 
-**1. PayPal Business račun (besplatan)**
-- Idi na: **https://www.paypal.com** → **Sign Up** → **Business Account**
-- Unesi: ime firme/ime i prezime, adresu, email (preporuka: `myicon2025@gmail.com`), IBAN računa za isplatu
-- Potvrdi email
+- **Ključevi su samo na serveru** (`PAYPAL_CLIENT_ID` + `PAYPAL_CLIENT_SECRET` u Vercel env vars) — browser ih nikad ne vidi
+- Live endpoint: `api-m.paypal.com` (sandbox se uključuje sa `PAYPAL_ENV=sandbox`)
+- Narudžba se u bazi kreira **tek nakon što je novac stvarno naplaćen** — nema lažnih narudžbi
 
-**2. PayPal Developer račun**
-- Idi na: **https://developer.paypal.com**
-- Prijavi se sa istim Business računom
-- Klikni **"Apps & Credentials"** → **"Create App"**
-- Dobićeš **Client ID** (nije tajna) i **Secret** (TAJNO — čuva se na serveru)
+### Šta TI trebaš uraditi (jednom, 2 minute) ⭐
 
-**3. Šta mi treba od tebe (da bih ja uradio integraciju):**
-- [ ] PayPal Business email račun (kreiran + potvrđen)
-- [ ] **Client ID** (možeš slobodno dati — nije tajna)
-- [ ] **Secret** (šalji samo meni / u `.env` na serveru — NIKAD u browser kodu)
-- [ ] Webhook URL podešen u PayPal dashboardu (napravimo zajedno kad deploy-uješ)
+Da bi PayPal radio na živom sajtu, dodaj ključeve u Vercel:
 
-**4. Kako će izgledati kad je gotovo:**
-- Klik „Mit PayPal bezahlen" → prebaci kupca na **PayPal stranicu** → kupac se prijavi i plati
-- PayPal ti **automatski javi** (webhook) da je uplata stigla
-- Narudžba prelazi u „In Bearbeitung" automatski — **bez ručne potvrde**
+1. **vercel.com** → projekat **myicon** → **Settings** → **Environment Variables**
+2. Klikni **Add New** i dodaj **oba**:
+   - **Key:** `PAYPAL_CLIENT_ID` → **Value:** tvoj Client ID (`AXKb...`)
+   - **Key:** `PAYPAL_CLIENT_SECRET` → **Value:** tvoj Secret (`EA4o...`)
+   - Oba označena za **Production** → **Save**
+3. **Deployments** → zadnji deployment → **⋯** → **Redeploy**
 
-> ⚠️ **Napomena:** PayPal integracija zahtijeva server (webhook mora negdje da „čuči"). Radićemo je preko Vercel serverless funkcije — isto mjesto gdje je i Resend ključ.
+> ✅ Lokalno su ključevi već upisani u `.env` — lokalni test radi odmah.
 
----
+### Napomene
+- **Webhook** (automatske obavijesti PayPal-a, npr. za povrate/refunde) **nije potreban** za osnovno plaćanje — naš flow potvrđuje uplatu odmah (capture). Možemo ga dodati kasnije za napredne stvari.
+- Testiraj prvo sa **malim iznosom** (npr. najjeftiniji proizvod) — to je pravi novac.
+- PayPal provizija: ~2,49% + 0,35 € po transakciji (njemačke cijene).
 
 ## 3. 💳 KARTICA (kreditna/debitna) — šta ti treba
 
