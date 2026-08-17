@@ -321,7 +321,7 @@ export const DEFAULT_TERMS: LegalPageContent = {
   title: "Allgemeine Geschäftsbedingungen",
   sections: [
     { h: "§1 Geltungsbereich", p: "Für alle Bestellungen über unseren Online-Shop gelten die nachfolgenden AGB." },
-    { h: "§2 Vertragspartner", p: "Der Kaufvertrag kommt zustande mit MYICON GmbH, Druckallee 1, 10115 Berlin." },
+    { h: "§2 Vertragspartner", p: "Der Kaufvertrag kommt zustande mit Ivan Muzeka, Steinstr, 42855 Remscheid, Deutschland." },
     { h: "§3 Preise & Versandkosten", p: "Alle Preise verstehen sich inklusive der gesetzlichen Mehrwertsteuer. Versandkosten werden im Bestellprozess angezeigt." },
     { h: "§4 Lieferung", p: "Die Lieferzeit beträgt in der Regel 3–5 Werktage nach Druckfreigabe." },
     { h: "§5 Widerruf", p: "Bei individuell gefertigten Produkten ist das Widerrufsrecht ausgeschlossen, soweit gesetzlich zulässig." },
@@ -333,7 +333,7 @@ export const DEFAULT_TERMS_EN: LegalPageContent = {
   title: "Terms and Conditions",
   sections: [
     { h: "§1 Scope", p: "The following terms and conditions apply to all orders placed through our online shop." },
-    { h: "§2 Contracting Party", p: "The purchase contract is concluded with MYICON GmbH, Druckallee 1, 10115 Berlin." },
+    { h: "§2 Contracting Party", p: "The purchase contract is concluded with Ivan Muzeka, Steinstr, 42855 Remscheid, Germany." },
     { h: "§3 Prices & Shipping Costs", p: "All prices include the applicable VAT. Shipping costs are shown during the checkout process." },
     { h: "§4 Delivery", p: "Delivery typically takes 3–5 business days after print approval." },
     { h: "§5 Right of Withdrawal", p: "The right of withdrawal is excluded for custom-made products to the extent permitted by law." },
@@ -344,7 +344,7 @@ export const DEFAULT_TERMS_EN: LegalPageContent = {
 export const DEFAULT_PRIVACY: LegalPageContent = {
   title: "Datenschutzerklärung",
   sections: [
-    { h: "1. Verantwortlicher", p: "MYICON, www.my-icon.shop, myicon2025@gmail.com" },
+    { h: "1. Verantwortlicher", p: "Ivan Muzeka, Steinstr, 42855 Remscheid, Deutschland, myicon2025@gmail.com" },
     { h: "2. Datenerhebung", p: "Wir erheben personenbezogene Daten nur, sofern Sie uns diese im Rahmen einer Bestellung oder Kontaktanfrage freiwillig mitteilen." },
     { h: "3. Cookies", p: "Unsere Webseite verwendet technisch notwendige Cookies. Analytische Cookies werden nur mit Ihrer ausdrücklichen Zustimmung gesetzt." },
     { h: "4. Ihre Rechte", p: "Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Datenübertragbarkeit gemäß DSGVO. Anfragen richten Sie bitte an myicon2025@gmail.com." },
@@ -355,7 +355,7 @@ export const DEFAULT_PRIVACY: LegalPageContent = {
 export const DEFAULT_PRIVACY_EN: LegalPageContent = {
   title: "Privacy Policy",
   sections: [
-    { h: "1. Controller", p: "MYICON, www.my-icon.shop, myicon2025@gmail.com" },
+    { h: "1. Controller", p: "Ivan Muzeka, Steinstr, 42855 Remscheid, Germany, myicon2025@gmail.com" },
     { h: "2. Data Collection", p: "We only collect personal data that you voluntarily provide as part of an order or contact request." },
     { h: "3. Cookies", p: "Our website uses technically necessary cookies. Analytical cookies are only set with your explicit consent." },
     { h: "4. Your Rights", p: "You have the right to access, rectify, delete and port your data under GDPR. Please address requests to myicon2025@gmail.com." },
@@ -371,12 +371,12 @@ export interface ImprintContent {
 
 export const DEFAULT_IMPRINT: ImprintContent = {
   title: "Impressum",
-  body: "MYICON\nwww.my-icon.shop\n\nTelefon: 02191 5606112\nTelefon: 0176 64824863\nTelefon: 0178 8793509\nE-Mail: myicon2025@gmail.com",
+  body: "Ivan Muzeka\nSteinstr\n42855 Remscheid\nDeutschland\n\nTelefon: 02191 5606112\nTelefon: 0176 64824863\nTelefon: 0178 8793509\nE-Mail: myicon2025@gmail.com",
 };
 
 export const DEFAULT_IMPRINT_EN: ImprintContent = {
   title: "Legal Notice",
-  body: "MYICON\nwww.my-icon.shop\n\nPhone: 02191 5606112\nPhone: 0176 64824863\nPhone: 0178 8793509\nEmail: myicon2025@gmail.com",
+  body: "Ivan Muzeka\nSteinstr\n42855 Remscheid\nGermany\n\nPhone: 02191 5606112\nPhone: 0176 64824863\nPhone: 0178 8793509\nEmail: myicon2025@gmail.com",
 };
 
 // ─── Navbar (Site Header) ─────────────────────────────────────────────────────
