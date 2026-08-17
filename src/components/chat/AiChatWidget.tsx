@@ -14,7 +14,7 @@ const QUICK_SUGGESTIONS = [
   "Status meiner Bestellung",
 ];
 
-const WELCOME_TEXT = `Hallo! 👋 Ich bin der KI-Assistent von MYiCON — ein virtueller Berater, der Ihnen sofort weiterhilft.
+const WELCOME_TEXT = `Hallo! 👋 Ich bin der AI-Assistent von MYiCON — ein virtueller Berater, der Ihnen sofort weiterhilft.
 
 Das kann ich für Sie tun:
 • 🛍️ Produkte, Preise, Farben & Größen zeigen
@@ -96,7 +96,7 @@ export default function AiChatWidget() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        aria-label={open ? "KI-Chat schließen" : "KI-Chat öffnen"}
+        aria-label={open ? "AI-Chat schließen" : "AI-Chat öffnen"}
         className={`fixed bottom-5 right-5 z-[70] grid place-items-center rounded-full shadow-lg shadow-brand/30 text-white transition-all hover:scale-105 active:scale-95 ${
           open ? "bg-ink" : "bg-brand"
         } ${open ? "size-12" : "size-14"}`}
@@ -107,7 +107,7 @@ export default function AiChatWidget() {
           <span className="relative flex flex-col items-center justify-center">
             <Sparkles className="size-6" />
             <span className="absolute -bottom-5 text-[9px] font-bold tracking-wide uppercase bg-accent text-ink rounded px-1.5 py-0.5 leading-none shadow">
-              KI
+              AI
             </span>
           </span>
         )}
@@ -121,7 +121,7 @@ export default function AiChatWidget() {
         <div
           className="fixed inset-x-0 bottom-0 top-16 z-[69] sm:inset-auto sm:bottom-24 sm:right-5 sm:top-auto sm:h-[560px] sm:max-h-[calc(100vh-120px)] sm:w-[400px] flex flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl border border-line bg-white shadow-2xl shadow-black/20"
           role="dialog"
-          aria-label="MYiCON KI-Assistent Chat"
+          aria-label="MYiCON AI-Assistent Chat"
         >
           {/* Header — clearly branded as AI assistant */}
           <div className="flex items-center gap-3 px-4 py-3 bg-brand text-white">
@@ -133,9 +133,9 @@ export default function AiChatWidget() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-sm leading-tight flex items-center gap-1.5">
-                MYiCON KI-Assistent
+                MYiCON AI-Assistent
                 <span className="text-[9px] font-bold uppercase bg-accent text-ink rounded px-1.5 py-0.5 leading-none">
-                  KI
+                  AI
                 </span>
               </p>
               <p className="text-[11px] text-white/70 leading-tight">
@@ -235,7 +235,7 @@ export default function AiChatWidget() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Nachricht an den KI-Assistenten…"
+              placeholder="Nachricht an den AI-Assistenten…"
               className="flex-1 input !mb-0"
               disabled={loading}
             />
