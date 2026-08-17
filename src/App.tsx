@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Toaster } from "@/components/ui/Toaster";
+import AiChatWidget from "@/components/chat/AiChatWidget";
 
 // Route-level code splitting — each page gets its own chunk
 const HomePage = lazy(() => import("@/pages/HomePage"));
@@ -64,6 +65,7 @@ function ShellLayout({ children }: { children: React.ReactNode }) {
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
       <main className="flex-1">{children}</main>
       <SiteFooter />
+      <AiChatWidget />
     </>
   );
 }
