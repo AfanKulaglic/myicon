@@ -22,9 +22,8 @@ const FROM_EMAIL =
   (import.meta.env.VITE_EMAIL_FROM as string | undefined) ??
   "MYICON <info@my-icon.shop>";
 /**
- * The shop owner's business inbox. Every customer email is also delivered
- * (BCC) here, and the admin "new order" notification is addressed to it.
- * Set via VITE_EMAIL_COPY_TO.
+ * The shop owner's business inbox. The admin "new order" notification is
+ * addressed to it. Set via VITE_EMAIL_COPY_TO.
  */
 const COPY_TO =
   (import.meta.env.VITE_EMAIL_COPY_TO as string | undefined) ??
@@ -82,9 +81,6 @@ export async function sendEmail({ to, subject, html, text }: SendEmailInput): Pr
       body: JSON.stringify({
         from: FROM_EMAIL,
         to,
-        // BCC a copy to the shop owner — unless the email is already for them
-        // (the admin notification), to avoid duplicates.
-        ...(COPY_TO && COPY_TO !== to ? { bcc: COPY_TO } : {}),
         subject,
         html,
         ...(text ? { text } : {}),
