@@ -7,6 +7,7 @@ import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Toaster } from "@/components/ui/Toaster";
 import AiChatWidget from "@/components/chat/AiChatWidget";
 import { trackPageView } from "@/lib/analytics";
+import { applySeo } from "@/lib/seo";
 
 // Route-level code splitting — each page gets its own chunk
 const HomePage = lazy(() => import("@/pages/HomePage"));
@@ -53,11 +54,27 @@ const AdminSettings = lazy(() => import("@/pages/admin/AdminSettings"));
 const AdminAnalytics = lazy(() => import("@/pages/admin/AdminAnalytics"));
 const AdminPromoCodes = lazy(() => import("@/pages/admin/AdminPromoCodes"));
 
+const PAGE_SEO: Record<string, { title: string; description: string }> = {
+  "/": { title: "MYICON — Individuell bedruckte Textilien & Druckprodukte", description: "Online-Shop für individuell bedruckte T-Shirts, Hoodies, Flyer, Visitenkarten, Plakate & Werbematerial. Kostenloser Versand ab 99 €." },
+  "/categories": { title: "Alle Produktkategorien", description: "Entdecken Sie Textilien, Flyer, Broschüren, Visitenkarten, Plakate und Werbematerial bei MYICON." },
+  "/cart": { title: "Warenkorb", description: "Ihr MYICON Warenkorb." },
+  "/checkout": { title: "Kasse", description: "Sichere Kasse bei MYICON — PayPal oder Banküberweisung." },
+  "/order/track": { title: "Bestellung verfolgen", description: "Verfolgen Sie den Status Ihrer MYICON Bestellung." },
+  "/login": { title: "Anmelden", description: "Melden Sie sich bei Ihrem MYICON Konto an." },
+  "/register": { title: "Registrieren", description: "Erstellen Sie ein MYICON Konto." },
+  "/help/faq": { title: "FAQ — Häufige Fragen", description: "Antworten auf häufige Fragen zu MYICON." },
+  "/contact": { title: "Kontakt", description: "Kontaktieren Sie das MYICON Team." },
+};
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
     trackPageView(pathname);
+    const seo = PAGE_SEO[pathname];
+    if (seo) {
+      applySeo({ title: seo.title, description: seo.description, path: pathname });
+    }
   }, [pathname]);
   return null;
 }

@@ -59,6 +59,16 @@ export default function AiChatWidget() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  // Lock body scroll while the mobile chat is open (prevents page jump/zoom)
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }
+  }, [open]);
+
   // Auto-scroll to the latest message
   useEffect(() => {
     scrollRef.current?.scrollTo({
@@ -117,34 +127,29 @@ export default function AiChatWidget() {
 
   return (
     <>
-      {/* Floating toggle button — AI-labelled so it's clearly an AI chat */}
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        aria-label={open ? "AI-Chat schließen" : "AI-Chat öffnen"}
-        className={`fixed bottom-5 right-5 z-[70] grid place-items-center rounded-full shadow-lg shadow-brand/30 text-white transition-all hover:scale-105 active:scale-95 ${
-          open ? "bg-ink" : "bg-brand"
-        } ${open ? "size-12" : "size-14"}`}
-      >
-        {open ? (
-          <X className="size-6" />
-        ) : (
+      {/* Floating toggle button — hidden while the chat panel is open so it
+          never overlaps the send button on mobile */}
+      {!open && (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-label="AI-Chat öffnen"
+          className="fixed bottom-5 right-5 z-[70] size-14 grid place-items-center rounded-full shadow-lg shadow-brand/30 text-white transition-all hover:scale-105 active:scale-95 bg-brand"
+        >
           <span className="relative flex flex-col items-center justify-center">
             <Sparkles className="size-6" />
             <span className="absolute -bottom-5 text-[9px] font-bold tracking-wide uppercase bg-accent text-ink rounded px-1.5 py-0.5 leading-none shadow">
               AI
             </span>
           </span>
-        )}
-        {!open && (
           <span className="absolute -top-0.5 -right-0.5 size-3.5 rounded-full bg-accent border-2 border-white" />
-        )}
-      </button>
+        </button>
+      )}
 
       {/* Chat panel */}
       {open && (
         <div
-          className="fixed inset-x-0 bottom-0 top-16 z-[69] sm:inset-auto sm:bottom-24 sm:right-5 sm:top-auto sm:h-[560px] sm:max-h-[calc(100vh-120px)] sm:w-[400px] flex flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl border border-line bg-white shadow-2xl shadow-black/20"
+          className="fixed inset-x-0 bottom-0 top-16 z-[69] sm:inset-auto sm:bottom-6 sm:right-5 sm:top-auto sm:h-[560px] sm:max-h-[calc(100vh-120px)] sm:w-[400px] flex flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl border border-line bg-white shadow-2xl shadow-black/20"
           role="dialog"
           aria-label="MYiCON AI-Assistent Chat"
         >
@@ -175,6 +180,15 @@ export default function AiChatWidget() {
               title="Chat neu starten"
             >
               <RefreshCcw className="size-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="size-8 rounded-lg hover:bg-white/15 grid place-items-center transition-colors"
+              aria-label="Chat schließen"
+              title="Chat schließen"
+            >
+              <X className="size-5" />
             </button>
           </div>
 
@@ -250,7 +264,7 @@ export default function AiChatWidget() {
             )}
           </div>
 
-          {/* Input */}
+          {/* Input — text-base (16px) prevents iOS Safari from zooming in */}
           <form
             onSubmit={onSubmit}
             className="border-t border-line p-3 flex items-center gap-2 bg-white"
@@ -261,13 +275,16 @@ export default function AiChatWidget() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Nachricht an den AI-Assistenten…"
-              className="flex-1 input !mb-0"
+              className="flex-1 min-w-0 rounded-lg border border-line bg-white px-3.5 py-2.5 text-base placeholder:text-ink-subtle focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors"
               disabled={loading}
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="size-10 rounded-lg bg-brand text-white grid place-items-center hover:bg-brand-600 transition-colors disabled:opacity-40 disabled:pointer-events-none shrink-0"
+              className="size-10 shrink-0 rounded-lg bg-brand text-white grid place-items-center hover:bg-brand-600 transition-colors disabled:opacity-40 disabled:pointer-events-none"
               aria-label="Senden"
             >
               <Send className="size-4" />
