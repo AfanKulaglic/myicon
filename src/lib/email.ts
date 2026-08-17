@@ -349,6 +349,77 @@ export async function sendOrderDeliveredEmail(order: Order): Promise<boolean> {
 }
 
 /**
+ * Contact form — sent to the shop owner's inbox (VITE_EMAIL_COPY_TO) when a
+ * customer submits the contact form.
+ */
+export async function sendContactMessageEmail({
+  name,
+  email,
+  subject,
+  message,
+}: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}): Promise<boolean> {
+  if (!COPY_TO) return false;
+
+  const html = shell(`
+    <h2 style="margin:0 0 12px;font-size:18px;">Neue Kontaktanfrage 📬</h2>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 16px;font-size:13px;">
+      <tr><td style="padding:2px 12px 2px 0;color:#5a6675;">Name</td><td style="padding:2px 0;">${esc(name)}</td></tr>
+      <tr><td style="padding:2px 12px 2px 0;color:#5a6675;">E-Mail</td><td style="padding:2px 0;">${esc(email)}</td></tr>
+      <tr><td style="padding:2px 12px 2px 0;color:#5a6675;">Betreff</td><td style="padding:2px 0;">${esc(subject)}</td></tr>
+    </table>
+    <div style="background:${BRAND.blueSoft};border:1px solid ${BRAND.blueLine};border-radius:8px;padding:16px 18px;">
+      <p style="margin:0 0 8px;font-weight:bold;color:${BRAND.blue};">Nachricht:</p>
+      <p style="margin:0;white-space:pre-wrap;">${esc(message)}</p>
+    </div>
+    <p style="margin:16px 0 0;font-size:13px;color:${BRAND.muted};">
+      Antworten Sie direkt auf diese E-Mail, um zu antworten.
+    </p>
+  `);
+
+  return sendEmail({
+    to: COPY_TO,
+    subject: `Kontaktanfrage: ${esc(subject).slice(0, 60)}`,
+    html,
+  });
+}
+
+/**
+ * Registration confirmation — sent to the customer after they create an
+ * account, so they know the registration was successful.
+ */
+export async function sendRegistrationEmail({
+  email,
+  name,
+}: {
+  email: string;
+  name: string;
+}): Promise<boolean> {
+  const html = shell(`
+    <h2 style="margin:0 0 12px;font-size:18px;">Willkommen bei MYiCON! 🎉</h2>
+    <p style="margin:0 0 16px;">
+      Hallo ${esc(name)},<br/>
+      Ihre Registrierung war erfolgreich. Ihr Konto ist jetzt bereit —
+      Sie können Designs erstellen, Bestellungen verfolgen und vieles mehr.
+    </p>
+    ${ctaButton(`${PUBLIC_URL}/account`, "Zum Konto")}
+    <p style="margin:16px 0 0;font-size:13px;color:${BRAND.muted};">
+      Falls Sie Fragen haben, helfen wir Ihnen gerne weiter.
+    </p>
+  `);
+
+  return sendEmail({
+    to: email,
+    subject: "Willkommen bei MYiCON — Registrierung erfolgreich",
+    html,
+  });
+}
+
+/**
  * Admin "new order" notification — sent to the shop owner's inbox
  * (VITE_EMAIL_COPY_TO) for EVERY order. Lists the ordered products with their
  * images, the total and the customer's data so the admin can start fulfilling.

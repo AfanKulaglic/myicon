@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 import { Button } from "@/components/ui/Button";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { sendRegistrationEmail } from "@/lib/email";
 import { DEFAULT_REGISTER, DEFAULT_REGISTER_EN, type RegisterContent } from "@/types/content";
 import { useState } from "react";
 
@@ -44,6 +45,8 @@ export default function RegisterPage() {
   const onSubmit = async (v: V) => {
     try {
       await registerWithEmail(v.email, v.password, v.name);
+      // Welcome email — non-blocking, must never break registration
+      sendRegistrationEmail({ email: v.email, name: v.name }).catch(() => {});
       navigate("/account");
     } catch (e: unknown) {
       const code = (e as { code?: string }).code ?? "";

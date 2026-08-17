@@ -6,6 +6,31 @@ interface ChatMessage {
   content: string;
 }
 
+/**
+ * Render message text with clickable links (https:// URLs become <a> tags)
+ * so the AI can point customers to cart / order tracking / contact pages.
+ */
+function linkify(text: string): React.ReactNode {
+  const parts = text.split(/(https?:\/\/[^\s]+)/g);
+  return parts.map((part, i) => {
+    if (/^https?:\/\//.test(part)) {
+      const clean = part.replace(/[.,;:!?)]+$/, "");
+      return (
+        <a
+          key={i}
+          href={clean}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline break-all hover:text-brand-600"
+        >
+          {clean}
+        </a>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
+}
+
 /** Suggestions shown as quick-reply chips when the chat is empty. */
 const QUICK_SUGGESTIONS = [
   "Welche Produkte gibt es?",
@@ -199,7 +224,7 @@ export default function AiChatWidget() {
                     <Bot className="size-4 text-brand" />
                   </div>
                   <div className="bg-white border border-line rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-sm whitespace-pre-line shadow-sm max-w-[85%]">
-                    {m.content}
+                    {linkify(m.content)}
                   </div>
                 </div>
               ),

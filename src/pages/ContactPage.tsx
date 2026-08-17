@@ -6,6 +6,7 @@ import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { toast } from "@/store/toast";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { sendContactMessageEmail } from "@/lib/email";
 import { DEFAULT_CONTACT, DEFAULT_CONTACT_EN, type ContactContent } from "@/types/content";
 
 const schema = z.object({
@@ -23,9 +24,13 @@ export default function ContactPage() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async () => {
-    await new Promise((r) => setTimeout(r, 700));
-    toast({ title: "Nachricht gesendet", description: "Wir melden uns innerhalb von 24 h." });
+  const onSubmit = async (v: V) => {
+    const sent = await sendContactMessageEmail(v).catch(() => false);
+    if (sent) {
+      toast({ title: "Nachricht gesendet", description: "Wir melden uns innerhalb von 24 h." });
+    } else {
+      toast({ title: "Fehler", description: "Nachricht konnte nicht gesendet werden. Bitte später erneut versuchen." });
+    }
     setSent(true);
     reset();
   };
