@@ -192,11 +192,12 @@ function bankDetailsHtml(order: Order, reference: string): string {
   return `<div style="background:${BRAND.blueSoft};border:1px solid ${BRAND.blueLine};border-radius:8px;padding:16px 18px;margin:0 0 20px;">
       <p style="margin:0 0 8px;font-weight:bold;color:${BRAND.blue};">Bitte überweisen Sie den Betrag auf folgendes Konto:</p>
       <table role="presentation" cellpadding="0" cellspacing="0" style="font-size:13px;">
+        <tr><td style="padding:2px 12px 2px 0;color:#5a6675;">Rechnungsnummer (Proforma)</td><td style="padding:2px 0;font-family:monospace;font-weight:bold;">${esc(reference)}</td></tr>
         <tr><td style="padding:2px 12px 2px 0;color:#5a6675;">Empfänger</td><td style="padding:2px 0;">${esc(BANK_ACCOUNT.holder)}</td></tr>
         <tr><td style="padding:2px 12px 2px 0;color:#5a6675;">IBAN</td><td style="padding:2px 0;font-family:monospace;">${esc(BANK_ACCOUNT.iban)}</td></tr>
         <tr><td style="padding:2px 12px 2px 0;color:#5a6675;">BIC</td><td style="padding:2px 0;font-family:monospace;">${esc(BANK_ACCOUNT.bic)}</td></tr>
         <tr><td style="padding:2px 12px 2px 0;color:#5a6675;">Bank</td><td style="padding:2px 0;">${esc(BANK_ACCOUNT.bankName)}</td></tr>
-        <tr><td style="padding:2px 12px 2px 0;color:#5a6675;">Verwendungszweck</td><td style="padding:2px 0;font-family:monospace;font-weight:bold;">${esc(reference)}</td></tr>
+        <tr><td style="padding:2px 12px 2px 0;color:#5a6675;">Verwendungszweck (= Rechnungsnr.)</td><td style="padding:2px 0;font-family:monospace;font-weight:bold;">${esc(reference)}</td></tr>
       </table>
     </div>`;
 }
@@ -218,7 +219,7 @@ export async function sendOrderConfirmationEmail(order: Order): Promise<boolean>
       Ihre Bestellnummer lautet <strong style="font-family:monospace;">${esc(order.id)}</strong>.
       ${
         isVorkasse
-          ? `Sie haben sich für <strong>Zahlung per Überweisung (Vorkasse)</strong> entschieden.`
+          ? `Ihre <strong>Proforma-Rechnung</strong> trägt die Nummer <strong style="font-family:monospace;">${esc(reference)}</strong> — diese Nummer geben Sie bitte bei der Überweisung als <strong>Verwendungszweck</strong> an.`
           : `Ihre Zahlung per <strong>PayPal</strong> ist bei uns eingegangen.`
       }
     </p>

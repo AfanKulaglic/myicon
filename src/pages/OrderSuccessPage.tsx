@@ -52,6 +52,10 @@ export default function OrderSuccessPage() {
           </p>
           <dl className="mt-5 space-y-3 text-sm bg-surface-alt rounded-lg p-4">
             <div className="flex justify-between gap-4">
+              <dt className="text-ink-muted shrink-0">Rechnungsnummer (Proforma)</dt>
+              <dd className="font-mono font-semibold text-brand text-right">{reference}</dd>
+            </div>
+            <div className="flex justify-between gap-4">
               <dt className="text-ink-muted shrink-0">Empfänger</dt>
               <dd className="font-medium text-right">{BANK_ACCOUNT.holder}</dd>
             </div>

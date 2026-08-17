@@ -61,7 +61,7 @@ Ključ **NE ide u browser kod** — njega čita serverless funkcija `api/send-em
 
 ### Gdje emailovi stižu
 - Emailovi o narudžbama (potvrda sa IBAN-om, potvrda uplate) idu **kupcu** na adresu koju unese na checkout-u.
-- **Svaki email se automatski šalje i kao kopija (BCC) na `myicon2025@gmail.com`** — tvoj poslovni inbox, da ništa ne propustiš. Podešeno preko `VITE_EMAIL_COPY_TO` u `.env`.
+- **Admin obavijest „Neue Bestellung"** za svaku narudžbu ide na `myicon2025@gmail.com` (podešeno preko `VITE_EMAIL_COPY_TO` u `.env`) — kupac dobija **samo svoj** email, bez kopija.
 - **Admin obavijest „Neue Bestellung"** za svaku narudžbu ide na `myicon2025@gmail.com` — sa proizvodima, iznosom i podacima kupca.
 
 > ℹ️ **Zašto je potreban server (`/api/send-email`):** Resend **blokira direktne pozive iz browsera** (CORS — ne šalje `Access-Control-Allow-Origin` zaglavlje). Zato aplikacija šalje email preko svoje serverless funkcije `api/send-email.ts` koja drži ključ na serveru i prosljeđuje Resendu. Ovo je urađeno i radi.
@@ -299,17 +299,26 @@ Da bi eBay narudžbe **automatski** dolazile u tvoj admin panel i da bi im ti sl
 
 ## 5. 🏦 BANKA — koji podaci trebaju
 
-Trenutno u aplikaciji stoji **fejk IBAN** (`DE12 3456 7890 1234 5678 90`) u fajlu `src/lib/bank.ts`. Prije lansiranja ga zamijeni pravim podacima.
+✅ **URAĐENO — pravi bankovni podaci su upisani** u `src/lib/bank.ts` (Ivan Muzeka, Deutsche Bank). Ako se ikad promijene, zamijeni ih u tom fajlu.
 
 ### Koji podaci ti trebaju (i odakle)
 
-| Podatak | Primjer | Odakle ga uzimaš |
-|---------|---------|------------------|
-| **Ime primaoca** | `MYICON GmbH` | Mora biti **tačno** kako glasi na računu (za firmu: naziv iz registra; za fizičko lice: tvoje ime i prezime) |
-| **IBAN** | `DE89 3704 0044 0532 0130 00` | Iz bankovnog računa / online bankarstva / ugovora sa bankom |
-| **BIC / SWIFT** | `COBADEFFXXX` | Isto mjesto — banka ga uvijek daje uz IBAN |
-| **Naziv banke** | `Commerzbank`, `Sparkasse`, `N26`, `Revolut`... | Tvoja banka |
-| **Verwendungszweck (svrha uplate)** | `MYICON-<broj narudžbe>` | Automatski generiše aplikacija — ne moraš ništa |
+| Podatak | Vrijednost u aplikaciji | |
+|---------|------------------------|--|
+| **Ime primaoca (Empfänger)** | `Ivan Muzeka` | ✅ upisano |
+| **IBAN** | `DE85 3707 0024 0319 8488 00` | ✅ upisano |
+| **BIC / SWIFT** | `DEUTDEDBKOE` | ✅ upisano |
+| **Naziv banke** | `Deutsche Bank` | ✅ upisano |
+| **Verwendungszweck (svrha uplate)** | **Broj predračuna (proforma fakture)** — npr. `RE-2026-3F9A2C1B` | Automatski generiše aplikacija — jedinstven za svaku narudžbu |
+
+### 📄 Broj predračuna (Rechnungsnummer)
+
+Svaka narudžba dobija **svoj jedinstveni broj predračuna**, npr. `RE-2026-3F9A2C1B`:
+
+- **Format:** `RE-<godina>-<jedinstveni dio iz broja narudžbe>` — npr. narudžba `ord_3f9a2c1b` → predračun `RE-2026-3F9A2C1B`
+- **Kupac ga dobija odmah nakon narudžbe** — u emailu potvrde i na stranici „Vielen Dank für Ihre Bestellung"
+- **Verwendungszweck = taj isti broj** — kupac ga unese pri uplati, a ti po njemu prepoznaš koja uplata pripada kojoj narudžbi (jedan broj = jedna narudžba = jedna uplata)
+- Bankovni podaci se **ne prikazuju na checkout stranici** — kupac ih dobija tek u emailu nakon narudžbe (kako si tražio)
 
 ### Koliko brzo možeš dobiti prave podatke
 
@@ -325,11 +334,10 @@ Kada dobiješ prave podatke, **pošalji mi ih u chatu** (ili ih sam upiši) u `s
 
 ```ts
 export const BANK_ACCOUNT = {
-  holder: "TVOJE IME / NAZIV FIRME",
-  iban: "DE00 0000 0000 0000 0000 00",
-  bic: "XXXXXXXXXXX",
-  bankName: "NAZIV BANKE",
-  referencePrefix: "MYICON-",
+  holder: "Ivan Muzeka",
+  iban: "DE85 3707 0024 0319 8488 00",
+  bic: "DEUTDEDBKOE",
+  bankName: "Deutsche Bank",
   paymentDeadlineDays: 7,
 };
 ```
