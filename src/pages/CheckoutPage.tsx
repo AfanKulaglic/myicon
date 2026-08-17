@@ -7,10 +7,9 @@ import { useCartStore } from "@/store/cart";
 import { useAuthStore } from "@/store/auth";
 import { Button } from "@/components/ui/Button";
 import { formatCurrency, uid } from "@/lib/utils";
-import { Banknote, Landmark, Lock, ShieldCheck } from "lucide-react";
+import { Landmark, Lock, ShieldCheck, Mail } from "lucide-react";
 import { saveOrderToFirestore } from "@/lib/firestore";
 import { PromoCodeInput } from "@/components/cart/PromoCodeInput";
-import { BANK_ACCOUNT, paymentReference } from "@/lib/bank";
 import { sendNewOrderAdminEmail, sendOrderConfirmationEmail } from "@/lib/email";
 import type { PaymentMethod } from "@/types";
 
@@ -225,15 +224,16 @@ export default function CheckoutPage() {
               </label>
 
               {paymentMethod === "bank_transfer" && (
-                <div className="rounded-lg border border-line bg-white p-4 text-xs text-ink-muted space-y-1.5">
-                  <div className="flex items-center gap-2 font-medium text-ink">
-                    <Banknote className="size-4 text-brand" />
-                    Überweisungsdaten (per E-Mail erhalten Sie alle Details)
+                <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-xs text-ink-muted space-y-1.5">
+                  <div className="flex items-center gap-2 font-medium text-brand">
+                    <Mail className="size-4 text-brand" />
+                    Zahlungsdaten folgen per E-Mail
                   </div>
-                  <div>Empfänger: {BANK_ACCOUNT.holder}</div>
-                  <div className="font-mono">IBAN: {BANK_ACCOUNT.iban}</div>
-                  <div className="font-mono">BIC: {BANK_ACCOUNT.bic}</div>
-                  <div className="font-mono">Verwendungszweck: {paymentReference("…")}</div>
+                  <p>
+                    Nachdem Sie Ihre Bestellung aufgegeben haben, erhalten Sie alle
+                    Überweisungsdaten (Empfänger, IBAN, BIC und Verwendungszweck)
+                    an Ihre E-Mail-Adresse zugesandt.
+                  </p>
                 </div>
               )}
             </div>
